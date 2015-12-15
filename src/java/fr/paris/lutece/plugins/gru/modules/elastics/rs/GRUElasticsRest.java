@@ -51,7 +51,7 @@ public class GRUElasticsRest
 {
     
     /**
-     * Create a new demand
+     * Index data
      * @param strJson The JSon to store
      * @return the status of insert or modify
      */
@@ -59,12 +59,7 @@ public class GRUElasticsRest
     @Path( GRUElasticsConstants.PATH_NOTIFICATION )
     @Produces( MediaType.APPLICATION_JSON )
     @Consumes( MediaType.APPLICATION_JSON )
-    public String Notification ( 
-        @FormParam( GRUElasticsConstants.PARAMETER_ID_DEMAND_TYPE )
-    String strIdDemandType, @FormParam( GRUElasticsConstants.PARAMETER_USER_GUID )
-    String strUserGuid, @FormParam( GRUElasticsConstants.PARAMETER_ID_STATUS_CRM )
-    String strIdStatusCRM, @FormParam( GRUElasticsConstants.PARAMETER_STATUS_TEXT )
-    String strStatusText, @FormParam( GRUElasticsConstants.PARAMETER_DEMAND_DATA )
+    public String Notification ( String strJson )
     String strData, @Context
     HttpServletRequest request )
     {
