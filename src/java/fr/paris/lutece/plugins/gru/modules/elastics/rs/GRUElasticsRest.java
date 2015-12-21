@@ -38,6 +38,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.mapper.object.ObjectMapper;
+
 import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsConstants;
 
 
@@ -60,37 +66,12 @@ public class GRUElasticsRest
     @Produces( MediaType.APPLICATION_JSON )
     @Consumes( MediaType.APPLICATION_JSON )
     public String Notification ( String strJson )
-    String strData, @Context
-    HttpServletRequest request )
     {
-        String strIdDemand = GRUElasticsConstants.INVALID_ID;
-
-        if ( StringUtils.isNotBlank( strUserGuid ) )
-        {
-            CRMUser crmUser = CRMUserService.getService(  ).findByUserGuid( strUserGuid );
-
-            if ( crmUser == null )
-            {
-            	//if crm user does not exist create crm user
-        		crmUser=new CRMUser();
-        		crmUser.setUserGuid(strUserGuid);
-        		crmUser.setMustBeUpdated(true);
-        		crmUser.setIdCRMUser(CRMUserService.getService(  ).create(crmUser));
-        		
-                AppLogService.debug( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_INVALID_USER );
-            }
-            
-            String strConvertedStatusText = StringUtil.convertString( strStatusText );
-            String strConvertedData = StringUtil.convertString( strData );
-            strIdDemand = doCreateDemandByIdCRMUser( strIdDemandType, Integer.toString( crmUser.getIdCRMUser(  ) ),
-                    strIdStatusCRM, strConvertedStatusText, strConvertedData, request );
-         }
-        else
-        {
-            AppLogService.error( GRUElasticsConstants.MESSAGE_MANDATORY_FIELDS );
-        }
-
-        return strIdDemand;
+        Client client = new TransportClient( ).addTransportAddress( new InetSocketTransportAddress( "localhost", 8900 ) ); 
+        ObjectMapper objectMapper = new ObjectMapper();
+        IndexRequestBuilder index = client.prepareIndex( config.getIndex( ), "simple" )
+                .setSource( strJson );
+        index.execute( ).actionGet( );
     }
 
     /**
