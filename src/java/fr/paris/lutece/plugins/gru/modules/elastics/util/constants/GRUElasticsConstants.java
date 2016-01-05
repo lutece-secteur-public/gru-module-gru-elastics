@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2015, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,8 +47,15 @@ public final class GRUElasticsConstants
     public static final String INVALID_ID = "-1";
     public static final String MEDIA_TYPE_JSON = "application/json";
     public static final String MEDIA_TYPE_XML = "application/xml";
+    public static final String PLUGIN_NAME = "elasticsearch/";
     // PATHS
     public static final String PATH_WADL = "wadl";
+    public static final String PATH_DATA_FROM_FLUX = "send/data";
+    public static final String PATH_ELK_SERVER_DEMAND = "https://dev.lutece.paris.fr/poc/elasticsearch/teleservice/demand/";
+    public static final String PATH_ELK_SERVER_USER = "https://dev.lutece.paris.fr/poc/elasticsearch/teleservice/user/";
+    public static final String PATH_ELK_SERVER_NOTIFICATION = "https://dev.lutece.paris.fr/poc/elasticsearch/teleservice/notification/";
+    public static final String PATH_ELK_SOURCE = "/_source";
+    public static final String PATH_ELK_UPDATE = "/_update";
 
     // PROPERTIES
     public static final String PROPERTY_ENCODING_ENABLE = "crm-rest.encoding.enable";
@@ -56,7 +63,9 @@ public final class GRUElasticsConstants
     public static final String PROPERTY_ENCODING_TO = "crm-rest.encoding.to";
     // Paths
     public static final String PATH_NOTIFICATION = "notification";
-
+    
+    //PARAMETERS
+    public static final String PARAMETER_NOTIFICATION_DEMAND = "strJson";
     /**
      * Private constructor
      */

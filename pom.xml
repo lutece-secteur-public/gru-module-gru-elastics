@@ -39,6 +39,11 @@
     </repositories>
 	
     <dependencies>
+    	<dependency>
+  			<groupId>fr.paris.lutece.plugins</groupId>
+  			<artifactId>library-httpaccess</artifactId>
+  			<version>2.4.1-SNAPSHOT</version>
+	   </dependency>
         <dependency>
             <groupId>fr.paris.lutece.plugins</groupId>
             <artifactId>plugin-rest</artifactId>
@@ -46,17 +51,23 @@
             <type>lutece-plugin</type>
         </dependency>
 	<dependency>
-	    <groupId>fr.paris.lutece.plugins</groupId>
-	    <artifactId>plugin-elasticsearch</artifactId>
-	    <version>0.9.0-SNAPSHOT</version>
-	    <type>lutece-plugin</type>
+		<groupId>fr.paris.lutece.plugins</groupId>
+		<artifactId>plugin-gru</artifactId>
+		<version>0.9.0-SNAPSHOT</version>
+		<type>lutece-plugin</type>
 	</dependency>
+		<dependency>
+			<groupId>fr.paris.lutece.plugins</groupId>
+			<artifactId>plugin-elasticsearch</artifactId>
+			<version>0.9.0-SNAPSHOT</version>
+			<type>lutece-plugin</type>
+		</dependency>
     </dependencies>
 	
     <properties>
-        <componentName>gru-elastics</componentName>
-        <jiraProjectName>GRUELASTICS</jiraProjectName>
-        <jiraComponentId>9999999999</jiraComponentId>
+        <componentName>Module GRU Elastics</componentName>
+        <jiraProjectName>GRUELASTIC</jiraProjectName>
+        <jiraComponentId>12924</jiraComponentId>
     </properties>
 	
     <scm>

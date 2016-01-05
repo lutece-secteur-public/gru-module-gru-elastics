@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2015, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,44 @@
  */
 package fr.paris.lutece.plugins.gru.modules.elastics.rs;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.type.TypeFactory;
+import org.codehaus.jackson.type.TypeReference;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+import org.elasticsearch.action.index.IndexResponse;
+
+import com.sun.jersey.api.client.ClientResponse;
+
+import fr.paris.lutece.plugins.gru.business.customer.Customer;
+import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMapping;
+import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMappingHome;
+import fr.paris.lutece.plugins.gru.modules.elastics.business.ElasticMapping;
+import fr.paris.lutece.plugins.gru.modules.elastics.business.ElasticMappingHome;
+import fr.paris.lutece.plugins.gru.modules.elastics.util.ElasticSearchHttpRequest;
+import fr.paris.lutece.plugins.gru.modules.elastics.util.ElasticSearchRequest;
 import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsConstants;
+import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GruElasticTestData;
+import fr.paris.lutece.plugins.rest.service.RestConstants;
+import fr.paris.lutece.util.httpaccess.HttpAccessException;
 
 
 /**
@@ -46,383 +78,250 @@ import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsCo
  * GRUElasticsRest
  *
  */
-@Path( GRUElasticsConstants.BASE_PATH + GRUElasticsConstants.PLUGIN_NAME )
+@Path( RestConstants.BASE_PATH + GRUElasticsConstants.PLUGIN_NAME )
 public class GRUElasticsRest
-{
-    
-    /**
-     * Index data
-     * @param strJson The JSon to store
-     * @return the status of insert or modify
-     */
-    @POST
+{  
+	ObjectMapper mapper = new ObjectMapper();
+	
+	/**
+	 * 
+	 * @return
+	 * @throws JSONException
+	 */
+	
+	@POST
     @Path( GRUElasticsConstants.PATH_NOTIFICATION )
     @Produces( MediaType.APPLICATION_JSON )
     @Consumes( MediaType.APPLICATION_JSON )
-    public String Notification ( String strJson )
-    String strData, @Context
-    HttpServletRequest request )
+    public String notification ( String strJson) throws JSONException
     {
-        String strIdDemand = GRUElasticsConstants.INVALID_ID;
-
-        if ( StringUtils.isNotBlank( strUserGuid ) )
-        {
-            CRMUser crmUser = CRMUserService.getService(  ).findByUserGuid( strUserGuid );
-
-            if ( crmUser == null )
-            {
-            	//if crm user does not exist create crm user
-        		crmUser=new CRMUser();
-        		crmUser.setUserGuid(strUserGuid);
-        		crmUser.setMustBeUpdated(true);
-        		crmUser.setIdCRMUser(CRMUserService.getService(  ).create(crmUser));
-        		
-                AppLogService.debug( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_INVALID_USER );
-            }
-            
-            String strConvertedStatusText = StringUtil.convertString( strStatusText );
-            String strConvertedData = StringUtil.convertString( strData );
-            strIdDemand = doCreateDemandByIdCRMUser( strIdDemandType, Integer.toString( crmUser.getIdCRMUser(  ) ),
-                    strIdStatusCRM, strConvertedStatusText, strConvertedData, request );
-         }
-        else
-        {
-            AppLogService.error( GRUElasticsConstants.MESSAGE_MANDATORY_FIELDS );
-        }
-
-        return strIdDemand;
+    	String response = null;
+    	
+    	try {
+    		
+    		ElasticMapping mapping;
+    		DemandMapping demandMapping = new DemandMapping();
+    		Map<String, Object> resultDemand = null;
+    		Map<String,Object> resultUser = null;
+    		Map<String, Object> resultNotification = null;
+			Map<String,Object> flux = mapper.readValue(strJson, Map.class);
+			Map<String,Object> notification =(Map<String,Object>) flux.get("notification");
+			Map<String,String> userEmail = (Map<String,String>)notification.get("user_email");
+			Map<String,String> userDashboard = (Map<String,String>)notification.get("user_dashboard");
+			Map<String,String> userSMS = (Map<String,String>)notification.get("user_sms");
+			Map<String,Object> backofficeLogging = (Map<String,Object>)notification.get("backoffice_logging");
+			
+			if(StringUtils.isBlank(notification.get("user_guid").toString()) || ElasticMappingHome.findByUserId((Integer)notification.get("user_guid")) == null )
+			{	
+					Customer customer = new Customer();
+					customer.setAccountGuid("100");
+					customer.setAccountLogin("john");
+					customer.setEmail("john.doe@somewhere.com");
+					customer.setExtrasAttributes("");
+					customer.setFirstname("John");
+					customer.setHasAccount(true);
+					customer.setId(11);
+					customer.setIdTitle(12);
+					customer.setIsEmailVerified(true);
+					customer.setIsMobilePhoneVerified(true);
+					customer.setLastname("Doe");
+					customer.setMobilePhone("0681795994");
+					
+					mapping = new ElasticMapping();
+					mapping.setId_customer(customer.getId());
+					mapping.setId_user((Integer)notification.get("user_guid"));
+					demandMapping.setCustomerId(customer.getId());
+			}
+			else
+			{
+				mapping=ElasticMappingHome.findByUserId((Integer)notification.get("user_guid"));
+				demandMapping.setCustomerId(mapping.getId_customer());
+			}
+			
+			resultDemand = doCreateDemand(notification, userSMS);
+			resultUser = doCreateUser(notification, userSMS);
+			resultNotification = doCreateNotification(notification, backofficeLogging, userEmail, userDashboard, userSMS);
+			
+			if((Boolean)resultUser.get("created") && (Boolean)resultDemand.get("created") && (Boolean)resultNotification.get("created"))
+			{	
+				// mapping des users
+				mapping.setStrRefUser(resultUser.get("_id").toString());
+				ElasticMappingHome.create(mapping);
+				
+				//mapping des 
+				demandMapping.setDemandTypeId((Integer)notification.get("demand_id_type"));
+				demandMapping.setStrDemand_id(notification.get("demand_id").toString());
+				demandMapping.setStrElasticsearch_id(resultDemand.get("_id").toString());
+				demandMapping.setRefNotification(resultNotification.get("_id").toString());
+				DemandMappingHome.create(demandMapping);
+				
+				return "{"+"\"status\":"+"\"201\""+"}";		
+			}
+			else
+			{
+				return "{"+"\"status\":"+"\"404\""+"}";
+			}
+			
+    	} 
+			catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+		return null;
     }
-
     /**
-     * Create a new demand
-     * @param strIdDemandType the demand type id
-     * @param strIdCRMUser the ID CRM user
-     * @param strIdStatusCRM the id status crm
-     * @param strStatusText the status text
-     * @param strData the data
-     * @param request {@link HttpServletRequest}
-     * @return the id of the newly created demand
+     * 
+     * @param notification
+     * @param userSMS
+     * @return
      */
     @POST
-    @Path( GRUElasticsConstants.PATH_CREATE_DEMAND_BY_ID_CRM_USER )
-    @Produces( MediaType.TEXT_PLAIN )
-    @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
-    public String doCreateDemandByIdCRMUser( 
-        @FormParam( GRUElasticsConstants.PARAMETER_ID_DEMAND_TYPE )
-    String strIdDemandType, @FormParam( GRUElasticsConstants.PARAMETER_ID_CRM_USER )
-    String strIdCRMUser, @FormParam( GRUElasticsConstants.PARAMETER_ID_STATUS_CRM )
-    String strIdStatusCRM, @FormParam( GRUElasticsConstants.PARAMETER_STATUS_TEXT )
-    String strStatusText, @FormParam( GRUElasticsConstants.PARAMETER_DEMAND_DATA )
-    String strData, @Context
-    HttpServletRequest request )
-    {
-        String strIdDemand = GRUElasticsConstants.INVALID_ID;
-
-        if ( StringUtils.isNotBlank( strIdDemandType ) && StringUtils.isNumeric( strIdDemandType ) &&
-                StringUtils.isNotBlank( strIdStatusCRM ) && StringUtils.isNumeric( strIdStatusCRM ) &&
-                StringUtils.isNotBlank( strIdCRMUser ) && StringUtils.isNumeric( strIdCRMUser ) )
-        {
-            int nIdCRMUser = Integer.parseInt( strIdCRMUser );
-            CRMUser crmUser = CRMUserService.getService(  ).findByPrimaryKey( nIdCRMUser );
-
-            if ( crmUser != null )
-            {
-                int nIdDemandType = Integer.parseInt( strIdDemandType );
-                DemandType demandType = DemandTypeService.getService(  ).findByPrimaryKey( nIdDemandType );
-
-                if ( demandType != null )
-                {
-                    int nIdStatusCRM = Integer.parseInt( strIdStatusCRM );
-                    DemandStatusCRM statusCRM = DemandStatusCRMService.getService(  )
-                                                                      .getStatusCRM( nIdStatusCRM, request.getLocale(  ) );
-
-                    if ( statusCRM != null )
-                    {
-                        String strConvertedStatusText = StringUtil.convertString( strStatusText );
-                        String strConvertedData = StringUtil.convertString( strData );
-                        strIdDemand = Integer.toString( CRMService.getService(  )
-                                                                  .registerDemand( nIdDemandType, nIdCRMUser,
-                                    strConvertedData, strConvertedStatusText, nIdStatusCRM ) );
-                    }
-                    else
-                    {
-                        AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST +
-                            GRUElasticsConstants.MESSAGE_INVALID_ID_STATUS_CRM );
-                    }
-                }
-                else
-                {
-                    AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST +
-                        GRUElasticsConstants.MESSAGE_INVALID_DEMAND_TYPE );
-                }
-            }
-            else
-            {
-                AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_INVALID_USER );
-            }
-        }
-        else
-        {
-            AppLogService.error( GRUElasticsConstants.MESSAGE_MANDATORY_FIELDS );
-        }
-
-        return strIdDemand;
-    }
-
-    /**
-     * Update a demand
-     * @param strIdDemand the id demand
-     * @param strIdStatusCRM the id status crm
-     * @param strStatusText the status text
-     * @param strData the data
-     * @param request {@link HttpServletRequest}
-     * @return the id of the demand
-     */
-    @POST
-    @Path( GRUElasticsConstants.PATH_UPDATE_DEMAND )
-    @Produces( MediaType.TEXT_PLAIN )
-    @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
-    public String doUpdateDemand( @FormParam( GRUElasticsConstants.PARAMETER_ID_DEMAND )
-    String strIdDemand, @FormParam( GRUElasticsConstants.PARAMETER_ID_STATUS_CRM )
-    String strIdStatusCRM, @FormParam( GRUElasticsConstants.PARAMETER_STATUS_TEXT )
-    String strStatusText, @FormParam( GRUElasticsConstants.PARAMETER_DEMAND_DATA )
-    String strData, @Context
-    HttpServletRequest request )
-    {
-        if ( StringUtils.isNotBlank( strIdDemand ) && StringUtils.isNumeric( strIdDemand ) )
-        {
-            int nIdDemand = Integer.parseInt( strIdDemand );
-            Demand demand = DemandService.getService(  ).findByPrimaryKey( nIdDemand );
-
-            if ( demand != null )
-            {
-                int nIdStatusCRM = GRUElasticsConstants.INVALID_ID_INT;
-                DemandStatusCRM statusCRM = null;
-
-                if ( StringUtils.isNotBlank( strIdStatusCRM ) && StringUtils.isNumeric( strIdStatusCRM ) )
-                {
-                    nIdStatusCRM = Integer.parseInt( strIdStatusCRM );
-                    statusCRM = DemandStatusCRMService.getService(  ).getStatusCRM( nIdStatusCRM, request.getLocale(  ) );
-                }
-
-                if ( ( statusCRM != null ) || ( nIdStatusCRM == GRUElasticsConstants.INVALID_ID_INT ) )
-                {
-                    String strConvertedStatusText = StringUtil.convertString( strStatusText );
-                    String strConvertedData = StringUtil.convertString( strData );
-                    CRMService.getService(  )
-                              .setStatus( nIdDemand, strConvertedData, strConvertedStatusText, nIdStatusCRM );
-                }
-                else
-                {
-                    AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST +
-                        GRUElasticsConstants.MESSAGE_INVALID_ID_STATUS_CRM );
-                }
-            }
-            else
-            {
-                AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_INVALID_DEMAND );
-            }
-        }
-        else
-        {
-            AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_MANDATORY_FIELDS );
-        }
-
-        return strIdDemand;
-    }
-
-    /**
-     * Delete a demand
-     * @param strIdDemand the id demand
-     * @return the id of the demand
-     */
-    @POST
-    @Path( GRUElasticsConstants.PATH_DELETE_DEMAND )
-    @Produces( MediaType.TEXT_PLAIN )
-    @Consumes( MediaType.APPLICATION_FORM_URLENCODED )
-    public String doDeleteDemand( @FormParam( GRUElasticsConstants.PARAMETER_ID_DEMAND )
-    String strIdDemand )
-    {
-        if ( StringUtils.isNotBlank( strIdDemand ) && StringUtils.isNumeric( strIdDemand ) )
-        {
-            int nIdDemand = Integer.parseInt( strIdDemand );
-            Demand demand = DemandService.getService(  ).findByPrimaryKey( nIdDemand );
-
-            if ( demand != null )
-            {
-                CRMService.getService(  ).deleteDemand( nIdDemand );
-            }
-            else
-            {
-                AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_INVALID_DEMAND );
-            }
-        }
-        else
-        {
-            AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_MANDATORY_FIELDS );
-        }
-
-        return strIdDemand;
-    }
-    
-    /**
-     * Get the demand in XML or demand JSON depending the value of strMediaType
-     * @param strIdDemand the id demand
-     * @param strMediaType the media type selected
-     * @return the demand
-     */
-    @GET
-    @Path( GRUElasticsConstants.PATH_VIEW_DEMAND )
-    public String getDemand( @PathParam( GRUElasticsConstants.PARAMETER_ID_DEMAND )
-    String strIdDemand, @QueryParam( GRUElasticsConstants.PARAMETER_MEDIA_TYPE) String strMediaType )
-    {
-      if ( StringUtils.isNotBlank( strMediaType ) && strMediaType.equals(GRUElasticsConstants.MEDIA_TYPE_JSON) )
-        {
-        	return getDemandJson(strIdDemand);
-        	
-        }
-       return getDemandXML(strIdDemand);
-    }
-    
-    
-
-    /**
-     * Get the XML of the demand
-     * @param strIdDemand the id demand
-     * @return the XML of the demand
-     */
-    @GET
-    @Path( GRUElasticsConstants.PATH_VIEW_DEMAND )
-    @Produces( MediaType.APPLICATION_XML )
-    public String getDemandXML( @PathParam( GRUElasticsConstants.PARAMETER_ID_DEMAND )
-    String strIdDemand )
-    {
-        StringBuffer sbXML = new StringBuffer(  );
-
-        if ( StringUtils.isNotBlank( strIdDemand ) && StringUtils.isNumeric( strIdDemand ) )
-        {
-            int nIdDemand = Integer.parseInt( strIdDemand );
-            Demand demand = DemandService.getService(  ).findByPrimaryKey( nIdDemand );
-
-            if ( demand != null )
-            {
-                // sbXML.append( XmlUtil.getXmlHeader(  ) );
-                sbXML.append( GRUElasticsConstants.XML_HEADER );
-                XmlUtil.beginElement( sbXML, GRUElasticsConstants.TAG_DEMAND );
-
-                XmlUtil.addElement( sbXML, GRUElasticsConstants.TAG_ID_DEMAND, demand.getIdDemand(  ) );
-                XmlUtil.addElement( sbXML, GRUElasticsConstants.TAG_ID_DEMAND_TYPE, demand.getIdDemandType(  ) );
-                XmlUtil.addElement( sbXML, GRUElasticsConstants.TAG_STATUS_TEXT, demand.getStatusText(  ) );
-                XmlUtil.addElement( sbXML, GRUElasticsConstants.TAG_ID_STATUS_CRM, demand.getIdStatusCRM(  ) );
-                XmlUtil.addElement( sbXML, GRUElasticsConstants.TAG_DATA, demand.getData(  ) );
-                XmlUtil.addElement( sbXML, GRUElasticsConstants.TAG_USER_GUID, demand.getIdCRMUser(  ) );
-
-                String strDateModification = DateUtil.getDateString( demand.getDateModification(  ), null );
-                XmlUtil.addElement( sbXML, GRUElasticsConstants.TAG_DATE_MODIFICATION, strDateModification );
-                XmlUtil.addElement( sbXML, GRUElasticsConstants.TAG_NB_NOTIFICATIONS, demand.getNumberNotifications(  ) );
-
-                XmlUtil.endElement( sbXML, GRUElasticsConstants.TAG_DEMAND );
-            }
-            else
-            {
-                AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_DEMAND_NOT_FOUND );
-                sbXML.append( XMLUtil.formatError( GRUElasticsConstants.MESSAGE_DEMAND_NOT_FOUND, 3 ) );
-            }
-        }
-        else
-        {
-            AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_INVALID_DEMAND );
-            sbXML.append( XMLUtil.formatError( GRUElasticsConstants.MESSAGE_INVALID_DEMAND, 3 ) );
-        }
-
-        return sbXML.toString(  );
-    }
-
-    /**
-     * Get the Json of the demand
-     * @param strIdDemand the id of the demand
-     * @return the Json of the demand
-     */
-    @GET
-    @Path( GRUElasticsConstants.PATH_VIEW_DEMAND )
+    @Path( "demande" )
     @Produces( MediaType.APPLICATION_JSON )
-    public String getDemandJson( @PathParam( GRUElasticsConstants.PARAMETER_ID_DEMAND )
-    String strIdDemand )
-    {
-        String strJSON = StringUtils.EMPTY;
-
-        if ( StringUtils.isNotBlank( strIdDemand ) && StringUtils.isNumeric( strIdDemand ) )
-        {
-            int nIdDemand = Integer.parseInt( strIdDemand );
-            Demand demand = DemandService.getService(  ).findByPrimaryKey( nIdDemand );
-
-            if ( demand != null )
-            {
-                JSONObject json = new JSONObject(  );
-                json.accumulate( GRUElasticsConstants.TAG_ID_DEMAND, demand.getIdDemand(  ) );
-                json.accumulate( GRUElasticsConstants.TAG_ID_DEMAND_TYPE, demand.getIdDemandType(  ) );
-                json.accumulate( GRUElasticsConstants.TAG_STATUS_TEXT, demand.getStatusText(  ) );
-                json.accumulate( GRUElasticsConstants.TAG_ID_STATUS_CRM, demand.getIdStatusCRM(  ) );
-                json.accumulate( GRUElasticsConstants.TAG_DATA, demand.getData(  ) );
-                json.accumulate( GRUElasticsConstants.TAG_USER_GUID, demand.getIdCRMUser(  ) );
-
-                String strDateModification = DateUtil.getDateString( demand.getDateModification(  ), null );
-                json.accumulate( GRUElasticsConstants.TAG_DATE_MODIFICATION, strDateModification );
-                json.accumulate( GRUElasticsConstants.TAG_NB_NOTIFICATIONS, demand.getNumberNotifications(  ) );
-
-                JSONObject jsonDemand = new JSONObject(  );
-                jsonDemand.accumulate( GRUElasticsConstants.TAG_DEMAND, json );
-                strJSON = jsonDemand.toString( 4 );
-            }
-            else
-            {
-                AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_DEMAND_NOT_FOUND );
-                strJSON = JSONUtil.formatError( GRUElasticsConstants.MESSAGE_DEMAND_NOT_FOUND, 3 );
-            }
-        }
-        else
-        {
-            AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_INVALID_DEMAND );
-            strJSON = JSONUtil.formatError( GRUElasticsConstants.MESSAGE_INVALID_DEMAND, 3 );
-        }
-
-        return strJSON;
+    @Consumes( MediaType.APPLICATION_JSON )
+    public Map<String,Object> doCreateDemand(Map<String,Object> notification, Map<String,String> userSMS){
+    	Map<String, Object> mapResult = null;
+    	String demand= "{\n" + 
+    						"\"utilisateur\":\n" +	"{\n" + 
+    									"\"user_guid\":"+ "\""+notification.get("user_guid")+"\"" + "\n" + 
+    								"},\n" + 
+    						"\" demand_id\":" + "\""+notification.get("demand_id")+"\"" + ",\n" +
+    						"\"demand_id_type\":" + notification.get("demand_id_type")  + ",\n" +
+    						"\"demand_max_step\":"+ notification.get("demand_max_step") + ",\n" + 
+    						"\"demand_user_current_step\":"+ notification.get("demand_user_current_step") + ",\n" +
+    						"\"demande_state\":"+ notification.get("demand_state") + ",\n" +
+    						"\"notification_type\":"+ "\""+notification.get("notification_type")+"\"" + ",\n" +
+    						"\"date_demande\":\"2015-03-31\",\n" + 
+    						"\"crm_status_id\":" + notification.get("crm_status_id") + ",\n" + 
+    						"\"reference\": \"PZQu4rocRy60hO2seUEziQ\",\n" +
+    						"\"suggest\":\n"+"{\n"+
+    								"\"input\":"+"["+"\"PZQu4rocRy60hO2seUEziQ\""+"],\n"+
+    								"\"output\": \"John Doe\",\n" +
+    								"\"payload\":\n"+"{\n" + 
+    									"\"user_guid\":"+ "\""+notification.get("user_guid")+"\"" + ",\n" + 
+    									"\"birthday\":\"20/03/1980\",\n"+
+    									"\"telephoneNumber\":"+ "\""+userSMS.get("phone_number")+"\"" + ",\n" +
+    									"\" email\":"+ "\""+notification.get("email")+"\"" + ",\n" +
+    									"\"reference\":\"PZQu4rocRy60hO2seUEziQ\"\n"+
+    								"}\n"+
+    							"}\n"+
+    						"}";
+    	
+    	String result =ElasticSearchHttpRequest.insertDemand(demand);
+    	try {
+			 mapResult = mapper.readValue(result, Map.class);
+		} 
+    	catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return mapResult;
     }
-
     /**
-     * Get the user guid from a given id demand
-     * @param strIdDemand the id demand
-     * @return the user guid
+     * 
+     * @param notification
+     * @param userSMS
+     * @return
      */
-    @GET
-    @Path( GRUElasticsConstants.PATH_GET_USER_GUID_FROM_ID_DEMAND )
-    @Produces( MediaType.TEXT_PLAIN )
-    public String getUserGuidFromIdDemand( @PathParam( GRUElasticsConstants.PARAMETER_ID_DEMAND )
-    String strIdDemand )
-    {
-        String strUserGuid = StringUtils.EMPTY;
-
-        if ( StringUtils.isNotBlank( strIdDemand ) && StringUtils.isNumeric( strIdDemand ) )
-        {
-            int nIdDemand = Integer.parseInt( strIdDemand );
-            Demand demand = DemandService.getService(  ).findByPrimaryKey( nIdDemand );
-
-            if ( demand != null )
-            {
-                int nIdCRMUser = demand.getIdCRMUser(  );
-                CRMUser user = CRMUserService.getService(  ).findByPrimaryKey( nIdCRMUser );
-
-                if ( user != null )
-                {
-                    strUserGuid = user.getUserGuid(  );
-                }
-            }
-        }
-        else
-        {
-            AppLogService.error( GRUElasticsConstants.MESSAGE_CRM_REST + GRUElasticsConstants.MESSAGE_INVALID_USER );
-        }
-
-        return strUserGuid;
+    @POST
+    @Path( "utilisateur" )
+    @Produces( MediaType.APPLICATION_JSON )
+    @Consumes( MediaType.APPLICATION_JSON )
+    public Map<String, Object> doCreateUser(Map<String, Object> notification, Map<String, String> userSMS){
+    	Map<String,Object> response = null;
+    	String user = "{\n"+ 
+    			 			"\"user_guid\":"+ "\""+notification.get("user_guid")+"\"" + ",\n" +
+    			 			"\"email\":" + "\""+notification.get("email")+"\"" + ",\n" +
+    			 			"\"name\": \"John Doe\",\n" + 
+    			 			"\"stayConnected\" : \"true\",\n"+
+    			 			"\"street\" : \" rue test\",\n"+
+    			 			"\"telephoneNumber\" :"+ "\""+userSMS.get("phone_number")+"\"" + ",\n" +
+    			 			"\"city\" : \"Paris\",\n"+
+    			 			"\"cityOfBirth\" : \"london\",\n"+
+    			 			"\"birthday\" : \"20/03/1980\",\n"+
+    			 			"\"civility\":\"Mr\",\n" +
+    			 			"\"postalCode\" : \"75019\",\n"+
+    			 			"\"suggest\":"+"{\n"+
+    			 				"\"input\":" + "[" + "\"Ndiambe\","+ "\"Darou\"," + "\""+userSMS.get("phone_number")+"\"" + "," + "\""+notification.get("email")+"\"" + "],\n" + 
+    			 				"\"output\": \"Ndiambe Darou\",\n" + 
+    			 				"\"payload\":"+ "{" + "\"user_guid\":"+ "\""+notification.get("user_guid")+"\"" + ",\n" +
+    			 					"\"birthday\": \"20/03/1980\",\n"+
+    			 					"\"telephoneNumber\":" + "\""+userSMS.get("phone_number")+"\"" + ",\n" +
+    			 					"\"email\":" + "\""+notification.get("email")+"\"" + "\n" + 
+    			 					"}\n" + 
+    			 				"}\n"+
+    			 		"}";
+    	 
+    	 String result = ElasticSearchHttpRequest.insertUser(user);
+    	 try {
+			response = mapper.readValue(result, Map.class);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return response;
+    }
+    /**
+     * 
+     * @param notification
+     * @param backofficeLogging
+     * @param userEmail
+     * @param userDashboard
+     * @param userSMS
+     * @return
+     */
+    @POST
+    @Path( "creer_notif" )
+    @Produces( MediaType.APPLICATION_JSON )
+    @Consumes( MediaType.APPLICATION_JSON )
+    public Map<String, Object> doCreateNotification(Map<String, Object> notification, Map<String,Object> backofficeLogging, Map<String,String> userEmail,
+    												Map<String, String> userDashboard, Map<String,String> userSMS){
+    	Map<String,Object> response = null;
+    	 String notif = "{\n" + 
+    			 			"\"sollicitation\":" + "{\n" +
+    			 							"\"demand_id\":" + "\""+notification.get("demand_id")+"\"" + "\n" +
+    			 						"},\n" + 
+    			 				"\"status_text\":" + "\""+backofficeLogging.get("status_text")+"\"" + ",\n" +
+    			 				"\"message\":" + "\"" +backofficeLogging.get("message")+"\"" + ",\n" +
+    			 				"\"notified_on_dashboard\":"+ backofficeLogging.get("notified_on_dashboard")+ ",\n" + 
+    			 				"\"notified_by_email\":" + backofficeLogging.get("notified_by_email") + ",\n" +
+    			 				"\"notified_by_sms\":" + backofficeLogging.get("notified_by_sms") + ",\n" +
+    			 				"\"display_level_dashboard_notification\":" +  backofficeLogging.get("display_level_dashboard_notification") + ",\n" +
+    			 				"\"view_dashboard_notification\":" + "\""+backofficeLogging.get("view_dashboard_notification")+"\"" + ",\n" +
+    			 				"\"display_level_email_notification\":" + backofficeLogging.get("display_level_email_notification") + ",\n" +
+    			 				"\"view_email_notification\":" + "\""+backofficeLogging.get("view_email_notification")+"\"" + ",\n" +
+    			 				"\"display_level_sms_notification\":" + backofficeLogging.get("display_level_sms_notification") + ",\n" +
+    			 				"\"view_sms_notification\":" +  "\""+backofficeLogging.get("view_sms_notification")+"\"" + ",\n" +
+    			 				"\"date_sollicitation\":\"2015-03-31\",\n" +
+    			 				"\"user_email\": {\n" +	
+    			 					"\"sender_name\":" + "\""+userEmail.get("sender_name")+"\"" + ",\n" +	
+    			 					"\"sender_email\":" + "\""+ userEmail.get("sender_email")+"\"" + ",\n" +
+    			 					"\"recipient\":" + "\""+userEmail.get("recipient")+"\"" + ",\n" +
+    			 					"\"subject\":"+ "\""+userEmail.get("subject")+"\"" + ",\n" +
+    			 					"\"message\":" + "\""+userEmail.get("message")+"\"" + "\n" + 
+    			 				"},\n" + 
+    			 				"\"user_dashboard\":{\n" +
+    			 					"\"status_text\":" + "\""+userDashboard.get("status_text")+"\"" +  ",\n" +
+    			 					"\"sender_name\":" + "\""+userDashboard.get("sender_name")+"\"" +  ",\n" +
+    			 					"\"subject\":" + "\""+userDashboard.get("subject")+"\"" + ",\n" +
+    			 					"\"message\":" + "\""+userDashboard.get("message")+"\"" + ",\n" + 
+    			 					"\"data\":" + "\""+userDashboard.get("data")+"\"" + "\n" + 
+    			 				"},\n" + 
+    			 				"\"user_sms\": {\n" + 
+    			 					"\"phone_number\":" + "\""+userSMS.get("phone_number")+"\"" + ",\n" + 
+    			 					"\"message\":" + "\""+userSMS.get("message")+"\"" +
+    			 				"}\n" +
+    			 			"}";
+    	 
+    	 String result =ElasticSearchHttpRequest.insertNotification(notif);
+    	 try {
+			response = mapper.readValue(result, Map.class);
+		} 
+    	 catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return response;
     }
 }
