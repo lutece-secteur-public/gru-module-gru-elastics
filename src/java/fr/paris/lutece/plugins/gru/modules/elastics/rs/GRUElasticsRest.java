@@ -34,31 +34,18 @@
 package fr.paris.lutece.plugins.gru.modules.elastics.rs;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.type.TypeFactory;
-import org.codehaus.jackson.type.TypeReference;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.elasticsearch.action.index.IndexResponse;
 
-import com.sun.jersey.api.client.ClientResponse;
+import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jettison.json.JSONException;
 
 import fr.paris.lutece.plugins.gru.business.customer.Customer;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMapping;
@@ -66,11 +53,8 @@ import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMappingHome;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.ElasticMapping;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.ElasticMappingHome;
 import fr.paris.lutece.plugins.gru.modules.elastics.util.ElasticSearchHttpRequest;
-import fr.paris.lutece.plugins.gru.modules.elastics.util.ElasticSearchRequest;
 import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsConstants;
-import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GruElasticTestData;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
-import fr.paris.lutece.util.httpaccess.HttpAccessException;
 
 
 /**
@@ -95,7 +79,6 @@ public class GRUElasticsRest
     @Consumes( MediaType.APPLICATION_JSON )
     public String notification ( String strJson) throws JSONException
     {
-    	String response = null;
     	
     	try {
     		
@@ -169,6 +152,7 @@ public class GRUElasticsRest
 		}
     	
 		return null;
+
     }
     /**
      * 
