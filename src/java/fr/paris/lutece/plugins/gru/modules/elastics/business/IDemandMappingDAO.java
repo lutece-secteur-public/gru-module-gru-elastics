@@ -1,5 +1,7 @@
 package fr.paris.lutece.plugins.gru.modules.elastics.business;
 
+import java.util.List;
+
 import fr.paris.lutece.portal.service.plugin.Plugin;
 
 public interface IDemandMappingDAO {
@@ -51,5 +53,13 @@ public interface IDemandMappingDAO {
 	     * @return
 	     */
 	    public DemandMapping loadbyIdDemand(String strIdDemand,int demandIdType, Plugin plugin);
+	    
+	    /**
+	     * 
+	     * 
+	     * @param idCustomer
+	     * @return
+	     */
+	    public List<String> selectIdElasticsearchList(int idCustomer, Plugin plugin);
 }   
 

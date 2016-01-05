@@ -10,7 +10,7 @@ public class ElasticMappingDAO implements IElasticMappingDAO {
     private static final String SQL_QUERY_SELECT = "SELECT id_mapping,id_customer,id_user, ref_user FROM elastic_mapping WHERE id_customer = ?";
     private static final String SQL_QUERY_INSERT = "INSERT INTO elastic_mapping ( id_mapping, id_customer, id_user, ref_user ) VALUES (  ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM elastic_mapping WHERE id_mapping = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE elastic_mapping SET id_mapping = ?, id_customer = ?, id_user = ? ref_user = ?";
+    private static final String SQL_QUERY_UPDATE = "UPDATE elastic_mapping SET  id_customer = ?, id_user = ?, ref_user = ? WHERE id_mapping = ?";
     private static final String SQL_QUERY_SELECT_BY_ID_USER = "SELECT id_mapping, id_customer, ref_user FROM elastic_mapping WHERE id_user = ?";
 	
 	@Override
@@ -53,10 +53,11 @@ public class ElasticMappingDAO implements IElasticMappingDAO {
 		// TODO Auto-generated method stub
 		 DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
 
-	        daoUtil.setInt( 1, mapping.getId_mapping() );
-	        daoUtil.setInt( 2, mapping.getId_customer() );
-	        daoUtil.setInt( 3, mapping.getId_user() );
-	        daoUtil.setString(4, mapping.getStrRefUser());
+	        daoUtil.setInt( 1, mapping.getId_customer() );
+	        daoUtil.setInt( 2, mapping.getId_user() );
+	        daoUtil.setString(3, mapping.getStrRefUser());
+	        daoUtil.setInt( 4, mapping.getId_mapping() );
+	        
 	        daoUtil.executeUpdate(  );
 	        daoUtil.free(  );
 

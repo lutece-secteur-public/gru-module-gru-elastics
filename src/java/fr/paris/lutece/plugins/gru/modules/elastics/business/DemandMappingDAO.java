@@ -1,5 +1,9 @@
 package fr.paris.lutece.plugins.gru.modules.elastics.business;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import fr.paris.lutece.plugins.gru.business.customer.Customer;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.sql.DAOUtil;
 
@@ -11,6 +15,8 @@ public class DemandMappingDAO implements IDemandMappingDAO {
     private static final String SQL_QUERY_UPDATE = "UPDATE demand_mapping SET id_elasticsearch = ?, id_demand = ?, id_demand_type = ?, id_customer = ?, ref_notification = ?";
     private static final String SQL_QUERY_SELECT_BY_DEMAND  = "SELECT id_elasticsearch, id_demand, id_demand_type, id_customer, ref_notification FROM demand_mapping WHERE id_demand = ? AND id_demand_type = ?";
     private static final String SQL_QUERY_SELECT_BY_ID_CUSTOMER = "SELECT id_elasticsearch, id_demand, id_demand_type ,id_customer FROM demand_mapping WHERE id_customer = ?";
+    private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_elasticsearch FROM demand_mapping WHERE id_customer = ? ";
+    
 	@Override
 	public void insert(DemandMapping mapping, Plugin plugin) {
 		// TODO Auto-generated method stub
@@ -111,6 +117,25 @@ public class DemandMappingDAO implements IDemandMappingDAO {
         }
         daoUtil.free(  );
 		return mapping;
+	}
+
+
+	@Override
+	public List<String> selectIdElasticsearchList(int idCustomer, Plugin plugin) {
+		// TODO Auto-generated method stub
+		List<String> idList = new ArrayList<String>(  );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin );
+        daoUtil.executeQuery(  );
+
+        while ( daoUtil.next(  ) )
+        {
+            String strIdDemand = daoUtil.getString(1);
+            idList.add(strIdDemand);
+        }
+
+        daoUtil.free(  );
+
+		return idList;
 	}
 
 }

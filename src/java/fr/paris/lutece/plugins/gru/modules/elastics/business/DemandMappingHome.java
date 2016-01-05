@@ -1,5 +1,8 @@
 package fr.paris.lutece.plugins.gru.modules.elastics.business;
 
+import java.util.List;
+
+import fr.paris.lutece.plugins.gru.business.customer.Customer;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
@@ -63,5 +66,10 @@ public class DemandMappingHome {
     public static DemandMapping findByDemandId( String strDemandId, int demandIdType )
     {
     	return _dao.loadbyIdDemand(strDemandId, demandIdType, _plugin );
+    }
+    
+    public static List<String> getiddemandList(int nkey )
+    {
+        return _dao.selectIdElasticsearchList(nkey, _plugin );
     }
 }

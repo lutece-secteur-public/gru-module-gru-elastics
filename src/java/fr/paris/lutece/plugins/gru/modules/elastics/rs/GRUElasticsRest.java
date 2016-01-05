@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -48,13 +49,17 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONException;
 
 import fr.paris.lutece.plugins.gru.business.customer.Customer;
+import fr.paris.lutece.plugins.gru.business.customer.CustomerHome;
+import fr.paris.lutece.plugins.gru.business.demand.Demand;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMapping;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMappingHome;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.ElasticMapping;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.ElasticMappingHome;
 import fr.paris.lutece.plugins.gru.modules.elastics.util.ElasticSearchHttpRequest;
+import fr.paris.lutece.plugins.gru.modules.elastics.util.ElasticsearchDemandService;
 import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsConstants;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
+import fr.paris.lutece.portal.business.user.AdminUser;
 
 
 /**
@@ -103,17 +108,19 @@ public class GRUElasticsRest
 					customer.setExtrasAttributes("");
 					customer.setFirstname("John");
 					customer.setHasAccount(true);
-					customer.setId(11);
 					customer.setIdTitle(12);
 					customer.setIsEmailVerified(true);
 					customer.setIsMobilePhoneVerified(true);
 					customer.setLastname("Doe");
 					customer.setMobilePhone("0681795994");
 					
+					customer= CustomerHome.create(customer);
+					
 					mapping = new ElasticMapping();
 					mapping.setId_customer(customer.getId());
 					mapping.setId_user((Integer)notification.get("user_guid"));
 					demandMapping.setCustomerId(customer.getId());
+					ElasticMappingHome.create(mapping);
 			}
 			else
 			{
@@ -129,7 +136,7 @@ public class GRUElasticsRest
 			{	
 				// mapping des users
 				mapping.setStrRefUser(resultUser.get("_id").toString());
-				ElasticMappingHome.create(mapping);
+				ElasticMappingHome.update(mapping);
 				
 				//mapping des 
 				demandMapping.setDemandTypeId((Integer)notification.get("demand_id_type"));
@@ -170,7 +177,7 @@ public class GRUElasticsRest
     						"\"utilisateur\":\n" +	"{\n" + 
     									"\"user_guid\":"+ "\""+notification.get("user_guid")+"\"" + "\n" + 
     								"},\n" + 
-    						"\" demand_id\":" + "\""+notification.get("demand_id")+"\"" + ",\n" +
+    						"\"demand_id\":" + "\""+notification.get("demand_id")+"\"" + ",\n" +
     						"\"demand_id_type\":" + notification.get("demand_id_type")  + ",\n" +
     						"\"demand_max_step\":"+ notification.get("demand_max_step") + ",\n" + 
     						"\"demand_user_current_step\":"+ notification.get("demand_user_current_step") + ",\n" +
