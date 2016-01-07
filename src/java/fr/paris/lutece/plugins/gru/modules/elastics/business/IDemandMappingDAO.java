@@ -52,7 +52,7 @@ public interface IDemandMappingDAO {
 	     * @param plugin
 	     * @return
 	     */
-	    public DemandMapping loadbyIdDemand(String strIdDemand,int demandIdType, Plugin plugin);
+	    public DemandMapping loadByIdDemand(String strIdDemand,int demandIdType, Plugin plugin);
 	    
 	    /**
 	     * 

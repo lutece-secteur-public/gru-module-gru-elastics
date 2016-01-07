@@ -2,30 +2,27 @@ package fr.paris.lutece.plugins.gru.modules.elastics.util;
 
 
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import org.codehaus.jettison.json.JSONObject;
-import org.elasticsearch.action.delete.DeleteResponse;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsConstants;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
+
 
 
 public class ElasticSearchHttpRequest {
 
 	
 	private static Client client = Client.create();
-	
-	////////////////////////////////////////////////////////////////////////////////CREATE INDEX///////////////////////////////////////////////////////////////////////////////////////////
+	private static ObjectMapper mapper = new ObjectMapper();
+	////////////////////////////////////////////////////////////////////////////////CREATE ///////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * 
 	 * @param demand
@@ -33,11 +30,18 @@ public class ElasticSearchHttpRequest {
 	 */
 	public static String insertDemand( String demand ) 
 	{
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_DEMAND);
-		ClientResponse response = resource.post(ClientResponse.class,demand);
-		String output = response.getEntity(String.class);
-		return output;
+		String output = "";
+		try {
+			Map<String, Object> jsonDemand = mapper.readValue(demand, Map.class);
+			WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_DEMAND) );
+			ClientResponse response = resource.post(ClientResponse.class,demand);
+			output = response.getEntity(String.class);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		return output;
 	}
 	/**
 	 * 
@@ -46,9 +50,17 @@ public class ElasticSearchHttpRequest {
 	 */
 	public static String insertUser( String user )
 	{
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_USER);
-		ClientResponse response = resource.post(ClientResponse.class,user);
-		String output = response.getEntity(String.class);
+		String output = "";
+		try {
+			Map<String, Object> jsonUser = mapper.readValue(user, Map.class);
+			WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_USER) );
+			ClientResponse response = resource.post(ClientResponse.class,user);
+			output = response.getEntity(String.class);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 		return output;
 	}
 	/**
@@ -58,9 +70,18 @@ public class ElasticSearchHttpRequest {
 	 */
 	public static String insertNotification( String notification )
 	{
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_NOTIFICATION);
-		ClientResponse response = resource.post(ClientResponse.class,notification);
-		String output = response.getEntity(String.class);
+		String output = "";
+		try {
+			Map<String,Object> jsonNotification = mapper.readValue(notification, Map.class);
+			Map<String,String> jsonSollicitation = (Map<String,String>) jsonNotification.get("sollicitation");
+			WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_NOTIFICATION) );
+			ClientResponse response = resource.post(ClientResponse.class,notification);
+			output = response.getEntity(String.class);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return output;
 	}
 	
@@ -71,7 +92,7 @@ public class ElasticSearchHttpRequest {
 	 * @return
 	 */
 	public static String getDemandbyId(String strIdDemand){
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_DEMAND+strIdDemand+GRUElasticsConstants.PATH_ELK_SOURCE);
+		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_DEMAND) + strIdDemand+GRUElasticsConstants.PATH_ELK_SOURCE);
 		ClientResponse response = resource.get(ClientResponse.class);
 		String output = response.getEntity(String.class);
 		return output;
@@ -82,7 +103,7 @@ public class ElasticSearchHttpRequest {
 	 * @return
 	 */
 	public static String getUserbyGuId(String strGuId){
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_USER+strGuId+GRUElasticsConstants.PATH_ELK_SOURCE);
+		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_USER)+strGuId+GRUElasticsConstants.PATH_ELK_SOURCE);
 		ClientResponse response = resource.get(ClientResponse.class);
 		String output = response.getEntity(String.class);
 		return output;
@@ -93,7 +114,7 @@ public class ElasticSearchHttpRequest {
 	 * @return
 	 */
 	public static String getNotificationById(String strIdNotification){
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_NOTIFICATION+strIdNotification+GRUElasticsConstants.PATH_ELK_SOURCE);
+		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER)+ AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_NOTIFICATION) + strIdNotification+GRUElasticsConstants.PATH_ELK_SOURCE);
 		ClientResponse response = resource.get(ClientResponse.class);
 		String output = response.getEntity(String.class);
 		return output;
@@ -107,7 +128,7 @@ public class ElasticSearchHttpRequest {
 	 * @return
 	 */
 	public static String deleteDemandbyId(String strIdDemand){
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_DEMAND+strIdDemand);
+		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER)+AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_DEMAND) + strIdDemand);
 		ClientResponse response = resource.delete(ClientResponse.class);
 		String output = response.getEntity(String.class);
 		return output;
@@ -119,7 +140,7 @@ public class ElasticSearchHttpRequest {
 	 * @return
 	 */
 	public static String deleteUserbyGuId(String strGuId){
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_USER+strGuId);
+		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_USER) + strGuId);
 		ClientResponse response = resource.delete(ClientResponse.class);
 		String output = response.getEntity(String.class);
 		return output;
@@ -130,7 +151,7 @@ public class ElasticSearchHttpRequest {
 	 * @return
 	 */
 	public static String deleteNotificationbyId(String strIdNotification){
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_NOTIFICATION+strIdNotification);
+		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_NOTIFICATION)+ strIdNotification);
 		ClientResponse response = resource.delete(ClientResponse.class);
 		String output = response.getEntity(String.class);
 		return output;
@@ -144,7 +165,7 @@ public class ElasticSearchHttpRequest {
 	 * @return
 	 */
 	public static String updateDemandById(String demand, String strIdDemand) {
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_DEMAND+strIdDemand+GRUElasticsConstants.PATH_ELK_UPDATE);
+		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_DEMAND) + strIdDemand + GRUElasticsConstants.PATH_ELK_UPDATE);
 		ClientResponse response = resource.post(ClientResponse.class,demand);
 		String output = response.getEntity(String.class);
 		return output;
@@ -158,7 +179,7 @@ public class ElasticSearchHttpRequest {
 	 * @throws ExecutionException
 	 */
 	public static String updateUserByGuId(String user, String strIdUser) {
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_USER+strIdUser+GRUElasticsConstants.PATH_ELK_UPDATE);
+		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER)+ AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_USER) + strIdUser+GRUElasticsConstants.PATH_ELK_UPDATE);
 		ClientResponse response = resource.post(ClientResponse.class,user);
 		String output = response.getEntity(String.class);
 		return output;
@@ -170,7 +191,7 @@ public class ElasticSearchHttpRequest {
 	 * @return
 	 */
 	public static String UpdateNotificationByIdDemand(String notification, String strIdDemand) {
-		WebResource resource = client.resource(GRUElasticsConstants.PATH_ELK_SERVER_NOTIFICATION+strIdDemand+GRUElasticsConstants.PATH_ELK_UPDATE);
+		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_NOTIFICATION) + strIdDemand + GRUElasticsConstants.PATH_ELK_UPDATE);
 		ClientResponse response = resource.post(ClientResponse.class,notification);
 		String output = response.getEntity(String.class);
 		return output;	

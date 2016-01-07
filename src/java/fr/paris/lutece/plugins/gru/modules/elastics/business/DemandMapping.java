@@ -11,7 +11,7 @@ public class DemandMapping {
 	 * 
 	 * @return
 	 */
-	public String getRefNotification() {
+	public String getRefNotification(){
 		return strRefNotification;
 	}
 	/**

@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -50,16 +49,13 @@ import org.codehaus.jettison.json.JSONException;
 
 import fr.paris.lutece.plugins.gru.business.customer.Customer;
 import fr.paris.lutece.plugins.gru.business.customer.CustomerHome;
-import fr.paris.lutece.plugins.gru.business.demand.Demand;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMapping;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMappingHome;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.ElasticMapping;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.ElasticMappingHome;
 import fr.paris.lutece.plugins.gru.modules.elastics.util.ElasticSearchHttpRequest;
-import fr.paris.lutece.plugins.gru.modules.elastics.util.ElasticsearchDemandService;
 import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsConstants;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
-import fr.paris.lutece.portal.business.user.AdminUser;
 
 
 /**
@@ -93,13 +89,13 @@ public class GRUElasticsRest
     		Map<String,Object> resultUser = null;
     		Map<String, Object> resultNotification = null;
 			Map<String,Object> flux = mapper.readValue(strJson, Map.class);
-			Map<String,Object> notification =(Map<String,Object>) flux.get("notification");
-			Map<String,String> userEmail = (Map<String,String>)notification.get("user_email");
-			Map<String,String> userDashboard = (Map<String,String>)notification.get("user_dashboard");
-			Map<String,String> userSMS = (Map<String,String>)notification.get("user_sms");
-			Map<String,Object> backofficeLogging = (Map<String,Object>)notification.get("backoffice_logging");
+			Map<String,Object> notification =(Map<String,Object>) flux.get(GRUElasticsConstants.FIELD_JSON_BLOC_NOTIFICATION);
+			Map<String,String> userEmail = (Map<String,String>)notification.get(GRUElasticsConstants.FIELD_JSON_BLOC_USER_EMAIL);
+			Map<String,String> userDashboard = (Map<String,String>)notification.get(GRUElasticsConstants.FIELD_JSON_BLOC_USER_DASHBOARD);
+			Map<String,String> userSMS = (Map<String,String>)notification.get(GRUElasticsConstants.FIELD_JSON_BLOC_USER_SMS);
+			Map<String,Object> backofficeLogging = (Map<String,Object>)notification.get(GRUElasticsConstants.FIELD_JSON_BLOC_BACKOFFICE_LOGGING);
 			
-			if(StringUtils.isBlank(notification.get("user_guid").toString()) || ElasticMappingHome.findByUserId((Integer)notification.get("user_guid")) == null )
+			if(StringUtils.isBlank(notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_USER_GUID).toString()) || ElasticMappingHome.findByUserId((Integer)notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_USER_GUID)) == null )
 			{	
 					Customer customer = new Customer();
 					customer.setAccountGuid("100");
@@ -118,13 +114,13 @@ public class GRUElasticsRest
 					
 					mapping = new ElasticMapping();
 					mapping.setId_customer(customer.getId());
-					mapping.setId_user((Integer)notification.get("user_guid"));
+					mapping.setId_user((Integer)notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_USER_GUID));
 					demandMapping.setCustomerId(customer.getId());
 					ElasticMappingHome.create(mapping);
 			}
 			else
 			{
-				mapping=ElasticMappingHome.findByUserId((Integer)notification.get("user_guid"));
+				mapping=ElasticMappingHome.findByUserId((Integer)notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_USER_GUID));
 				demandMapping.setCustomerId(mapping.getId_customer());
 			}
 			
@@ -132,17 +128,17 @@ public class GRUElasticsRest
 			resultUser = doCreateUser(notification, userSMS);
 			resultNotification = doCreateNotification(notification, backofficeLogging, userEmail, userDashboard, userSMS);
 			
-			if((Boolean)resultUser.get("created") && (Boolean)resultDemand.get("created") && (Boolean)resultNotification.get("created"))
+			if((Boolean)resultUser.get(GRUElasticsConstants.FIELD_RESULT_CREATED) && (Boolean)resultDemand.get(GRUElasticsConstants.FIELD_RESULT_CREATED) && (Boolean)resultNotification.get(GRUElasticsConstants.FIELD_RESULT_CREATED))
 			{	
-				// mapping des users
-				mapping.setStrRefUser(resultUser.get("_id").toString());
+				// Users' mapping
+				mapping.setStrRefUser(resultUser.get(GRUElasticsConstants.FIELD_RESULT_ID).toString());
 				ElasticMappingHome.update(mapping);
 				
-				//mapping des 
-				demandMapping.setDemandTypeId((Integer)notification.get("demand_id_type"));
-				demandMapping.setStrDemand_id(notification.get("demand_id").toString());
-				demandMapping.setStrElasticsearch_id(resultDemand.get("_id").toString());
-				demandMapping.setRefNotification(resultNotification.get("_id").toString());
+				//Demand's mapping 
+				demandMapping.setDemandTypeId((Integer)notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_TYPE_ID));
+				demandMapping.setStrDemand_id(notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_ID).toString());
+				demandMapping.setStrElasticsearch_id(resultDemand.get(GRUElasticsConstants.FIELD_RESULT_ID).toString());
+				demandMapping.setRefNotification(resultNotification.get(GRUElasticsConstants.FIELD_RESULT_ID).toString());
 				DemandMappingHome.create(demandMapping);
 				
 				return "{"+"\"status\":"+"\"201\""+"}";		
@@ -173,32 +169,20 @@ public class GRUElasticsRest
     @Consumes( MediaType.APPLICATION_JSON )
     public Map<String,Object> doCreateDemand(Map<String,Object> notification, Map<String,String> userSMS){
     	Map<String, Object> mapResult = null;
-    	String demand= "{\n" + 
-    						"\"utilisateur\":\n" +	"{\n" + 
-    									"\"user_guid\":"+ "\""+notification.get("user_guid")+"\"" + "\n" + 
-    								"},\n" + 
-    						"\"demand_id\":" + "\""+notification.get("demand_id")+"\"" + ",\n" +
-    						"\"demand_id_type\":" + notification.get("demand_id_type")  + ",\n" +
-    						"\"demand_max_step\":"+ notification.get("demand_max_step") + ",\n" + 
-    						"\"demand_user_current_step\":"+ notification.get("demand_user_current_step") + ",\n" +
-    						"\"demande_state\":"+ notification.get("demand_state") + ",\n" +
-    						"\"notification_type\":"+ "\""+notification.get("notification_type")+"\"" + ",\n" +
-    						"\"date_demande\":\"2015-03-31\",\n" + 
-    						"\"crm_status_id\":" + notification.get("crm_status_id") + ",\n" + 
-    						"\"reference\": \"PZQu4rocRy60hO2seUEziQ\",\n" +
-    						"\"suggest\":\n"+"{\n"+
-    								"\"input\":"+"["+"\"PZQu4rocRy60hO2seUEziQ\""+"],\n"+
-    								"\"output\": \"John Doe\",\n" +
-    								"\"payload\":\n"+"{\n" + 
-    									"\"user_guid\":"+ "\""+notification.get("user_guid")+"\"" + ",\n" + 
-    									"\"birthday\":\"20/03/1980\",\n"+
-    									"\"telephoneNumber\":"+ "\""+userSMS.get("phone_number")+"\"" + ",\n" +
-    									"\" email\":"+ "\""+notification.get("email")+"\"" + ",\n" +
-    									"\"reference\":\"PZQu4rocRy60hO2seUEziQ\"\n"+
-    								"}\n"+
-    							"}\n"+
-    						"}";
+    	String demandUser = GRUElasticsConstants.OPEN_BRACE + GRUElasticsConstants.FIELD_DEMAND_USER + GRUElasticsConstants.OPEN_BRACE + GRUElasticsConstants.FIELD_DEMAND_USER_GUID + "\""+notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_USER_GUID)+"\""+ GRUElasticsConstants.CLOSE_BRACE + ",";
     	
+    	String demandDetail =	GRUElasticsConstants.FIELD_DEMAND_ID + "\""+notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_ID)+"\"," + GRUElasticsConstants.FIELD_DEMAND_ID_TYPE + notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_TYPE_ID)  + "," +
+    			        GRUElasticsConstants.FIELD_DEMAND_MAX_STEP+ notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_MAX_STEP) + "," + GRUElasticsConstants.FIELD_DEMAND_CURRENT_STEP+ notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_CURRENT_STEP) + "," +
+    					GRUElasticsConstants.FIELD_DEMAND_STATE+ notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_STATE) + "," + GRUElasticsConstants.FIELD_DEMAND_NOTIFICATION_TYPE + "\""+notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_TYPE)+"\"" + "," +
+    					GRUElasticsConstants.FIELD_DEMAND_DATE + "\"2015-03-31\"," + GRUElasticsConstants.FIELD_CRM_STATUS_ID + notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_CRM_STATUS_ID) + "," + GRUElasticsConstants.FIELD_DEMAND_REFERENCE + "\"PZQu4rocRy60hO2seUEziQ\"," ;
+    					
+    	String suggest = GRUElasticsConstants.FIELD_SUGGEST + GRUElasticsConstants.OPEN_BRACE + GRUElasticsConstants.FIELD_SUGGEST_INPUT + GRUElasticsConstants.OPEN_SQUARE_BRACKET +"\"PZQu4rocRy60hO2seUEziQ\""+ GRUElasticsConstants.CLOSE_SQUARE_BRACKET +"," +
+    					 GRUElasticsConstants.FIELD_SUGGEST_OUTPUT + "\"John Doe\"," + GRUElasticsConstants.FIELD_SUGGEST_PAYLOAD + GRUElasticsConstants.OPEN_BRACE + GRUElasticsConstants.FIELD_DEMAND_USER_GUID + "\""+notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_USER_GUID)+"\"" + "," + 
+    					 GRUElasticsConstants.FIELD_SUGGEST_BIRTHDAY + "\"20/03/1980\"," + GRUElasticsConstants.FIELD_SUGGEST_PHONE_NUMBER + "\""+userSMS.get(GRUElasticsConstants.FIELD_USER_SMS_PHONE_NUMBER)+"\"" + "," +
+    					 GRUElasticsConstants.FIELD_SUGGEST_EMAIL + "\""+notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_EMAIL)+"\"" + "," + GRUElasticsConstants.FIELD_DEMAND_REFERENCE + "\"PZQu4rocRy60hO2seUEziQ\""+ GRUElasticsConstants.CLOSE_BRACE + 
+    					 GRUElasticsConstants.CLOSE_BRACE+GRUElasticsConstants.CLOSE_BRACE;
+    	
+    	String demand = demandUser + demandDetail + suggest;
     	String result =ElasticSearchHttpRequest.insertDemand(demand);
     	try {
 			 mapResult = mapper.readValue(result, Map.class);
@@ -221,29 +205,18 @@ public class GRUElasticsRest
     @Consumes( MediaType.APPLICATION_JSON )
     public Map<String, Object> doCreateUser(Map<String, Object> notification, Map<String, String> userSMS){
     	Map<String,Object> response = null;
-    	String user = "{\n"+ 
-    			 			"\"user_guid\":"+ "\""+notification.get("user_guid")+"\"" + ",\n" +
-    			 			"\"email\":" + "\""+notification.get("email")+"\"" + ",\n" +
-    			 			"\"name\": \"John Doe\",\n" + 
-    			 			"\"stayConnected\" : \"true\",\n"+
-    			 			"\"street\" : \" rue test\",\n"+
-    			 			"\"telephoneNumber\" :"+ "\""+userSMS.get("phone_number")+"\"" + ",\n" +
-    			 			"\"city\" : \"Paris\",\n"+
-    			 			"\"cityOfBirth\" : \"london\",\n"+
-    			 			"\"birthday\" : \"20/03/1980\",\n"+
-    			 			"\"civility\":\"Mr\",\n" +
-    			 			"\"postalCode\" : \"75019\",\n"+
-    			 			"\"suggest\":"+"{\n"+
-    			 				"\"input\":" + "[" + "\"Ndiambe\","+ "\"Darou\"," + "\""+userSMS.get("phone_number")+"\"" + "," + "\""+notification.get("email")+"\"" + "],\n" + 
-    			 				"\"output\": \"Ndiambe Darou\",\n" + 
-    			 				"\"payload\":"+ "{" + "\"user_guid\":"+ "\""+notification.get("user_guid")+"\"" + ",\n" +
-    			 					"\"birthday\": \"20/03/1980\",\n"+
-    			 					"\"telephoneNumber\":" + "\""+userSMS.get("phone_number")+"\"" + ",\n" +
-    			 					"\"email\":" + "\""+notification.get("email")+"\"" + "\n" + 
-    			 					"}\n" + 
-    			 				"}\n"+
-    			 		"}";
+    	String userDetail = GRUElasticsConstants.OPEN_BRACE + GRUElasticsConstants.FIELD_USER_GUID + "\""+notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_USER_GUID)+"\"" + "," +
+    			 	  GRUElasticsConstants.FIELD_USER_EMAIL + "\""+notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_EMAIL)+"\"" + "," + GRUElasticsConstants.FIELD_USER_NAME + " \"John Doe\",\n" + 
+    			 	  GRUElasticsConstants.FIELD_USER_STAYCONNECTED + " \"true\"," + GRUElasticsConstants.FIELD_USER_STREET + "\"rue test\","+ GRUElasticsConstants.FIELD_USER_PHONE_NUMBER + "\""+userSMS.get(GRUElasticsConstants.FIELD_USER_SMS_PHONE_NUMBER)+"\"" + "," +
+    			 	  GRUElasticsConstants.FIELD_USER_CITY + " \"Paris\"," + GRUElasticsConstants.FIELD_USER_CITYOFBIRTH + "\"london\","+ GRUElasticsConstants.FIELD_USER_BIRTHDAY + "\"20/03/1980\","+
+    			 	  GRUElasticsConstants.FIELD_USER_CIVILITY + "\"Mr\"," + GRUElasticsConstants.FIELD_USER_POSTAL_CODE  + "\"75019\",";
+    	
+    	String suggestUser = GRUElasticsConstants.FIELD_SUGGEST + GRUElasticsConstants.OPEN_BRACE + GRUElasticsConstants.FIELD_SUGGEST_INPUT + GRUElasticsConstants.OPEN_SQUARE_BRACKET + "\"John\","+ "\"Doe\"," + "\""+userSMS.get(GRUElasticsConstants.FIELD_USER_SMS_PHONE_NUMBER)+"\"" + "," + "\""+notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_EMAIL)+"\"" + GRUElasticsConstants.CLOSE_SQUARE_BRACKET + "," + 
+    			 			 GRUElasticsConstants.FIELD_SUGGEST_OUTPUT + "\"Ndiambe Darou\"," + GRUElasticsConstants.FIELD_SUGGEST_PAYLOAD + GRUElasticsConstants.OPEN_BRACE + GRUElasticsConstants.FIELD_USER_GUID + "\""+notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_USER_GUID) + "\"" + "," +
+    			 			 GRUElasticsConstants.FIELD_USER_BIRTHDAY + "\"20/03/1980\",\n"+ GRUElasticsConstants.FIELD_USER_PHONE_NUMBER + "\"" + userSMS.get(GRUElasticsConstants.FIELD_USER_SMS_PHONE_NUMBER) + "\"" + "," +
+    			 			 GRUElasticsConstants.FIELD_USER_EMAIL + "\""+notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_EMAIL)+"\"" + GRUElasticsConstants.CLOSE_BRACE + GRUElasticsConstants.CLOSE_BRACE + GRUElasticsConstants.CLOSE_BRACE;
     	 
+    	String user = userDetail + suggestUser;
     	 String result = ElasticSearchHttpRequest.insertUser(user);
     	 try {
 			response = mapper.readValue(result, Map.class);
@@ -269,41 +242,32 @@ public class GRUElasticsRest
     public Map<String, Object> doCreateNotification(Map<String, Object> notification, Map<String,Object> backofficeLogging, Map<String,String> userEmail,
     												Map<String, String> userDashboard, Map<String,String> userSMS){
     	Map<String,Object> response = null;
-    	 String notif = "{\n" + 
-    			 			"\"sollicitation\":" + "{\n" +
-    			 							"\"demand_id\":" + "\""+notification.get("demand_id")+"\"" + "\n" +
-    			 						"},\n" + 
-    			 				"\"status_text\":" + "\""+backofficeLogging.get("status_text")+"\"" + ",\n" +
-    			 				"\"message\":" + "\"" +backofficeLogging.get("message")+"\"" + ",\n" +
-    			 				"\"notified_on_dashboard\":"+ backofficeLogging.get("notified_on_dashboard")+ ",\n" + 
-    			 				"\"notified_by_email\":" + backofficeLogging.get("notified_by_email") + ",\n" +
-    			 				"\"notified_by_sms\":" + backofficeLogging.get("notified_by_sms") + ",\n" +
-    			 				"\"display_level_dashboard_notification\":" +  backofficeLogging.get("display_level_dashboard_notification") + ",\n" +
-    			 				"\"view_dashboard_notification\":" + "\""+backofficeLogging.get("view_dashboard_notification")+"\"" + ",\n" +
-    			 				"\"display_level_email_notification\":" + backofficeLogging.get("display_level_email_notification") + ",\n" +
-    			 				"\"view_email_notification\":" + "\""+backofficeLogging.get("view_email_notification")+"\"" + ",\n" +
-    			 				"\"display_level_sms_notification\":" + backofficeLogging.get("display_level_sms_notification") + ",\n" +
-    			 				"\"view_sms_notification\":" +  "\""+backofficeLogging.get("view_sms_notification")+"\"" + ",\n" +
-    			 				"\"date_sollicitation\":\"2015-03-31\",\n" +
-    			 				"\"user_email\": {\n" +	
-    			 					"\"sender_name\":" + "\""+userEmail.get("sender_name")+"\"" + ",\n" +	
-    			 					"\"sender_email\":" + "\""+ userEmail.get("sender_email")+"\"" + ",\n" +
-    			 					"\"recipient\":" + "\""+userEmail.get("recipient")+"\"" + ",\n" +
-    			 					"\"subject\":"+ "\""+userEmail.get("subject")+"\"" + ",\n" +
-    			 					"\"message\":" + "\""+userEmail.get("message")+"\"" + "\n" + 
-    			 				"},\n" + 
-    			 				"\"user_dashboard\":{\n" +
-    			 					"\"status_text\":" + "\""+userDashboard.get("status_text")+"\"" +  ",\n" +
-    			 					"\"sender_name\":" + "\""+userDashboard.get("sender_name")+"\"" +  ",\n" +
-    			 					"\"subject\":" + "\""+userDashboard.get("subject")+"\"" + ",\n" +
-    			 					"\"message\":" + "\""+userDashboard.get("message")+"\"" + ",\n" + 
-    			 					"\"data\":" + "\""+userDashboard.get("data")+"\"" + "\n" + 
-    			 				"},\n" + 
-    			 				"\"user_sms\": {\n" + 
-    			 					"\"phone_number\":" + "\""+userSMS.get("phone_number")+"\"" + ",\n" + 
-    			 					"\"message\":" + "\""+userSMS.get("message")+"\"" +
-    			 				"}\n" +
-    			 			"}";
+    	 String sollicitation = GRUElasticsConstants.OPEN_BRACE  + GRUElasticsConstants.FIELD_NOTIF_SOLLICITATION + GRUElasticsConstants.OPEN_BRACE + GRUElasticsConstants.FIELD_NOTIF_DEMAND_ID + "\""+notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_ID)+"\""+ GRUElasticsConstants.CLOSE_BRACE +",";
+    	
+    	 String backoffice_Logging = GRUElasticsConstants.FIELD_NOTIF_STATUS_TEXT + "\""+backofficeLogging.get(GRUElasticsConstants.FIELD_BACKOFFICE_STATUS_TEXT)+"\"" + "," + GRUElasticsConstants.FIELD_NOTIF_MESSAGE + "\"" + backofficeLogging.get(GRUElasticsConstants.FIELD_BACKOFFICE_MESSAGE)+"\"" + "," +
+    			 					 GRUElasticsConstants.FIELD_NOTIFIED_ON_DASHBOARD+ backofficeLogging.get(GRUElasticsConstants.FIELD_BACKOFFICE_NOTIFIED_ON_DASHBOARD)+ "," + GRUElasticsConstants.FIELD_NOTIFIED_BY_EMAIL + backofficeLogging.get(GRUElasticsConstants.FIELD_BACKOFFICE_NOTIFIED_BY_EMAIL) + "," +
+    			 					 GRUElasticsConstants.FIELD_NOTIFIED_BY_SMS + backofficeLogging.get(GRUElasticsConstants.FIELD_BACKOFFICE_NOTIFIED_BY_SMS) + "," + GRUElasticsConstants.FIELD_NOTIF_LEVEL_DASHBOARD_NOTIF +  backofficeLogging.get(GRUElasticsConstants.FIELD_BACKOFFICE_LEVEL_DASHBOARD_NOTIF) + "," +
+    			 					GRUElasticsConstants.FIELD_NOTIF_VIEW_DASHBOARD_NOTIF + "\""+backofficeLogging.get(GRUElasticsConstants.FIELD_BACKOFFICE_VIEW_DASHBOARD_NOTIF)+"\"" + "," +	GRUElasticsConstants.FIELD_NOTIF_LEVEL_EMAIL_NOTIF + backofficeLogging.get(GRUElasticsConstants.FIELD_BACKOFFICE_LEVEL_EMAIL_NOTIF) + "," +
+    			 					GRUElasticsConstants.FIELD_NOTIF_VIEW_EMAIL_NOTIF + "\""+backofficeLogging.get(GRUElasticsConstants.FIELD_BACKOFFICE_VIEW_EMAIL_NOTIF)+"\"" + "," +
+    			 				GRUElasticsConstants.FIELD_NOTIF_LEVEL_SMS_NOTIF + backofficeLogging.get(GRUElasticsConstants.FIELD_BACKOFFICE_LEVEL_SMS_NOTIF) + "," +
+    			 				GRUElasticsConstants.FIELD_NOTIF_VIEW_SMS_NOTIF +  "\""+backofficeLogging.get(GRUElasticsConstants.FIELD_NOTIF_VIEW_SMS_NOTIF)+"\"" + "," +
+    			 				GRUElasticsConstants.FIELD_NOTIF_DATE_SOLLICITATION + "\"2015-03-31\"," ;
+    	 
+    	 String user_mail =	GRUElasticsConstants.FIELD_NOTIF_USER_MAIL + GRUElasticsConstants.OPEN_BRACE + GRUElasticsConstants.FIELD_NOTIF_SENDER_NAME + "\""+userEmail.get(GRUElasticsConstants.FIELD_USER_EMAIL_SENDER_NAME)+"\"" + "," +	
+    			 			GRUElasticsConstants.FIELD_NOTIF_SENDER_EMAIL + "\""+ userEmail.get(GRUElasticsConstants.FIELD_USER_EMAIL_SENDER_EMAIL)+"\"" + "," +	GRUElasticsConstants.FIELD_NOTIF_RECIPIENT + "\""+userEmail.get(GRUElasticsConstants.FIELD_USER_EMAIL_RECIPIENT)+"\"" + "," +
+    			 			GRUElasticsConstants.FIELD_NOTIF_SUBJECT+ "\""+userEmail.get(GRUElasticsConstants.FIELD_USER_EMAIL_SUBJECT)+"\"" + "," + GRUElasticsConstants.FIELD_NOTIF_USER_EMAIL_MESSAGE + "\""+userEmail.get(GRUElasticsConstants.FIELD_USER_EMAIL_MESSAGE)+"\""+ 
+    			 			GRUElasticsConstants.CLOSE_BRACE +",";
+    	 
+    	 String user_dashboard = GRUElasticsConstants.FIELD_NOTIF_USER_DASHBOARD + GRUElasticsConstants.OPEN_BRACE + GRUElasticsConstants.FIELD_NOTIF_DASHBOARD_STATUS_TEXT + "\""+userDashboard.get(GRUElasticsConstants.FIELD_DASHBOARD_STATUS_TEXT)+"\"" + "," +
+    			 				 GRUElasticsConstants.FIELD_NOTIF_DASHBOARD_SENDER_NAME + "\""+userDashboard.get(GRUElasticsConstants.FIELD_DASHBORD_SENDER_NAME)+"\"" +  "," +	GRUElasticsConstants.FIELD_NOTIF_DASHBOARD_SUBJECT + "\""+userDashboard.get(GRUElasticsConstants.FIELD_DASHBORD_SUBJECT)+"\"" + "," +
+    			 				GRUElasticsConstants.FIELD_NOTIF_DASHBOARD_MESSAGE + "\""+userDashboard.get(GRUElasticsConstants.FIELD_DASHBORD_MESSAGE)+"\"" + "," + GRUElasticsConstants.FIELD_NOTIF_DASHBOARD_DATA + "\""+userDashboard.get(GRUElasticsConstants.FIELD_DASHBORD_DATA)+"\"" + 
+    			 				GRUElasticsConstants.CLOSE_BRACE +",";
+    	 
+    	 String user_sms = GRUElasticsConstants.FIELD_NOTIF_USER_SMS + GRUElasticsConstants.OPEN_BRACE + 
+    			 		   GRUElasticsConstants.FIELD_NOTIF_USER_SMS_PHONE_NUMBER + "\""+userSMS.get(GRUElasticsConstants.FIELD_USER_SMS_PHONE)+"\"" + "," + GRUElasticsConstants.FIELD_NOTIF_USER_SMS_MESSAGE + "\""+userSMS.get(GRUElasticsConstants.FIELD_USER_SMS_MESSAGE)+"\"" +
+    			 		   GRUElasticsConstants.CLOSE_BRACE + GRUElasticsConstants.CLOSE_BRACE ;
+    	 
+    	 String notif = sollicitation + backoffice_Logging + user_mail + user_dashboard +user_sms;
     	 
     	 String result =ElasticSearchHttpRequest.insertNotification(notif);
     	 try {

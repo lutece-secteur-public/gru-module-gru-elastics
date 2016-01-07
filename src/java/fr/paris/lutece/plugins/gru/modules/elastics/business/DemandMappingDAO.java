@@ -98,7 +98,7 @@ public class DemandMappingDAO implements IDemandMappingDAO {
 	}
 
 	@Override
-	public DemandMapping loadbyIdDemand(String strIdDemand, int demandIdType, Plugin plugin) {
+	public DemandMapping loadByIdDemand(String strIdDemand, int demandIdType, Plugin plugin) {
 		// TODO Auto-generated method stub
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_DEMAND, plugin );
         daoUtil.setString( 1, strIdDemand );

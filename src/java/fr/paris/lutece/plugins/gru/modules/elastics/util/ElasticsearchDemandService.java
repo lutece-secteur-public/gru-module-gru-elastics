@@ -15,6 +15,7 @@ import fr.paris.lutece.plugins.gru.business.demand.Demand;
 import fr.paris.lutece.plugins.gru.business.demand.Notification;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMapping;
 import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMappingHome;
+import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsConstants;
 import fr.paris.lutece.plugins.gru.service.demand.IDemandService;
 import fr.paris.lutece.plugins.gru.service.demand.NotificationService;
 import fr.paris.lutece.plugins.gru.service.demandtype.DemandTypeService;
@@ -39,10 +40,10 @@ public class ElasticsearchDemandService implements IDemandService {
 		
 		try {
 			jsonDemand = mapper.readValue(demandElastic, Map.class);
-			base.setDemandTypeId(jsonDemand.get("demand_id_type").toString());
-			base.setId(jsonDemand.get("demand_id").toString());
-			base.setReference(jsonDemand.get("reference").toString());
-			base.setStatus(Integer.parseInt(jsonDemand.get("crm_status_id").toString()));
+			base.setDemandTypeId(jsonDemand.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_TYPE_ID).toString());
+			base.setId(jsonDemand.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_ID).toString());
+			base.setReference(jsonDemand.get(GRUElasticsConstants.FIELD_NOTIFICATION_REFERENCE).toString());
+			base.setStatus(Integer.parseInt(jsonDemand.get(GRUElasticsConstants.FIELD_NOTIFICATION_CRM_STATUS_ID).toString()));
 			
 			demand=DemandTypeService.buildDemand( base, customer, user );
 			
@@ -69,10 +70,10 @@ public class ElasticsearchDemandService implements IDemandService {
 					try {
 						Map<String, Object> jsonDemand = mapper.readValue(demand, Map.class);
 						BaseDemand base = new BaseDemand();
-						base.setDemandTypeId(jsonDemand.get("demand_id_type").toString());
-						base.setId(jsonDemand.get("demand_id").toString());
-						base.setReference(jsonDemand.get("reference").toString());
-						base.setStatus((Integer)jsonDemand.get("demand_state"));
+						base.setDemandTypeId(jsonDemand.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_TYPE_ID).toString());
+						base.setId(jsonDemand.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_ID).toString());
+						base.setReference(jsonDemand.get(GRUElasticsConstants.FIELD_NOTIFICATION_REFERENCE).toString());
+						base.setStatus((Integer)jsonDemand.get(GRUElasticsConstants.FIELD_NOTIFICATION_CRM_STATUS_ID));
 						list.add(base);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
