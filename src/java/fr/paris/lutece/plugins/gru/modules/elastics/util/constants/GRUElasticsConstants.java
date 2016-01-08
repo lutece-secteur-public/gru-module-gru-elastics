@@ -193,7 +193,7 @@ public final class GRUElasticsConstants
     
     
     //RESULT FIELDS
-    public static final String FIELD_RESULT_CREATED  = "created" ; 
+    public static final String FIELD_RESULT_CREATED  = "successful" ; 
     public static final String FIELD_RESULT_ID  = "_id" ;
     /**
      * Private constructor

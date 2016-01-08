@@ -86,8 +86,11 @@ public class GRUElasticsRest
     		ElasticMapping mapping;
     		DemandMapping demandMapping = new DemandMapping();
     		Map<String, Object> resultDemand = null;
+    		Map<String, Integer> successDemand = null;
     		Map<String,Object> resultUser = null;
+    		Map<String, Integer> successUser = null;
     		Map<String, Object> resultNotification = null;
+    		Map<String, Integer> successNotification = null;
 			Map<String,Object> flux = mapper.readValue(strJson, Map.class);
 			Map<String,Object> notification =(Map<String,Object>) flux.get(GRUElasticsConstants.FIELD_JSON_BLOC_NOTIFICATION);
 			Map<String,String> userEmail = (Map<String,String>)notification.get(GRUElasticsConstants.FIELD_JSON_BLOC_USER_EMAIL);
@@ -127,20 +130,26 @@ public class GRUElasticsRest
 			resultDemand = doCreateDemand(notification, userSMS);
 			resultUser = doCreateUser(notification, userSMS);
 			resultNotification = doCreateNotification(notification, backofficeLogging, userEmail, userDashboard, userSMS);
+			successDemand = (Map<String, Integer>)resultDemand.get("_shards"); 
+			successUser = (Map<String, Integer>)resultUser.get("_shards"); 
+			successNotification = (Map<String, Integer>)resultNotification.get("_shards");
 			
-			if((Boolean)resultUser.get(GRUElasticsConstants.FIELD_RESULT_CREATED) && (Boolean)resultDemand.get(GRUElasticsConstants.FIELD_RESULT_CREATED) && (Boolean)resultNotification.get(GRUElasticsConstants.FIELD_RESULT_CREATED))
+			if(successDemand.get(GRUElasticsConstants.FIELD_RESULT_CREATED)>= 1 && successUser.get(GRUElasticsConstants.FIELD_RESULT_CREATED)>= 1 
+					&& successNotification.get(GRUElasticsConstants.FIELD_RESULT_CREATED)>= 1)
 			{	
 				// Users' mapping
 				mapping.setStrRefUser(resultUser.get(GRUElasticsConstants.FIELD_RESULT_ID).toString());
 				ElasticMappingHome.update(mapping);
-				
-				//Demand's mapping 
-				demandMapping.setDemandTypeId((Integer)notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_TYPE_ID));
-				demandMapping.setStrDemand_id(notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_ID).toString());
-				demandMapping.setStrElasticsearch_id(resultDemand.get(GRUElasticsConstants.FIELD_RESULT_ID).toString());
-				demandMapping.setRefNotification(resultNotification.get(GRUElasticsConstants.FIELD_RESULT_ID).toString());
-				DemandMappingHome.create(demandMapping);
-				
+				;				
+				if( DemandMappingHome.findByDemandId(notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_ID).toString(), (Integer)notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_TYPE_ID)) == null)
+				{
+					//Demand's mapping 
+					demandMapping.setDemandTypeId((Integer)notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_TYPE_ID));
+					demandMapping.setStrDemand_id(notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_ID).toString());
+					demandMapping.setStrElasticsearch_id(resultDemand.get(GRUElasticsConstants.FIELD_RESULT_ID).toString());
+					demandMapping.setRefNotification(resultNotification.get(GRUElasticsConstants.FIELD_RESULT_ID).toString());
+					DemandMappingHome.create(demandMapping);
+				}
 				return "{"+"\"status\":"+"\"201\""+"}";		
 			}
 			else

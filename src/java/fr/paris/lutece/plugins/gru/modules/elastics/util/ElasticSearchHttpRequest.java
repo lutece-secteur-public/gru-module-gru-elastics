@@ -33,8 +33,8 @@ public class ElasticSearchHttpRequest {
 		String output = "";
 		try {
 			Map<String, Object> jsonDemand = mapper.readValue(demand, Map.class);
-			WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_DEMAND) );
-			ClientResponse response = resource.post(ClientResponse.class,demand);
+			WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_DEMAND) + jsonDemand.get("reference") );
+			ClientResponse response = resource.put(ClientResponse.class,demand);
 			output = response.getEntity(String.class);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -53,7 +53,7 @@ public class ElasticSearchHttpRequest {
 		String output = "";
 		try {
 			Map<String, Object> jsonUser = mapper.readValue(user, Map.class);
-			WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_USER) );
+			WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_USER) + jsonUser.get("user_guid"));
 			ClientResponse response = resource.post(ClientResponse.class,user);
 			output = response.getEntity(String.class);
 		} catch (IOException e) {
@@ -74,7 +74,7 @@ public class ElasticSearchHttpRequest {
 		try {
 			Map<String,Object> jsonNotification = mapper.readValue(notification, Map.class);
 			Map<String,String> jsonSollicitation = (Map<String,String>) jsonNotification.get("sollicitation");
-			WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_NOTIFICATION) );
+			WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_NOTIFICATION) + "1108");
 			ClientResponse response = resource.post(ClientResponse.class,notification);
 			output = response.getEntity(String.class);
 		} catch (IOException e) {
