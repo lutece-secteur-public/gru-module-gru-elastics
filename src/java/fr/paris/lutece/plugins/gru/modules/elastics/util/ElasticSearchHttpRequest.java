@@ -19,14 +19,14 @@ import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
 public class ElasticSearchHttpRequest {
 
-	
+	//Client Http
 	private static Client client = Client.create();
 	private static ObjectMapper mapper = new ObjectMapper();
 	////////////////////////////////////////////////////////////////////////////////CREATE ///////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * 
-	 * @param demand
-	 * @return
+	 * method which permit to insert a Demand 
+	 * @param demand json string which represent the demand
+	 * @return elasticsearch response
 	 */
 	public static String insertDemand( String demand ) 
 	{
@@ -44,9 +44,9 @@ public class ElasticSearchHttpRequest {
 		return output;
 	}
 	/**
-	 * 
-	 * @param user
-	 * @return
+	 * method which permit to insert a User
+	 * @param user json string which represent the user
+	 * @return elasticsearch response
 	 */
 	public static String insertUser( String user )
 	{
@@ -64,9 +64,9 @@ public class ElasticSearchHttpRequest {
 		return output;
 	}
 	/**
-	 * 
-	 * @param notification
-	 * @return
+	 * method which permit to insert a Notification
+	 * @param notification json string which represent the notification
+	 * @return elasticsearch response
 	 */
 	public static String insertNotification( String notification )
 	{
@@ -87,9 +87,9 @@ public class ElasticSearchHttpRequest {
 	
 	////////////////////////////////////////////////////////////////////////////////////////GETTERS////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * 
-	 * @param strIdDemand
-	 * @return
+	 * method which permit to get a demand by its id
+	 * @param strIdDemand the Id of the demand
+	 * @return the demand from elasticsearch
 	 */
 	public static String getDemandbyId(String strIdDemand){
 		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_DEMAND) + strIdDemand+GRUElasticsConstants.PATH_ELK_SOURCE);
@@ -98,9 +98,9 @@ public class ElasticSearchHttpRequest {
 		return output;
 	}
 	/**
-	 * 
-	 * @param strGuId
-	 * @return
+	 * method which permit to get a user by its Id
+	 * @param strGuId the Id of the user
+	 * @return the user from elasticsearch
 	 */
 	public static String getUserbyGuId(String strGuId){
 		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_USER)+strGuId+GRUElasticsConstants.PATH_ELK_SOURCE);
@@ -109,9 +109,9 @@ public class ElasticSearchHttpRequest {
 		return output;
 	}
 	/**
-	 * 
-	 * @param strIdNotification
-	 * @return
+	 * method which permit to get a notification by its id
+	 * @param strIdNotification the Id of the notification
+	 * @return the notification from elasticsearch
 	 */
 	public static String getNotificationById(String strIdNotification){
 		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER)+ AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_NOTIFICATION) + strIdNotification+GRUElasticsConstants.PATH_ELK_SOURCE);
@@ -123,9 +123,9 @@ public class ElasticSearchHttpRequest {
 
 ////////////////////////////////////////////////////////////////////////////////////////////DELETE//////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * 
-	 * @param strIdDemand
-	 * @return
+	 * method which permit to delete a demand by its id
+	 * @param strIdDemand the Id of a demand
+	 * @return the response of Elasticsearch
 	 */
 	public static String deleteDemandbyId(String strIdDemand){
 		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER)+AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_DEMAND) + strIdDemand);
@@ -135,9 +135,9 @@ public class ElasticSearchHttpRequest {
 	
 	}
 	/**
-	 * 
-	 * @param strGuId
-	 * @return
+	 * method which permit to delete a User by its id
+	 * @param strGuId the Id of a User
+	 * @return the response of elasticsearch
 	 */
 	public static String deleteUserbyGuId(String strGuId){
 		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_USER) + strGuId);
@@ -146,9 +146,9 @@ public class ElasticSearchHttpRequest {
 		return output;
 	}
 	/**
-	 * 
-	 * @param strIdDemand
-	 * @return
+	 * method which permit to delete a Notification by its id
+	 * @param strIdNotification the Id of a Notification
+	 * @return the response of elasticsearch
 	 */
 	public static String deleteNotificationbyId(String strIdNotification){
 		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_NOTIFICATION)+ strIdNotification);
@@ -159,10 +159,10 @@ public class ElasticSearchHttpRequest {
 	
 	///////////////////////////////////////////////////////////////////////////////////////////UPDATE///////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * 
-	 * @param demand
-	 * @param strIdDemand
-	 * @return
+	 * method which permit to update a Demand by its id
+	 * @param demand json string which represents the demand
+	 * @param strIdDemand the Id of the demand
+	 * @return response of elasticsearch
 	 */
 	public static String updateDemandById(String demand, String strIdDemand) {
 		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_DEMAND) + strIdDemand + GRUElasticsConstants.PATH_ELK_UPDATE);
@@ -171,10 +171,10 @@ public class ElasticSearchHttpRequest {
 		return output;
 	}
 	/**
-	 * 
-	 * @param user
-	 * @param strIdUser
-	 * @return
+	 * method which permit to update a User by its id
+	 * @param user json string which represents the user
+	 * @param strIdUser the Id of the user
+	 * @return response of elasticsearch
 	 * @throws InterruptedException
 	 * @throws ExecutionException
 	 */
@@ -185,10 +185,10 @@ public class ElasticSearchHttpRequest {
 		return output;
 	}
 	/**
-	 * 
-	 * @param notification
-	 * @param strIdDemand
-	 * @return
+	 * method which permit to update a Notification by its id
+	 * @param notification json string which represents the notification
+	 * @param strIdDemand the id of the notification
+	 * @return response of elasticsearch
 	 */
 	public static String UpdateNotificationByIdDemand(String notification, String strIdDemand) {
 		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_TYPE_NOTIFICATION) + strIdDemand + GRUElasticsConstants.PATH_ELK_UPDATE);
@@ -196,4 +196,18 @@ public class ElasticSearchHttpRequest {
 		String output = response.getEntity(String.class);
 		return output;	
 	}
+	
+//////////////////////////////////////////////////////////////////AUTOCOMPLETION//////////////////////////////////////////////////////////////////////
+	/**
+	 * method which permit to send an autocomplete request to elasticsearch
+	 * @param autocompleteRequest  the autocomplete request
+	 * @return response of elasticsearch
+	 */
+	public static String autocomplete(String autocompleteRequest) {
+		WebResource resource = client.resource(AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SERVER) + AppPropertiesService.getProperty(GRUElasticsConstants.PATH_ELK_SUGGEST));
+		ClientResponse response = resource.post(ClientResponse.class,autocompleteRequest);
+		String output = response.getEntity(String.class);
+		return output;	
+	}
+	
 }

@@ -17,6 +17,7 @@ PRIMARY KEY (id_mapping)
 
 DROP TABLE IF EXISTS demand_mapping;
 CREATE TABLE demand_mapping (
+id_elasticsearch varchar(50) NOT NULL,
 id_demand varchar(50) NOT NULL ,
 id_demand_type int(11) NOT NULL,
 id_customer int(11) NOT NULL,

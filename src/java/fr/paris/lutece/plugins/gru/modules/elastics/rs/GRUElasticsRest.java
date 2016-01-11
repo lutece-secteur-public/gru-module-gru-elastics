@@ -37,8 +37,10 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -69,8 +71,8 @@ public class GRUElasticsRest
 	ObjectMapper mapper = new ObjectMapper();
 	
 	/**
-	 * 
-	 * @return
+	 * Web service method which permit to store data in elasticsearch
+	 * @return the status of the elasticsearch response 
 	 * @throws JSONException
 	 */
 	
@@ -82,7 +84,7 @@ public class GRUElasticsRest
     {
     	
     	try {
-    		
+    		//Variables
     		ElasticMapping mapping;
     		DemandMapping demandMapping = new DemandMapping();
     		Map<String, Object> resultDemand = null;
@@ -130,17 +132,16 @@ public class GRUElasticsRest
 			resultDemand = doCreateDemand(notification, userSMS);
 			resultUser = doCreateUser(notification, userSMS);
 			resultNotification = doCreateNotification(notification, backofficeLogging, userEmail, userDashboard, userSMS);
-			successDemand = (Map<String, Integer>)resultDemand.get("_shards"); 
-			successUser = (Map<String, Integer>)resultUser.get("_shards"); 
-			successNotification = (Map<String, Integer>)resultNotification.get("_shards");
+			successDemand = (Map<String, Integer>)resultDemand.get(GRUElasticsConstants.FIEL_RESULT_SHARD); 
+			successUser = (Map<String, Integer>)resultUser.get(GRUElasticsConstants.FIEL_RESULT_SHARD); 
+			successNotification = (Map<String, Integer>)resultNotification.get(GRUElasticsConstants.FIEL_RESULT_SHARD);
 			
 			if(successDemand.get(GRUElasticsConstants.FIELD_RESULT_CREATED)>= 1 && successUser.get(GRUElasticsConstants.FIELD_RESULT_CREATED)>= 1 
 					&& successNotification.get(GRUElasticsConstants.FIELD_RESULT_CREATED)>= 1)
 			{	
 				// Users' mapping
 				mapping.setStrRefUser(resultUser.get(GRUElasticsConstants.FIELD_RESULT_ID).toString());
-				ElasticMappingHome.update(mapping);
-				;				
+				ElasticMappingHome.update(mapping);			
 				if( DemandMappingHome.findByDemandId(notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_ID).toString(), (Integer)notification.get(GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_TYPE_ID)) == null)
 				{
 					//Demand's mapping 
@@ -150,11 +151,11 @@ public class GRUElasticsRest
 					demandMapping.setRefNotification(resultNotification.get(GRUElasticsConstants.FIELD_RESULT_ID).toString());
 					DemandMappingHome.create(demandMapping);
 				}
-				return "{"+"\"status\":"+"\"201\""+"}";		
+				return GRUElasticsConstants.STATUS_201;		
 			}
 			else
 			{
-				return "{"+"\"status\":"+"\"404\""+"}";
+				return GRUElasticsConstants.STATUS_404;
 			}
 			
     	} 
@@ -167,13 +168,13 @@ public class GRUElasticsRest
 
     }
     /**
-     * 
-     * @param notification
-     * @param userSMS
-     * @return
+     * Web service method which permit to store a Demand in elasticseach
+     * @param notification json string which contains data about notificattion
+     * @param userSMS json string which contains data SMS
+     * @return the response of Elasticsearch as a Map
      */
     @POST
-    @Path( "demande" )
+    @Path( GRUElasticsConstants.PARAMETER_NOTIFICATION_DEMAND )
     @Produces( MediaType.APPLICATION_JSON )
     @Consumes( MediaType.APPLICATION_JSON )
     public Map<String,Object> doCreateDemand(Map<String,Object> notification, Map<String,String> userSMS){
@@ -203,13 +204,13 @@ public class GRUElasticsRest
     	return mapResult;
     }
     /**
-     * 
-     * @param notification
-     * @param userSMS
-     * @return
+     * Web service method which permit to store a User in elasticseach
+     * @param notification json string which contains data about notificattion
+     * @param userSMS json string which contains data SMS
+     * @return the response of Elasticsearch as a Map
      */
     @POST
-    @Path( "utilisateur" )
+    @Path( GRUElasticsConstants.PARAMETER_NOTIFICATION_USER )
     @Produces( MediaType.APPLICATION_JSON )
     @Consumes( MediaType.APPLICATION_JSON )
     public Map<String, Object> doCreateUser(Map<String, Object> notification, Map<String, String> userSMS){
@@ -236,16 +237,16 @@ public class GRUElasticsRest
     	return response;
     }
     /**
-     * 
-     * @param notification
-     * @param backofficeLogging
-     * @param userEmail
-     * @param userDashboard
-     * @param userSMS
-     * @return
+     *  Web service method which permit to store a Notification in elasticseach
+     * @param notification  json string which contains data about notificattion
+     * @param backofficeLogging json string which contains data about backofficeLogging
+     * @param userEmail json string which contains data about Email
+     * @param userDashboard json string which contains data about Userdashboard
+     * @param userSMS json string which contains data about SMS
+     * @return the response of Elasticsearch as a Map
      */
     @POST
-    @Path( "creer_notif" )
+    @Path( GRUElasticsConstants.PARAMETER_NOTIFICATION_NOTIFICATION )
     @Produces( MediaType.APPLICATION_JSON )
     @Consumes( MediaType.APPLICATION_JSON )
     public Map<String, Object> doCreateNotification(Map<String, Object> notification, Map<String,Object> backofficeLogging, Map<String,String> userEmail,
@@ -287,5 +288,20 @@ public class GRUElasticsRest
 			e.printStackTrace();
 		}
     	return response;
+    }
+    /**
+     *  Web service method which permit to send autocompletion request to elasticsearch
+     * @param strQuery autocompletion request for elasticsearch
+     * @return
+     */
+    @GET
+    @Path( GRUElasticsConstants.PARAMETER_NOTIFICATION_AUTOCOMPLETE )
+    @Produces( MediaType.APPLICATION_JSON )
+    @Consumes( MediaType.APPLICATION_JSON )
+    public String autocomplete(@PathParam(GRUElasticsConstants.PARAMETER_NOTIFICATION_QUERY) String strQuery)
+    {
+    	String autocompleteRequest = GRUElasticsConstants.FIELD_USER_SUGGEST  + strQuery + GRUElasticsConstants.FIELD__COMPLETION;
+    	
+    	return ElasticSearchHttpRequest.autocomplete(autocompleteRequest);
     }
 }

@@ -6,26 +6,26 @@ public interface IElasticMappingDAO {
 	/**
 	 * 
 	 * @param plugin
-	 * @return
+	 * @return the new primary key
 	 */
 	public int newPrimaryKey( Plugin plugin );
 	    /**
-	     * Insert a new record in the table.
+	     * Insert a new mapping in the table.
 	     * @param mapping instance of the Customer object to insert
 	     * @param plugin the Plugin
 	     */
 	    void insert( ElasticMapping mapping, Plugin plugin );
 
 	    /**
-	     * Update the record in the table
-	     * @param  mapping the reference of the Customer
+	     * Update the mapping in the table
+	     * @param  mapping the reference of the Mapping
 	     * @param plugin the Plugin
 	     */
 	    void store( ElasticMapping mapping, Plugin plugin );
 
 	    /**
-	     * Delete a record from the table
-	     * @param nKey The identifier of the Customer to delete
+	     * Delete a mapping from the table
+	     * @param nKey The identifier of the Mapping to delete
 	     * @param plugin the Plugin
 	     */
 	    void delete( int nKey, Plugin plugin );
@@ -34,17 +34,17 @@ public interface IElasticMappingDAO {
 	    // Finders
 
 	    /**
-	     * Load the data from the table
-	     * @param nKey The identifier of the customer
+	     * Load the mapping from the table
+	     * @param nKey The identifier of the mapping
 	     * @param plugin the Plugin
-	     * @return The instance of the customer
+	     * @return The instance of the mapping
 	     */
 	    ElasticMapping load( int nKey, Plugin plugin );
 
 	
 	    /**
-	     * Load the data from the table 
-	     * @param nKey the  identifier of the customer
+	     * Load the mapping from the table 
+	     * @param nKey the  identifier of the mapping
 	     * @param plugin
 	     * @return
 	     */

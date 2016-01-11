@@ -53,7 +53,8 @@ public final class GRUElasticsConstants
     public static final String MEDIA_TYPE_XML = "application/xml";
     public static final String PLUGIN_NAME = "elasticsearch/";
     public static final String MODULE_NAME = "gru-elastics" ;
-    public static final String BEAN_DEMAND_MAPPING = "gru-elastics.demandMappingDAO" ;
+    public static final String BEAN_DEMAND_MAPPING  = "gru-elastics.demandMappingDAO" ;
+    public static final String BEAN_ELASTIC_MAPPING = "gru-elastics.elasticMappingDAO";
     
     // PATHS
     public static final String PATH_WADL = "wadl";
@@ -64,6 +65,7 @@ public final class GRUElasticsConstants
     public static final String PATH_ELK_TYPE_NOTIFICATION = "gru-elastics.pathNotification";
     public static final String PATH_ELK_SOURCE = "/_source";
     public static final String PATH_ELK_UPDATE = "/_update";
+    public static final String PATH_ELK_SUGGEST = "gru-elastics.pathSuggest";
 
     // PROPERTIES
     public static final String PROPERTY_ENCODING_ENABLE = "crm-rest.encoding.enable";
@@ -73,7 +75,11 @@ public final class GRUElasticsConstants
     public static final String PATH_NOTIFICATION = "notification";
     
     //PARAMETERS
-    public static final String PARAMETER_NOTIFICATION_DEMAND = "strJson";
+    public static final String PARAMETER_NOTIFICATION_DEMAND = "demand";
+    public static final String PARAMETER_NOTIFICATION_USER = "user";
+    public static final String PARAMETER_NOTIFICATION_NOTIFICATION = "creerNotification";
+    public static final String PARAMETER_NOTIFICATION_AUTOCOMPLETE = "autocomplete";
+    public static final String PARAMETER_NOTIFICATION_QUERY =  "query";
     
     //BLOCS
     public static final String FIELD_JSON_BLOC_NOTIFICATION = "notification";
@@ -195,6 +201,18 @@ public final class GRUElasticsConstants
     //RESULT FIELDS
     public static final String FIELD_RESULT_CREATED  = "successful" ; 
     public static final String FIELD_RESULT_ID  = "_id" ;
+    public static final String FIEL_RESULT_SHARD = "_shards";
+    
+    
+    
+    
+    //AUTOCOMPLETION FIELD
+    public static final String FIELD_USER_SUGGEST = "{\"user-suggest\":{\"text\":\"";
+    public static final String FIELD__COMPLETION = "\",\"completion\":{\"field\":\"suggest\",\"fuzzy\":{}}}}";
+    
+    //STATUS 200
+    public static final String STATUS_201 = "{"+"\"status\":"+"\"201\""+"}";
+    public static final String STATUS_404 = "{"+"\"status\":"+"\"404\""+"}";
     /**
      * Private constructor
      */
