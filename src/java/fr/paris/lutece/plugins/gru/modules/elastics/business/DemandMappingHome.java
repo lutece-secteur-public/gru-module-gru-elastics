@@ -31,39 +31,44 @@
  *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.gru.modules.elastics.business;
 
-import java.util.List;
-
-import fr.paris.lutece.plugins.gru.business.customer.Customer;
 import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsConstants;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
-public class DemandMappingHome {
+import java.util.List;
 
-	// Static variable pointed at the DAO instance
-    private static IDemandMappingDAO _dao = SpringContextService.getBean( GRUElasticsConstants.BEAN_DEMAND_MAPPING);
+
+/**
+ * 
+ * 
+ *
+ */
+public class DemandMappingHome
+{
+    // Static variable pointed at the DAO instance
+    private static IDemandMappingDAO _dao = SpringContextService.getBean( GRUElasticsConstants.BEAN_DEMAND_MAPPING );
     private static Plugin _plugin = PluginService.getPlugin( GRUElasticsConstants.MODULE_NAME );
-    
+
     /**
      * Private constructor - this class need not be instantiated
      */
     private DemandMappingHome(  )
     {
     }
-    
+
     /**
      * Create an instance of the DemandMapping class
      * @param mapping The instance of the DemandMapping which contains the informations to store
-     * @return The  instance of DemandMapping which has been created with its primary key.
+     * @return The  instance of DemandMapping which has been created with its primary key. 
      */
-    public static void create(DemandMapping mapping )
+    public static void create( DemandMapping mapping )
     {
         _dao.insert( mapping, _plugin );
     }
+
     /**
      * Update of the DemandMapping which is specified in parameter
      * @param mapping The instance of the DemandMapping which contains the data to store
@@ -73,8 +78,9 @@ public class DemandMappingHome {
     {
         _dao.store( mapping, _plugin );
     }
-///////////////////////////////////////////////////////////////////////////
-//Finders
+
+    ///////////////////////////////////////////////////////////////////////////
+    //Finders
     /**
      * Returns an instance of a mapping whose identifier is specified in parameter
      * @param nKey The mapping primary key which is the elasticsearch id
@@ -82,8 +88,9 @@ public class DemandMappingHome {
      */
     public static DemandMapping findByPrimaryKey( int nKey )
     {
-    	return _dao.load( nKey, _plugin );
+        return _dao.load( nKey, _plugin );
     }
+
     /**
      * Returns an instance of a mapping whose user identifier is specified in parameter
      * @param nKey The user identifier
@@ -91,24 +98,27 @@ public class DemandMappingHome {
      */
     public static DemandMapping findByUserId( int nKey )
     {
-    	return _dao.loadByCustomerId( nKey, _plugin );
+        return _dao.loadByCustomerId( nKey, _plugin );
     }
+
     /**
     * Returns an instance of a mapping whose user identifier is specified in parameter
-    * @param nKey The user identifier
+    * @param strDemandId The demand identifier 
+    * @param demandIdType The demand type identifier
     * @return an instance of ElasticMapping
     */
     public static DemandMapping findByDemandId( String strDemandId, int demandIdType )
     {
-    	return _dao.loadByIdDemand(strDemandId, demandIdType, _plugin );
+        return _dao.loadByIdDemand( strDemandId, demandIdType, _plugin );
     }
+
     /**
      * Returns a list of demand's id
-     * @param nkey
-     * @return
+     * @param nkey 
+     * @return  the list of Ids 
      */
-    public static List<String> getiddemandList(int nkey )
+    public static List<String> getIdDemandList( int nkey )
     {
-        return _dao.selectIdElasticsearchList(nkey, _plugin );
+        return _dao.selectIdElasticsearchList( nkey, _plugin );
     }
 }

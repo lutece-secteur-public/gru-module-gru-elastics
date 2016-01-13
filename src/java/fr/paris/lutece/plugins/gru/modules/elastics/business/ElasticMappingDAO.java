@@ -36,20 +36,26 @@ package fr.paris.lutece.plugins.gru.modules.elastics.business;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.sql.DAOUtil;
 
-public class ElasticMappingDAO implements IElasticMappingDAO {
-
-	// Constants
+/**
+ * 
+ * 
+ *
+ */
+public class ElasticMappingDAO implements IElasticMappingDAO
+{
+    // Constants
     private static final String SQL_QUERY_NEW_PK = "SELECT max( id_mapping ) FROM elastic_mapping";
     private static final String SQL_QUERY_SELECT = "SELECT id_mapping,id_customer,id_user, ref_user FROM elastic_mapping WHERE id_customer = ?";
     private static final String SQL_QUERY_INSERT = "INSERT INTO elastic_mapping ( id_mapping, id_customer, id_user, ref_user ) VALUES (  ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM elastic_mapping WHERE id_mapping = ? ";
     private static final String SQL_QUERY_UPDATE = "UPDATE elastic_mapping SET  id_customer = ?, id_user = ?, ref_user = ? WHERE id_mapping = ?";
     private static final String SQL_QUERY_SELECT_BY_ID_USER = "SELECT id_mapping, id_customer, ref_user FROM elastic_mapping WHERE id_user = ?";
-	
-	@Override
-	public int newPrimaryKey(Plugin plugin) {
-		// TODO Auto-generated method stub
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
+
+    @Override
+    public int newPrimaryKey( Plugin plugin )
+    {
+        // TODO Auto-generated method stub
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
         daoUtil.executeQuery(  );
 
         int nKey = 1;
@@ -62,87 +68,95 @@ public class ElasticMappingDAO implements IElasticMappingDAO {
         daoUtil.free(  );
 
         return nKey;
-	}
+    }
 
-    
     @Override
-	public void insert(ElasticMapping mapping, Plugin plugin) {
-		// TODO Auto-generated method stub
-    	DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
+    public void insert( ElasticMapping mapping, Plugin plugin )
+    {
+        // TODO Auto-generated method stub
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
 
-        mapping.setId_mapping( newPrimaryKey( plugin ) );
+        mapping.setIdMapping( newPrimaryKey( plugin ) );
 
-        daoUtil.setInt( 1, mapping.getId_mapping(  ) );
-        daoUtil.setInt(2, mapping.getId_customer());
-        daoUtil.setInt(3, mapping.getId_user());
-        daoUtil.setString(4, mapping.getStrRefUser());
+        daoUtil.setInt( 1, mapping.getIdMapping(  ) );
+        daoUtil.setInt( 2, mapping.getIdCustomer(  ) );
+        daoUtil.setInt( 3, mapping.getIdUser(  ) );
+        daoUtil.setString( 4, mapping.getStrRefUser(  ) );
 
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
-	}
+    }
 
-	@Override
-	public void store(ElasticMapping mapping, Plugin plugin) {
-		// TODO Auto-generated method stub
-		 DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
+    @Override
+    public void store( ElasticMapping mapping, Plugin plugin )
+    {
+        // TODO Auto-generated method stub
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
 
-	        daoUtil.setInt( 1, mapping.getId_customer() );
-	        daoUtil.setInt( 2, mapping.getId_user() );
-	        daoUtil.setString(3, mapping.getStrRefUser());
-	        daoUtil.setInt( 4, mapping.getId_mapping() );
-	        
-	        daoUtil.executeUpdate(  );
-	        daoUtil.free(  );
+        daoUtil.setInt( 1, mapping.getIdCustomer(  ) );
+        daoUtil.setInt( 2, mapping.getIdUser(  ) );
+        daoUtil.setString( 3, mapping.getStrRefUser(  ) );
+        daoUtil.setInt( 4, mapping.getIdMapping(  ) );
 
-	}
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
+    }
 
-	@Override
-	public void delete(int nKey, Plugin plugin) {
-		// TODO Auto-generated method stub
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
+    @Override
+    public void delete( int nKey, Plugin plugin )
+    {
+        // TODO Auto-generated method stub
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
         daoUtil.setInt( 1, nKey );
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
-	}
+    }
 
-	@Override
-	public ElasticMapping load(int nKey, Plugin plugin) {
-		// TODO Auto-generated method stub
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
+    @Override
+    public ElasticMapping load( int nKey, Plugin plugin )
+    {
+        // TODO Auto-generated method stub
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
         daoUtil.setInt( 1, nKey );
         daoUtil.executeQuery(  );
-        
-        ElasticMapping mapping =null;
+
+        ElasticMapping mapping = null;
+
         if ( daoUtil.next(  ) )
         {
             mapping = new ElasticMapping(  );
-            mapping.setId_mapping( daoUtil.getInt( 1 ) );
-            mapping.setId_customer( daoUtil.getInt( 2 ) );
-            mapping.setId_user( daoUtil.getInt( 3 ) );
-            mapping.setStrRefUser(daoUtil.getString(4));
+            mapping.setIdMapping( daoUtil.getInt( 1 ) );
+            mapping.setIdCustomer( daoUtil.getInt( 2 ) );
+            mapping.setIdUser( daoUtil.getInt( 3 ) );
+            mapping.setStrRefUser( daoUtil.getString( 4 ) );
         }
+
         daoUtil.free(  );
-		return mapping;
-	}
 
+        return mapping;
+    }
 
-	@Override
-	public ElasticMapping loadByUserId(int nKey, Plugin plugin) {
-		// TODO Auto-generated method stub
-		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_ID_USER, plugin );
+    @Override
+    public ElasticMapping loadByUserId( int nKey, Plugin plugin )
+    {
+        // TODO Auto-generated method stub
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_ID_USER, plugin );
         daoUtil.setInt( 1, nKey );
         daoUtil.executeQuery(  );
-        
-        ElasticMapping mapping =null;
+
+        ElasticMapping mapping = null;
+
         if ( daoUtil.next(  ) )
         {
             mapping = new ElasticMapping(  );
-            mapping.setId_mapping( daoUtil.getInt( 1 ) );
-            mapping.setId_customer( daoUtil.getInt( 2 ) );
-            mapping.setId_user( nKey);
-            mapping.setStrRefUser(daoUtil.getString(3));
+            mapping.setIdMapping( daoUtil.getInt( 1 ) );
+            mapping.setIdCustomer( daoUtil.getInt( 2 ) );
+            mapping.setIdUser( nKey );
+            mapping.setStrRefUser( daoUtil.getString( 3 ) );
         }
+
         daoUtil.free(  );
-		return mapping;
-	}
+
+        return mapping;
+    }
 }

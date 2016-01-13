@@ -37,39 +37,44 @@ import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsCo
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
+
+
 /**
- * 
+ *
  *
  *
  */
-public final class ElasticMappingHome {
-
-	// Static variable pointed at the DAO instance
+public final class ElasticMappingHome
+{
+    // Static variable pointed at the DAO instance
     private static IElasticMappingDAO _dao = SpringContextService.getBean( GRUElasticsConstants.BEAN_ELASTIC_MAPPING );
-    private static Plugin _plugin = PluginService.getPlugin( GRUElasticsConstants.MODULE_NAME);
-    
+    private static Plugin _plugin = PluginService.getPlugin( GRUElasticsConstants.MODULE_NAME );
+
     /**
      * Private constructor - this class need not be instantiated
      */
     private ElasticMappingHome(  )
     {
     }
+
     /**
      * Create an instance of the ElasticMapping class
      * @param mapping The instance of the ElasticMapping which contains the informations to store
      */
-    public static void create(ElasticMapping mapping )
+    public static void create( ElasticMapping mapping )
     {
         _dao.insert( mapping, _plugin );
     }
+
     /**
      * Update of the elasticMapping which is specified in parameter
-     * @param mapping The instance of the ElasticMapping which contains the data to store 
+     * @param mapping The instance of the ElasticMapping which contains the data to store
      */
     public static void update( ElasticMapping mapping )
     {
         _dao.store( mapping, _plugin );
     }
+
     /**
      * Remove the mapping whose identifier is specified in parameter
      * @param nKey The mapping Id
@@ -78,9 +83,9 @@ public final class ElasticMappingHome {
     {
         _dao.delete( nKey, _plugin );
     }
-    
-///////////////////////////////////////////////////////////////////////////
-// Finders
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Finders
     /**
      * Returns an instance of a mapping whose identifier is specified in parameter
      * @param nKey The mapping primary key
@@ -90,6 +95,7 @@ public final class ElasticMappingHome {
     {
         return _dao.load( nKey, _plugin );
     }
+
     /**
      * Returns an instance of a mapping whose user identifier is specified in parameter
      * @param nKey The user identifier
@@ -99,5 +105,4 @@ public final class ElasticMappingHome {
     {
         return _dao.loadByUserId( nKey, _plugin );
     }
-    
 }

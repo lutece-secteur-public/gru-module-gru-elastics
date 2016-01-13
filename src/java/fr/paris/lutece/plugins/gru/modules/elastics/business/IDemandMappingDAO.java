@@ -31,69 +31,73 @@
  *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.gru.modules.elastics.business;
-
-import java.util.List;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 
-public interface IDemandMappingDAO {
-		/**
-		 * 
-		 * @param mapping
-		 * @param plugin
-		 */
-	    void insert( DemandMapping mapping, Plugin plugin );
+import java.util.List;
 
-	    /**
-	     * Update the mapping in the table
-	     * @param  mapping the reference of the Mapping
-	     * @param plugin the Plugin
-	     */
-	    void store( DemandMapping mapping, Plugin plugin );
+/**
+ * 
+ * 
+ *
+ */
+public interface IDemandMappingDAO
+{
+    /**
+     *
+     * @param mapping 
+     * @param plugin 
+     */
+    void insert( DemandMapping mapping, Plugin plugin );
 
-	    /**
-	     * Delete a mapping from the table
-	     * @param nKey The identifier of the Mapping to delete
-	     * @param plugin the Plugin
-	     */
-	    void delete( int nKey, Plugin plugin );
+    /**
+     * Update the mapping in the table
+     * @param  mapping the reference of the Mapping
+     * @param plugin the Plugin
+     */
+    void store( DemandMapping mapping, Plugin plugin );
 
-	    ///////////////////////////////////////////////////////////////////////////
-	    // Finders
+    /**
+     * Delete a mapping from the table
+     * @param nKey The identifier of the Mapping to delete
+     * @param plugin the Plugin
+     */
+    void delete( int nKey, Plugin plugin );
 
-	    /**
-	     * Load the data from the table
-	     * @param nKey The identifier of the mapping
-	     * @param plugin the Plugin
-	     * @return The instance of the mapping
-	     */
-	    DemandMapping load( int nKey, Plugin plugin );
+    ///////////////////////////////////////////////////////////////////////////
+    // Finders
 
-	
-	    /**
-	     * Load the data from the table 
-	     * @param nKey the  identifier of the customer
-	     * @param plugin the instance of the Mapping class 
-	     * @return
-	     */
-	    DemandMapping loadByCustomerId(int nKey, Plugin plugin);
-	    /**
-	     * 
-	     * @param strIdDemand the Id of the demand
-	     * @param demandIdType the id type of the demand
-	     * @param plugin the instance of the Mapping class
-	     * @return
-	     */
-	    public DemandMapping loadByIdDemand(String strIdDemand,int demandIdType, Plugin plugin);
-	    
-	    /**
-	     * 
-	     * 
-	     * @param idCustomer
-	     * @return all id demand which correspond to the id customer 
-	     */
-	    public List<String> selectIdElasticsearchList(int idCustomer, Plugin plugin);
-}   
+    /**
+     * Load the data from the table
+     * @param nKey The identifier of the mapping
+     * @param plugin the Plugin
+     * @return The instance of the mapping
+     */
+    DemandMapping load( int nKey, Plugin plugin );
 
+    /**
+     * Load the data from the table
+     * @param nKey the  identifier of the customer
+     * @param plugin the instance of the Mapping class
+     * @return 
+     */
+    DemandMapping loadByCustomerId( int nKey, Plugin plugin );
+
+    /**
+     *
+     * @param strIdDemand the Id of the demand
+     * @param demandIdType the id type of the demand
+     * @param plugin the instance of the Mapping class
+     * @return 
+     */
+    public DemandMapping loadByIdDemand( String strIdDemand, int demandIdType, Plugin plugin );
+
+    /**
+     *
+     *
+     * @param idCustomer
+     * @return all id demand which correspond to the id customer
+     */
+    public List<String> selectIdElasticsearchList( int idCustomer, Plugin plugin );
+}

@@ -32,73 +32,88 @@
  * License 1.0
  */
 package fr.paris.lutece.plugins.gru.modules.elastics.business;
+
 /**
- * 
+ *
  * @author
  *
  */
- 
-public class ElasticMapping {
+public class ElasticMapping
+{
+    private int _nIdCustomer;
+    private int _nIdUser;
+    private int _nIdMapping;
+    private String _strRefUser;
 
-	private int id_customer;
-	private int id_user;
-	private int id_mapping;
-	private String strRefUser;
-	/**
-	 * 
-	 * @return
-	 */
-	public String getStrRefUser() {
-		return strRefUser;
-	}
-	/**
-	 * 
-	 * @param strRefUser
-	 */
-	public void setStrRefUser(String strRefUser) {
-		this.strRefUser = strRefUser;
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public int getId_mapping() {
-		return id_mapping;
-	}
-	/**
-	 * 
-	 * @param id_mapping
-	 */
-	public void setId_mapping(int id_mapping) {
-		this.id_mapping = id_mapping;
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public int getId_customer() {
-		return id_customer;
-	}
-	/**
-	 * 
-	 * @param id_customer
-	 */
-	public void setId_customer(int id_customer) {
-		this.id_customer = id_customer;
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public int getId_user() {
-		return id_user;
-	}
-	/**
-	 * 
-	 * @param id_user
-	 */
-	public void setId_user(int id_user) {
-		this.id_user = id_user;
-	}
-	
+    /**
+     *
+     * @return
+     */
+    public String getStrRefUser(  )
+    {
+        return _strRefUser;
+    }
+
+    /**
+     *
+     * @param strRefUser
+     */
+    public void setStrRefUser( String strRefUser )
+    {
+        this._strRefUser = strRefUser;
+    }
+
+    /**
+     *
+     * @return _nIdMapping 
+     */
+    public int getIdMapping(  )
+    {
+        return _nIdMapping;
+    }
+
+    /**
+     *
+     * @param idMapping 
+     */
+    public void setIdMapping( int idMapping )
+    {
+        this._nIdMapping = idMapping;
+    }
+
+    /**
+     *
+     * @return _nIdCustomer
+     */
+    public int getIdCustomer(  )
+    {
+        return _nIdCustomer;
+    }
+
+    /**
+     *
+     * @param idCustomer 
+     */
+    public void setIdCustomer( int idCustomer )
+    {
+        this._nIdCustomer = idCustomer;
+    }
+
+    /**
+     *
+     * @return _nIdUser
+     */
+    public int getIdUser(  )
+    {
+        return _nIdUser;
+    }
+
+    /**
+     *
+     * @param idUser 
+     */
+    public void setIdUser( int idUser )
+    {
+        this._nIdUser = idUser;
+    }
 }
