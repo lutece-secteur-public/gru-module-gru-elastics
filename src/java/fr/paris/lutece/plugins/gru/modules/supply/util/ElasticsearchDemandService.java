@@ -31,16 +31,16 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.elastics.util;
+package fr.paris.lutece.plugins.gru.modules.supply.util;
 
 import fr.paris.lutece.plugins.gru.business.customer.Customer;
 import fr.paris.lutece.plugins.gru.business.customer.CustomerHome;
 import fr.paris.lutece.plugins.gru.business.demand.BaseDemand;
 import fr.paris.lutece.plugins.gru.business.demand.Demand;
 import fr.paris.lutece.plugins.gru.business.demand.Notification;
-import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMapping;
-import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMappingHome;
-import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsConstants;
+import fr.paris.lutece.plugins.gru.modules.supply.business.DemandMapping;
+import fr.paris.lutece.plugins.gru.modules.supply.business.DemandMappingHome;
+import fr.paris.lutece.plugins.gru.modules.supply.util.constants.GRUElasticsConstants;
 import fr.paris.lutece.plugins.gru.service.demand.IDemandService;
 import fr.paris.lutece.plugins.gru.service.demand.NotificationService;
 import fr.paris.lutece.plugins.gru.service.demandtype.DemandTypeService;

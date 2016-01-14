@@ -31,7 +31,7 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.elastics.util.constants;
+package fr.paris.lutece.plugins.gru.modules.supply.util.constants;
 
 
 /**

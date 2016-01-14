@@ -7,8 +7,8 @@
     <installation/>
     <changes/>
     <user-guide/>
-    <description>module.gru.elastics.module.description</description>
-    <provider>module.gru.elastics.module.provider</provider>
+    <description>plugin.gru.supply.module.description</description>
+    <provider>plugin.gru.supply.module.provider</provider>
     <provider-url>http://lutece.paris.fr</provider-url>
     <icon-url>images/admin/skin/plugins/gru/modules/elastics/gru-elastics.png</icon-url>
     <copyright>Copyright 2001-2015 Mairie de Paris</copyright>

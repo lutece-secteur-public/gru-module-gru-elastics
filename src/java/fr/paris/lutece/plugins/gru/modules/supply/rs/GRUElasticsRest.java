@@ -31,17 +31,18 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.elastics.rs;
+package fr.paris.lutece.plugins.gru.modules.supply.rs;
 
 import fr.paris.lutece.plugins.gru.business.customer.Customer;
 import fr.paris.lutece.plugins.gru.business.customer.CustomerHome;
-import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMapping;
-import fr.paris.lutece.plugins.gru.modules.elastics.business.DemandMappingHome;
-import fr.paris.lutece.plugins.gru.modules.elastics.business.ElasticMapping;
-import fr.paris.lutece.plugins.gru.modules.elastics.business.ElasticMappingHome;
-import fr.paris.lutece.plugins.gru.modules.elastics.util.ElasticSearchHttpRequest;
-import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsConstants;
+import fr.paris.lutece.plugins.gru.modules.supply.business.DemandMapping;
+import fr.paris.lutece.plugins.gru.modules.supply.business.DemandMappingHome;
+import fr.paris.lutece.plugins.gru.modules.supply.business.ElasticMapping;
+import fr.paris.lutece.plugins.gru.modules.supply.business.ElasticMappingHome;
+import fr.paris.lutece.plugins.gru.modules.supply.util.ElasticSearchHttpRequest;
+import fr.paris.lutece.plugins.gru.modules.supply.util.constants.GRUElasticsConstants;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -59,6 +60,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 
@@ -71,6 +73,7 @@ import javax.ws.rs.core.MediaType;
 public class GRUElasticsRest
 {
     ObjectMapper _mapper = new ObjectMapper(  );
+    IElasticSearchHttpRequest _query = SpringContextService.getBean("gru-elastics.elasticsearchRequest"); 
 
     /**
      * Web service method which permit to store data in elasticsearch
@@ -88,7 +91,6 @@ public class GRUElasticsRest
         {
             //Variables
             ElasticMapping mapping;
-            DemandMapping demandMapping = new DemandMapping(  );
             Map<String, Object> resultDemand = null;
             Map<String, Integer> successDemand = null;
             Map<String, Object> resultUser = null;
@@ -124,14 +126,12 @@ public class GRUElasticsRest
                 mapping = new ElasticMapping(  );
                 mapping.setIdCustomer( customer.getId(  ) );
                 mapping.setIdUser( (Integer) notification.get( GRUElasticsConstants.FIELD_NOTIFICATION_USER_GUID ) );
-                demandMapping.setCustomerId( customer.getId(  ) );
                 ElasticMappingHome.create( mapping );
             }
             else
             {
                 mapping = ElasticMappingHome.findByUserId( (Integer) notification.get( 
                             GRUElasticsConstants.FIELD_NOTIFICATION_USER_GUID ) );
-                demandMapping.setCustomerId( mapping.getIdCustomer(  ) );
             }
 
             resultDemand = doCreateDemand( notification, userSMS );
@@ -146,25 +146,6 @@ public class GRUElasticsRest
                     ( successUser.get( GRUElasticsConstants.FIELD_RESULT_CREATED ) >= 1 ) &&
                     ( successNotification.get( GRUElasticsConstants.FIELD_RESULT_CREATED ) >= 1 ) )
             {
-                // Users' mapping
-                mapping.setStrRefUser( resultUser.get( GRUElasticsConstants.FIELD_RESULT_ID ).toString(  ) );
-                ElasticMappingHome.update( mapping );
-
-                if ( DemandMappingHome.findByDemandId( 
-                            notification.get( GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_ID ).toString(  ),
-                            (Integer) notification.get( GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_TYPE_ID ) ) == null )
-                {
-                    //Demand's mapping 
-                    demandMapping.setDemandTypeId( (Integer) notification.get( 
-                            GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_TYPE_ID ) );
-                    demandMapping.setStrDemandId( notification.get( GRUElasticsConstants.FIELD_NOTIFICATION_DEMAND_ID )
-                                                              .toString(  ) );
-                    demandMapping.setStrElasticsearchId( resultDemand.get( GRUElasticsConstants.FIELD_RESULT_ID )
-                                                                     .toString(  ) );
-                    demandMapping.setRefNotification( resultNotification.get( GRUElasticsConstants.FIELD_RESULT_ID )
-                                                                        .toString(  ) );
-                    DemandMappingHome.create( demandMapping );
-                }
 
                 return GRUElasticsConstants.STATUS_201;
             }
@@ -231,7 +212,7 @@ public class GRUElasticsRest
             GRUElasticsConstants.CLOSE_BRACE + GRUElasticsConstants.CLOSE_BRACE + GRUElasticsConstants.CLOSE_BRACE;
 
         String demand = demandUser + demandDetail + suggest;
-        String result = ElasticSearchHttpRequest.insertDemand( demand );
+        String result = _query.insertDemand( demand );
 
         try
         {
@@ -288,7 +269,7 @@ public class GRUElasticsRest
             GRUElasticsConstants.CLOSE_BRACE + GRUElasticsConstants.CLOSE_BRACE + GRUElasticsConstants.CLOSE_BRACE;
 
         String user = userDetail + suggestUser;
-        String result = ElasticSearchHttpRequest.insertUser( user );
+        String result = _query.insertUser( user );
 
         try
         {
@@ -385,7 +366,7 @@ public class GRUElasticsRest
 
         String notif = sollicitation + backofficeLog + userMail + dashboard + sms;
 
-        String result = ElasticSearchHttpRequest.insertNotification( notif );
+        String result = _query.insertNotification( notif );
 
         try
         {
@@ -409,12 +390,12 @@ public class GRUElasticsRest
     @Path( GRUElasticsConstants.PARAMETER_NOTIFICATION_AUTOCOMPLETE )
     @Produces( MediaType.APPLICATION_JSON )
     @Consumes( MediaType.APPLICATION_JSON )
-    public String autocomplete( @PathParam( GRUElasticsConstants.PARAMETER_NOTIFICATION_QUERY )
+    public String autocomplete( @QueryParam( GRUElasticsConstants.PARAMETER_NOTIFICATION_QUERY )
     String strQuery )
     {
         //String autocompleteRequest = GRUElasticsConstants.FIELD_USER_SUGGEST + strQuery +
           //  GRUElasticsConstants.FIELD__COMPLETION;
 
-        return ElasticSearchHttpRequest.autocomplete(strQuery);
+        return _query.autocomplete(strQuery);
     }
 }

@@ -31,32 +31,33 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.elastics.business;
+package fr.paris.lutece.plugins.gru.modules.supply.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 
-import java.util.List;
 
-/**
- * 
- * 
- *
- */
-public interface IDemandMappingDAO
+public interface IElasticMappingDAO
 {
     /**
      *
-     * @param mapping 
-     * @param plugin 
+     * @param plugin
+     * @return the new primary key
      */
-    void insert( DemandMapping mapping, Plugin plugin );
+    public int newPrimaryKey( Plugin plugin );
+
+    /**
+     * Insert a new mapping in the table.
+     * @param mapping instance of the Customer object to insert
+     * @param plugin the Plugin
+     */
+    void insert( ElasticMapping mapping, Plugin plugin );
 
     /**
      * Update the mapping in the table
      * @param  mapping the reference of the Mapping
      * @param plugin the Plugin
      */
-    void store( DemandMapping mapping, Plugin plugin );
+    void store( ElasticMapping mapping, Plugin plugin );
 
     /**
      * Delete a mapping from the table
@@ -69,35 +70,18 @@ public interface IDemandMappingDAO
     // Finders
 
     /**
-     * Load the data from the table
+     * Load the mapping from the table
      * @param nKey The identifier of the mapping
      * @param plugin the Plugin
      * @return The instance of the mapping
      */
-    DemandMapping load( int nKey, Plugin plugin );
+    ElasticMapping load( int nKey, Plugin plugin );
 
     /**
-     * Load the data from the table
-     * @param nKey the  identifier of the customer
-     * @param plugin the instance of the Mapping class
-     * @return 
+     * Load the mapping from the table
+     * @param nKey the  identifier of the mapping
+     * @param plugin
+     * @return
      */
-    DemandMapping loadByCustomerId( int nKey, Plugin plugin );
-
-    /**
-     *
-     * @param strIdDemand the Id of the demand
-     * @param demandIdType the id type of the demand
-     * @param plugin the instance of the Mapping class
-     * @return 
-     */
-    public DemandMapping loadByIdDemand( String strIdDemand, int demandIdType, Plugin plugin );
-
-    /**
-     *
-     *
-     * @param idCustomer
-     * @return all id demand which correspond to the id customer
-     */
-    public List<String> selectIdElasticsearchList( int idCustomer, Plugin plugin );
+    ElasticMapping loadByUserId( int nKey, Plugin plugin );
 }

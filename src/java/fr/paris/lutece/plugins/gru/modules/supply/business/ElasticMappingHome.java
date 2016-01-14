@@ -31,62 +31,67 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.elastics.business;
+package fr.paris.lutece.plugins.gru.modules.supply.business;
 
-import fr.paris.lutece.plugins.gru.modules.elastics.util.constants.GRUElasticsConstants;
+import fr.paris.lutece.plugins.gru.modules.supply.util.constants.GRUElasticsConstants;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
-import java.util.List;
-
 
 /**
- * 
- * 
+ *
+ *
  *
  */
-public class DemandMappingHome
+public final class ElasticMappingHome
 {
     // Static variable pointed at the DAO instance
-    private static IDemandMappingDAO _dao = SpringContextService.getBean( GRUElasticsConstants.BEAN_DEMAND_MAPPING );
+    private static IElasticMappingDAO _dao = SpringContextService.getBean( GRUElasticsConstants.BEAN_ELASTIC_MAPPING );
     private static Plugin _plugin = PluginService.getPlugin( GRUElasticsConstants.MODULE_NAME );
 
     /**
      * Private constructor - this class need not be instantiated
      */
-    private DemandMappingHome(  )
+    private ElasticMappingHome(  )
     {
     }
 
     /**
-     * Create an instance of the DemandMapping class
-     * @param mapping The instance of the DemandMapping which contains the informations to store
-     * @return The  instance of DemandMapping which has been created with its primary key. 
+     * Create an instance of the ElasticMapping class
+     * @param mapping The instance of the ElasticMapping which contains the informations to store
      */
-    public static void create( DemandMapping mapping )
+    public static void create( ElasticMapping mapping )
     {
         _dao.insert( mapping, _plugin );
     }
 
     /**
-     * Update of the DemandMapping which is specified in parameter
-     * @param mapping The instance of the DemandMapping which contains the data to store
-     * @return The instance of the DemandMapping which has been updated
+     * Update of the elasticMapping which is specified in parameter
+     * @param mapping The instance of the ElasticMapping which contains the data to store
      */
-    public static void update( DemandMapping mapping )
+    public static void update( ElasticMapping mapping )
     {
         _dao.store( mapping, _plugin );
     }
 
+    /**
+     * Remove the mapping whose identifier is specified in parameter
+     * @param nKey The mapping Id
+     */
+    public static void remove( int nKey )
+    {
+        _dao.delete( nKey, _plugin );
+    }
+
     ///////////////////////////////////////////////////////////////////////////
-    //Finders
+    // Finders
     /**
      * Returns an instance of a mapping whose identifier is specified in parameter
-     * @param nKey The mapping primary key which is the elasticsearch id
-     * @return an instance of DemandMapping
+     * @param nKey The mapping primary key
+     * @return an instance of ElasticMapping
      */
-    public static DemandMapping findByPrimaryKey( int nKey )
+    public static ElasticMapping findByPrimaryKey( int nKey )
     {
         return _dao.load( nKey, _plugin );
     }
@@ -96,29 +101,8 @@ public class DemandMappingHome
      * @param nKey The user identifier
      * @return an instance of ElasticMapping
      */
-    public static DemandMapping findByUserId( int nKey )
+    public static ElasticMapping findByUserId( int nKey )
     {
-        return _dao.loadByCustomerId( nKey, _plugin );
-    }
-
-    /**
-    * Returns an instance of a mapping whose user identifier is specified in parameter
-    * @param strDemandId The demand identifier 
-    * @param demandIdType The demand type identifier
-    * @return an instance of ElasticMapping
-    */
-    public static DemandMapping findByDemandId( String strDemandId, int demandIdType )
-    {
-        return _dao.loadByIdDemand( strDemandId, demandIdType, _plugin );
-    }
-
-    /**
-     * Returns a list of demand's id
-     * @param nkey 
-     * @return  the list of Ids 
-     */
-    public static List<String> getIdDemandList( int nkey )
-    {
-        return _dao.selectIdElasticsearchList( nkey, _plugin );
+        return _dao.loadByUserId( nKey, _plugin );
     }
 }

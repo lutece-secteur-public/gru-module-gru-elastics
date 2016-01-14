@@ -11,7 +11,7 @@
     <artifactId>gru-plugin-grusupply</artifactId>
     <packaging>lutece-plugin</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Lutece GRU supply plugin</name>
+    <name>Lutece GRU plugin</name>
     
     <repositories>
         <repository>
@@ -62,11 +62,17 @@
 			<version>0.9.0-SNAPSHOT</version>
 			<type>lutece-plugin</type>
 		</dependency>
+		<dependency>
+			<groupId>fr.paris.lutece.plugins</groupId>
+			<artifactId>gru-module-grusupply-elastic</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<type>lutece-plugin</type>
+		</dependency>
     </dependencies>
 	
     <properties>
         <componentName>Plugin GRU Supply</componentName>
-        <jiraProjectName>GRUSUPPLY</jiraProjectName>
+        <jiraProjectName> GRUSUPPLY</jiraProjectName>
         <jiraComponentId>12924</jiraComponentId>
     </properties>
 	
