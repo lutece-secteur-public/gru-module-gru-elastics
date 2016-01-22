@@ -33,87 +33,13 @@
  */
 package fr.paris.lutece.plugins.gru.modules.supply.business;
 
-/**
- *
- * @author
- *
- */
-public class ElasticMapping
+import fr.paris.lutece.plugins.gru.modules.supply.model.gru.Demand;
+import fr.paris.lutece.plugins.gru.modules.supply.model.gru.Notification;
+import fr.paris.lutece.plugins.gru.modules.supply.model.gru.User;
+
+public interface INotificationStorageService
 {
-    private int _nIdCustomer;
-    private int _nIdUser;
-    private int _nIdMapping;
-    private String _strRefUser;
-
-    /**
-     *
-     * @return
-     */
-    public String getStrRefUser(  )
-    {
-        return _strRefUser;
-    }
-
-    /**
-     *
-     * @param strRefUser
-     */
-    public void setStrRefUser( String strRefUser )
-    {
-        this._strRefUser = strRefUser;
-    }
-
-    /**
-     *
-     * @return _nIdMapping 
-     */
-    public int getIdMapping(  )
-    {
-        return _nIdMapping;
-    }
-
-    /**
-     *
-     * @param idMapping 
-     */
-    public void setIdMapping( int idMapping )
-    {
-        this._nIdMapping = idMapping;
-    }
-
-    /**
-     *
-     * @return _nIdCustomer
-     */
-    public int getIdCustomer(  )
-    {
-        return _nIdCustomer;
-    }
-
-    /**
-     *
-     * @param idCustomer 
-     */
-    public void setIdCustomer( int idCustomer )
-    {
-        this._nIdCustomer = idCustomer;
-    }
-
-    /**
-     *
-     * @return _nIdUser
-     */
-    public int getIdUser(  )
-    {
-        return _nIdUser;
-    }
-
-    /**
-     *
-     * @param idUser 
-     */
-    public void setIdUser( int idUser )
-    {
-        this._nIdUser = idUser;
-    }
+	public void store( User _user );
+	public void store( Notification _Notification );
+	public void store( Demand _demand );
 }

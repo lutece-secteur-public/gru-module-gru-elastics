@@ -40,9 +40,10 @@
 	
     <dependencies>
     	<dependency>
-  			<groupId>fr.paris.lutece.plugins</groupId>
-  			<artifactId>library-httpaccess</artifactId>
-  			<version>2.4.1-SNAPSHOT</version>
+  			<groupId>fr.paris.lutece</groupId>
+  			<artifactId>lutece-core</artifactId>
+  			<version>[5.0.0,)</version>
+  			<type>lutece-core</type>
 	   </dependency>
         <dependency>
             <groupId>fr.paris.lutece.plugins</groupId>
@@ -50,30 +51,13 @@
             <version>[1.0.0,)</version>
             <type>lutece-plugin</type>
         </dependency>
-	<dependency>
-		<groupId>fr.paris.lutece.plugins</groupId>
-		<artifactId>plugin-gru</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
-		<type>lutece-plugin</type>
-	</dependency>
-		<dependency>
-			<groupId>fr.paris.lutece.plugins</groupId>
-			<artifactId>plugin-elasticsearch</artifactId>
-			<version>0.9.0-SNAPSHOT</version>
-			<type>lutece-plugin</type>
-		</dependency>
-		<dependency>
-			<groupId>fr.paris.lutece.plugins</groupId>
-			<artifactId>gru-module-grusupply-elastic</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<type>lutece-plugin</type>
-		</dependency>
+
     </dependencies>
 	
     <properties>
         <componentName>Plugin GRU Supply</componentName>
         <jiraProjectName> GRUSUPPLY</jiraProjectName>
-        <jiraComponentId>12924</jiraComponentId>
+        <jiraComponentId>12928</jiraComponentId>
     </properties>
 	
     <scm>
