@@ -6,9 +6,13 @@
     
     <!-- REST -->
     <bean id="grusupply.grurestelasticsearch" class="fr.paris.lutece.plugins.grusupply.rest.GRURestElasticSearch"/>
-        
+    <bean id="grusupply.grurestdatabase" class="fr.paris.lutece.plugins.grusupply.rest.GRURestDataBase"/>
+       
     
     <!-- SERVICE -->
     <bean id="grusupply.gruService" class="fr.paris.lutece.plugins.grusupply.service.GRUService"/>
+    <bean class="fr.paris.lutece.plugins.grusupply.service.PluginRegistrationBeanPostProcessor">
+		<constructor-arg ref="grusupply.gruService"/>
+	</bean>	
     
 </beans>

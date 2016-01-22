@@ -56,21 +56,18 @@ public class GRUService  {
     	if(_singleton == null){
     		
     		_singleton= SpringContextService.getBean( BEAN_GRUSUPPLY_SERVICE );
-	    	List<AbsractStorageService> _listStorageService = SpringContextService.getBeansOfType(AbsractStorageService.class );
-	    	List<IUserInfoProvider> _listUserInfoProvider = SpringContextService.getBeansOfType(IUserInfoProvider.class);
-	        
-	        for(INotificationStorageService storagService: _listStorageService){
-	        	
-	        	_notificationStorageService.add(storagService);
-	        	
-	        }
-	        for(IUserInfoProvider userService: _listUserInfoProvider){
-	        	
-	        	_userInfoProvider.add(userService);
-	        	
-	        }
     	}
         return _singleton;
+    }
+    
+    public void addNotificationStorageBean(INotificationStorageService nStorageService){
+    	
+    	_notificationStorageService.add(nStorageService);
+    }
+    
+    public void addUserInfoProviderBean(IUserInfoProvider userInfoProvider){
+    	
+    	_userInfoProvider.add(userInfoProvider);
     }
     /**
      * 
