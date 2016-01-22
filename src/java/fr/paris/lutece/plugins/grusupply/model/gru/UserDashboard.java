@@ -31,44 +31,52 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.supply.model.gru;
+package fr.paris.lutece.plugins.grusupply.model.gru;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-public class UserSMS 
+public class UserDashboard
 {
-	private int _nPhoneNumber;
+	private String _strStatusText;
 	private String _strMessage;
-	
-	// Constructor
-	public UserSMS( )
+	private String _strSubject;
+	private String _strSenderName;
+	private String _strData;
+
+	public UserDashboard( ) 
 	{
 		super( );
-	}	
-	public UserSMS( int _nPhoneNumber, String _strMessage )
+	}
+	public UserDashboard( String _strStatusText, String _strMessage, String _strSubject, String _strSenderName,
+			String _strData ) 
 	{
 		super( );
-		this._nPhoneNumber = _nPhoneNumber;
+		this._strStatusText = _strStatusText;
 		this._strMessage = _strMessage;
-	}
-	public UserSMS( JSONObject json ) throws JSONException 
+		this._strSubject = _strSubject;
+		this._strSenderName = _strSenderName;
+		this._strData = _strData;
+	}	
+	public UserDashboard( JSONObject json ) throws JSONException
 	{
-		super();
-		this._nPhoneNumber = json.getInt("phone_number");
+		super( );
+		this._strStatusText = json.getString("status_text");
 		this._strMessage = json.getString("message");
+		this._strSubject = json.getString("subject");
+		this._strSenderName = json.getString("sender_name");
+		this._strData = json.getString("data");
 	}
-	
 	// Getters & Setters
-	public int getPhoneNumber( ) 
+	public String getStatusText( ) 
 	{
-		return _nPhoneNumber;
+		return _strStatusText;
 	}
-	public void setPhoneNumber( int _nPhoneNumber ) 
+	public void setStatusText( String _strStatusText )
 	{
-		this._nPhoneNumber = _nPhoneNumber;
+		this._strStatusText = _strStatusText;
 	}
-	public String getMessage( ) 
+	public String getMessage( )
 	{
 		return _strMessage;
 	}
@@ -76,8 +84,32 @@ public class UserSMS
 	{
 		this._strMessage = _strMessage;
 	}
+	public String getSubject( ) 
+	{
+		return _strSubject;
+	}
+	public void setSubject( String _strSubject ) 
+	{
+		this._strSubject = _strSubject;
+	}
+	public String getSenderName( )
+	{
+		return _strSenderName;
+	}
+	public void setSenderName( String _strSenderName )
+	{
+		this._strSenderName = _strSenderName;
+	}
+	public String getData( ) 
+	{
+		return _strData;
+	}
+	public void setData( String _strData )
+	{
+		this._strData = _strData;
+	}
 	public String toJSON( )
 	{
-		return "\"user_sms\": {\"phone_number\": \""+_nPhoneNumber+"\",\"message\": \""+_strMessage+"\"}";
+		return "\"user_dashboard\": {\"status_text\": \""+_strStatusText+"\",\"data\": \""+_strData+"\"}";
 	}
 }

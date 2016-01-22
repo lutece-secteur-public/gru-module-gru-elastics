@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
 	<properties>
-		<title>Module GRU Elastics</title>
+		<title>Plugin GRUSupply</title>
 	</properties>
 	<body>
-		<section name="Module gru elastics">
+		<section name="Plugin GRUSupply">
 			<subsection name="Introduction">
 			</subsection>
 		</section>

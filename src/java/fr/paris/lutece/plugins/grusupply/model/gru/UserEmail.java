@@ -31,52 +31,76 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.supply.model.gru;
+package fr.paris.lutece.plugins.grusupply.model.gru;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-public class UserDashboard
+public class UserEmail
 {
-	private String _strStatusText;
-	private String _strMessage;
-	private String _strSubject;
 	private String _strSenderName;
-	private String _strData;
-
-	public UserDashboard( ) 
+	private String _strSenderEmail;
+	private String _strRecipient;
+	private String _strSubject;
+	private String _strMessage;
+	// Constructors
+	public UserEmail( ) 
 	{
 		super( );
-	}
-	public UserDashboard( String _strStatusText, String _strMessage, String _strSubject, String _strSenderName,
-			String _strData ) 
-	{
-		super( );
-		this._strStatusText = _strStatusText;
-		this._strMessage = _strMessage;
-		this._strSubject = _strSubject;
-		this._strSenderName = _strSenderName;
-		this._strData = _strData;
 	}	
-	public UserDashboard( JSONObject json ) throws JSONException
+	public UserEmail( String _strSenderName, String _strSenderEmail, String _strRecipient, String _strSubject,
+			String _strMessage ) 
 	{
 		super( );
-		this._strStatusText = json.getString("status_text");
-		this._strMessage = json.getString("message");
-		this._strSubject = json.getString("subject");
+		this._strSenderName = _strSenderName;
+		this._strSenderEmail = _strSenderEmail;
+		this._strRecipient = _strRecipient;
+		this._strSubject = _strSubject;
+		this._strMessage = _strMessage;
+	}
+	public UserEmail( JSONObject json ) throws JSONException 
+	{
+		super( );
 		this._strSenderName = json.getString("sender_name");
-		this._strData = json.getString("data");
+		this._strSenderEmail = json.getString("sender_email");
+		this._strRecipient = json.getString("recipient");
+		this._strSubject = json.getString("subject");
+		this._strMessage = json.getString("message");
 	}
 	// Getters & Setters
-	public String getStatusText( ) 
-	{
-		return _strStatusText;
+	public String getSenderName( )
+{
+		return _strSenderName;
 	}
-	public void setStatusText( String _strStatusText )
+	public void setSenderName( String _strSenderName ) 
 	{
-		this._strStatusText = _strStatusText;
+		this._strSenderName = _strSenderName;
 	}
-	public String getMessage( )
+	public String getSenderEmail( )
+{
+		return _strSenderEmail;
+	}
+	public void setSenderEmail( String _strSenderEmail ) 
+	{
+		this._strSenderEmail = _strSenderEmail;
+	}
+	public String getRecipient( ) 
+	{
+		return _strRecipient;
+	}
+	public void setRecipient( String _strRecipient )
+	{
+		this._strRecipient = _strRecipient;
+	}
+	public String getSubject( )
+	{
+		return _strSubject;
+	}
+	public void setSubject( String _strSubject )
+	{
+		this._strSubject = _strSubject;
+	}
+	public String getMessage( ) 
 	{
 		return _strMessage;
 	}
@@ -84,32 +108,9 @@ public class UserDashboard
 	{
 		this._strMessage = _strMessage;
 	}
-	public String getSubject( ) 
-	{
-		return _strSubject;
-	}
-	public void setSubject( String _strSubject ) 
-	{
-		this._strSubject = _strSubject;
-	}
-	public String getSenderName( )
-	{
-		return _strSenderName;
-	}
-	public void setSenderName( String _strSenderName )
-	{
-		this._strSenderName = _strSenderName;
-	}
-	public String getData( ) 
-	{
-		return _strData;
-	}
-	public void setData( String _strData )
-	{
-		this._strData = _strData;
-	}
 	public String toJSON( )
 	{
-		return "\"user_dashboard\": {\"status_text\": \""+_strStatusText+"\",\"data\": \""+_strData+"\"}";
+		return "\"user_email\": {\"sender_name\": \""+_strSenderName+"\",\"sender_email\": \""+_strSenderEmail+"\","
+				+ "\"recipient\": \""+_strRecipient+"\",\"subject\": \""+_strSubject+"\",\"message\": \""+_strMessage+"\"}";
 	}
 }

@@ -31,15 +31,15 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.supply.model;
+package fr.paris.lutece.plugins.grusupply.model;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.UserBackoffice;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.UserDashboard;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.UserEmail;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.UserSMS;
+import fr.paris.lutece.plugins.grusupply.model.gru.UserBackoffice;
+import fr.paris.lutece.plugins.grusupply.model.gru.UserDashboard;
+import fr.paris.lutece.plugins.grusupply.model.gru.UserEmail;
+import fr.paris.lutece.plugins.grusupply.model.gru.UserSMS;
 
 public class ESBNotification 
 {

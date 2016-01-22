@@ -31,7 +31,7 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.supply.model.gru;
+package fr.paris.lutece.plugins.grusupply.model.gru;
 
 public class Notification
 {

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?><plug-in>
     <!-- Plugin Informations -->
-    <name>gru-elastics</name>
+    <name>grusupply</name>
     <class>fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation</class>
     <version>1.0.0-SNAPSHOT</version>
     <documentation/>
     <installation/>
     <changes/>
     <user-guide/>
-    <description>plugin.gru.supply.module.description</description>
-    <provider>plugin.gru.supply.module.provider</provider>
+    <description>grusupply.plugin.description</description>
+    <provider>grusupply.plugin.provider</provider>
     <provider-url>http://lutece.paris.fr</provider-url>
-    <icon-url>images/admin/skin/plugins/gru/modules/elastics/gru-elastics.png</icon-url>
+    <icon-url>images/admin/skin/plugins/grusupply/grusupply.png</icon-url>
     <copyright>Copyright 2001-2015 Mairie de Paris</copyright>
     <core-version-dependency>
-        <min-core-version>5.1.0</min-core-version>
+        <min-core-version>5.0.0</min-core-version>
         <max-core-version/>
     </core-version-dependency>
     <db-pool-required>1</db-pool-required>
 
-	<!-- REST security : Comment the filters if you want to test the REST service with the given JSP -->
+	
 	<filters>
-       <filter>
+    <!-- REST security : Comment the filters if you want to test the REST service with the given JSP   <filter>
            <filter-name>GRUElasticsSecurity</filter-name>
            <url-pattern>/rest/gruElastic/*</url-pattern>
            <filter-class>fr.paris.lutece.util.signrequest.servlet.HeaderHashRequestFilter</filter-class>
@@ -39,6 +39,6 @@
                <param-name>privateKey</param-name>
                <param-value>gruElastic</param-value>
            </init-param>
-       </filter>
+       </filter> -->
    </filters>
 </plug-in>

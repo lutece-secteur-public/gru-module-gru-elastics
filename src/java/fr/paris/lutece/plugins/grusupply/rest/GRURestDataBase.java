@@ -1,4 +1,4 @@
-package fr.paris.lutece.plugins.gru.modules.supply.rest;
+package fr.paris.lutece.plugins.grusupply.rest;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -9,16 +9,17 @@ import javax.ws.rs.core.MediaType;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import fr.paris.lutece.plugins.gru.modules.supply.constants.GruSupplyConstants;
-import fr.paris.lutece.plugins.gru.modules.supply.model.ESBNotification;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.Demand;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.Notification;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.User;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.UserBackoffice;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.UserDashboard;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.UserEmail;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.UserSMS;
-import fr.paris.lutece.plugins.gru.modules.supply.service.GRUService;
+import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
+import fr.paris.lutece.plugins.grusupply.model.ESBNotification;
+import fr.paris.lutece.plugins.grusupply.model.OpenAMUser;
+import fr.paris.lutece.plugins.grusupply.model.gru.Demand;
+import fr.paris.lutece.plugins.grusupply.model.gru.Notification;
+import fr.paris.lutece.plugins.grusupply.model.gru.User;
+import fr.paris.lutece.plugins.grusupply.model.gru.UserBackoffice;
+import fr.paris.lutece.plugins.grusupply.model.gru.UserDashboard;
+import fr.paris.lutece.plugins.grusupply.model.gru.UserEmail;
+import fr.paris.lutece.plugins.grusupply.model.gru.UserSMS;
+import fr.paris.lutece.plugins.grusupply.service.GRUService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME + GruSupplyConstants.MODULE_NAME_DB )
@@ -39,30 +40,36 @@ public class GRURestDataBase {
 		{
 			// Format to JSON
 			JSONObject jsonNotif = new JSONObject(strJson);
-			
+						
 			// Create JSON flux to Object
 			ESBNotification _esbNotif = new ESBNotification(jsonNotif);
-			
+						
 			// Search in OpenAM
-			// TODO OpenAM search user
-			
+			OpenAMUser userOpenam=GRUService.getService( ).getUserInfo(_esbNotif.getUserGuid());
+						
 			// Parse to User (TODO HAVE TO ADD WITH OPENAM)
 			User _user = new User();
-			_user.setUserGuid(Long.parseLong(_esbNotif.getUserGuid()));
-			_user.setName("DOE");
-			_user.setFirstName("JOHN");
+			if(userOpenam != null){
+				
+				_user.setName(userOpenam.getLastname( ));
+				_user.setFirstName(userOpenam.getFirstname( ));
+				_user.setBirthday(userOpenam.getBirthday( ));
+				_user.setCivility(userOpenam.getCivility( ));
+				_user.setStreet(userOpenam.getStreet( ));
+				_user.setCityOfBirth(userOpenam.getCityOfBirth( ));
+				_user.setCity(userOpenam.getCity( ));
+			    _user.setPostalCode(userOpenam.getPostalCode( ));
+				_user.setTelephoneNumber(userOpenam.getTelephoneNumber( ));
+							
+			}
+						
 			_user.setEmail(_esbNotif.getEmail());
-			_user.setBirthday("01/01/1970");
-			_user.setCivility("CIV");
-			_user.setStreet("3 rue de troie");
-			_user.setCityOfBirth("DEEP WEB");
+			_user.setUserGuid(Long.parseLong(_esbNotif.getUserGuid()));
 			_user.setStayConnected(true);
-			_user.setCity("DARK NET");
-			_user.setPostalCode("74000");
-			_user.setTelephoneNumber("0606060606");
-			
-			GRUService.store(_user);
-			
+					
+						
+			GRUService.getService( ).store(_user);
+				
 			// Parse to Demand
 			Demand _demand = new Demand();
 			_demand.setUserGuid(Long.parseLong(_esbNotif.getUserGuid()));
@@ -75,9 +82,9 @@ public class GRURestDataBase {
 			_demand.setDateDemand("NON RENSEIGNE");
 			_demand.setCRMStatus(_esbNotif.getCrmStatusId());
 			_demand.setReference("NON RENSEIGNE");
-			
-			GRUService.store(_demand);
-			
+					
+			GRUService.getService( ).store(_demand);
+						
 			// Parse to Notification
 			Notification _notification = new Notification();
 			_notification.setDemandeId(_esbNotif.getDemandeId());
@@ -86,23 +93,14 @@ public class GRURestDataBase {
 			_notification.setUserDashBoard(_esbNotif.getUserDashBoard());
 			_notification.setUserSms(_esbNotif.getUserSms());
 			_notification.setUserBackOffice(_esbNotif.getUserBackOffice());
-			
-			GRUService.store(_notification);
+				
+			GRUService.getService( ).store(_notification);
 		}
 		catch(JSONException e)
 		{
 			e.getMessage();
 			return GruSupplyConstants.STATUS_404;
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
 		return GruSupplyConstants.STATUS_201;
 	}

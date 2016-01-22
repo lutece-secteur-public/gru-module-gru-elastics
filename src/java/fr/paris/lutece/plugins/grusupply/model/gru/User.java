@@ -31,7 +31,7 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.supply.model.gru;
+package fr.paris.lutece.plugins.grusupply.model.gru;
 
 public class User 
 {
@@ -43,7 +43,7 @@ public class User
 	private String _strCivility;
 	private String _strStreet;
 	private String _strCityOfBirth;
-	private boolean _strStayConnected;
+	private boolean _bStayConnected;
 	private String _strCity;
 	private String _strPostalCode;
 	private String _strTelephoneNumber;
@@ -115,11 +115,11 @@ public class User
 	}
 	public boolean isStayConnected() 
 	{
-		return _strStayConnected;
+		return _bStayConnected;
 	}
 	public void setStayConnected(boolean _strStayConnected)
 	{
-		this._strStayConnected = _strStayConnected;
+		this._bStayConnected = _strStayConnected;
 	}
 	public String getCity() 
 	{
@@ -147,7 +147,7 @@ public class User
 	}
 	public String toJSON()
 	{
-		return "\"user_guid\": \""+_lUserGuid+"\",\"email\": \""+_strEmail+"\",\"name\": \""+_strName+" "+_strFirstName+"\",\"stayConnected\" : \""+((_strStayConnected)?"true":"false")+"\","
+		return "\"user_guid\": \""+_lUserGuid+"\",\"email\": \""+_strEmail+"\",\"name\": \""+_strName+" "+_strFirstName+"\",\"stayConnected\" : \""+((_bStayConnected)?"true":"false")+"\","
 				+ "\"street\" : \""+_strStreet+"\",\"telephoneNumber\" : \""+_strTelephoneNumber+"\",\"city\" : \""+_strCity+"\",\"cityOfBirth\" : \""+_strCityOfBirth+"\",\"birthday\" : \""+_strBirthday+"\",\"civility\" : \""+_strCivility+"\","
 				+ "\"postalCode\" : \""+_strPostalCode+"\",\"suggest\" : { \"input\": [ \""+_strName+"\", \""+_strFirstName+"\", \""+_strTelephoneNumber+"\", \""+_strEmail+"\" ],\"output\": \""+_strName+" "+_strFirstName+"\",\"payload\" : { \"user_guid\" : \""+_lUserGuid+"\","
 				+ "\"birthday\" : \""+_strBirthday+"\",\"telephoneNumber\" : \""+_strTelephoneNumber+"\",\"email\": \""+_strEmail+"\"}}";

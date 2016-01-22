@@ -31,11 +31,11 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.gru.modules.supply.business;
+package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.Demand;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.Notification;
-import fr.paris.lutece.plugins.gru.modules.supply.model.gru.User;
+import fr.paris.lutece.plugins.grusupply.model.gru.Demand;
+import fr.paris.lutece.plugins.grusupply.model.gru.Notification;
+import fr.paris.lutece.plugins.grusupply.model.gru.User;
 
 public interface INotificationStorageService
 {

@@ -1,4 +1,4 @@
-package fr.paris.lutece.plugins.gru.modules.supply.constants;
+package fr.paris.lutece.plugins.grusupply.constant;
 
 public class GruSupplyConstants {
 
