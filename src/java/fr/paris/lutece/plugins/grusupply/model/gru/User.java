@@ -33,123 +33,152 @@
  */
 package fr.paris.lutece.plugins.grusupply.model.gru;
 
-public class User 
+public class User
 {
-	private long _lUserGuid;
-	private String _strName;
-	private String _strFirstName;
-	private String _strEmail;
-	private String _strBirthday;
-	private String _strCivility;
-	private String _strStreet;
-	private String _strCityOfBirth;
-	private boolean _bStayConnected;
-	private String _strCity;
-	private String _strPostalCode;
-	private String _strTelephoneNumber;
-	
-	//Getters & Setters
-	public long getUserGuid() 
-	{
-		return _lUserGuid;
-	}
-	public void setUserGuid(long _lUserGuid) 
-	{
-		this._lUserGuid = _lUserGuid;
-	}
-	public String getName()
-{
-		return _strName;
-	}
-	public void setName(String _strName)
-	{
-		this._strName = _strName;
-	}
-	public String getFirstName()
-	{
-		return _strFirstName;
-	}
-	public void setFirstName(String _strFirstName) 
-	{
-		this._strFirstName = _strFirstName;
-	}
-	public String getEmail() 
-	{
-		return _strEmail;
-	}
-	public void setEmail(String _strEmail) 
-	{
-		this._strEmail = _strEmail;
-	}
-	public String getBirthday() 
-	{
-		return _strBirthday;
-	}
-	public void setBirthday(String _strBirthday)
-	{
-		this._strBirthday = _strBirthday;
-	}
-	public String getCivility() 
-	{
-		return _strCivility;
-	}
-	public void setCivility(String _strCivility) 
-	{
-		this._strCivility = _strCivility;
-	}
-	public String getStreet() 
-	{
-		return _strStreet;
-	}
-	public void setStreet(String _strStreet)
-	{
-		this._strStreet = _strStreet;
-	}
-	public String getCityOfBirth()
-	{
-		return _strCityOfBirth;
-	}
-	public void setCityOfBirth(String _strCityOfBirth)
-	{
-		this._strCityOfBirth = _strCityOfBirth;
-	}
-	public boolean isStayConnected() 
-	{
-		return _bStayConnected;
-	}
-	public void setStayConnected(boolean _strStayConnected)
-	{
-		this._bStayConnected = _strStayConnected;
-	}
-	public String getCity() 
-	{
-		return _strCity;
-	}
-	public void setCity(String _strCity)
-	{
-		this._strCity = _strCity;
-	}
-	public String getPostalCode()
-	{
-		return _strPostalCode;
-	}
-	public void setPostalCode(String _strPostalCode)
-	{
-		this._strPostalCode = _strPostalCode;
-	}
-	public String getTelephoneNumber() 
-	{
-		return _strTelephoneNumber;
-	}
-	public void setTelephoneNumber(String _strTelephoneNumber)
-	{
-		this._strTelephoneNumber = _strTelephoneNumber;
-	}
-	public String toJSON()
-	{
-		return "\"user_guid\": \""+_lUserGuid+"\",\"email\": \""+_strEmail+"\",\"name\": \""+_strName+" "+_strFirstName+"\",\"stayConnected\" : \""+((_bStayConnected)?"true":"false")+"\","
-				+ "\"street\" : \""+_strStreet+"\",\"telephoneNumber\" : \""+_strTelephoneNumber+"\",\"city\" : \""+_strCity+"\",\"cityOfBirth\" : \""+_strCityOfBirth+"\",\"birthday\" : \""+_strBirthday+"\",\"civility\" : \""+_strCivility+"\","
-				+ "\"postalCode\" : \""+_strPostalCode+"\",\"suggest\" : { \"input\": [ \""+_strName+"\", \""+_strFirstName+"\", \""+_strTelephoneNumber+"\", \""+_strEmail+"\" ],\"output\": \""+_strName+" "+_strFirstName+"\",\"payload\" : { \"user_guid\" : \""+_lUserGuid+"\","
-				+ "\"birthday\" : \""+_strBirthday+"\",\"telephoneNumber\" : \""+_strTelephoneNumber+"\",\"email\": \""+_strEmail+"\"}}";
-	}
+    private long _lUserGuid;
+    private String _strName;
+    private String _strFirstName;
+    private String _strEmail;
+    private String _strBirthday;
+    private String _strCivility;
+    private String _strStreet;
+    private String _strCityOfBirth;
+    private boolean _bStayConnected;
+    private String _strCity;
+    private String _strPostalCode;
+    private String _strTelephoneNumber;
+
+    //Getters & Setters
+    public long getUserGuid(  )
+    {
+        return _lUserGuid;
+    }
+
+    public void setUserGuid( long _lUserGuid )
+    {
+        this._lUserGuid = _lUserGuid;
+    }
+
+    public String getName(  )
+    {
+        return _strName;
+    }
+
+    public void setName( String _strName )
+    {
+        this._strName = _strName;
+    }
+
+    public String getFirstName(  )
+    {
+        return _strFirstName;
+    }
+
+    public void setFirstName( String _strFirstName )
+    {
+        this._strFirstName = _strFirstName;
+    }
+
+    public String getEmail(  )
+    {
+        return _strEmail;
+    }
+
+    public void setEmail( String _strEmail )
+    {
+        this._strEmail = _strEmail;
+    }
+
+    public String getBirthday(  )
+    {
+        return _strBirthday;
+    }
+
+    public void setBirthday( String _strBirthday )
+    {
+        this._strBirthday = _strBirthday;
+    }
+
+    public String getCivility(  )
+    {
+        return _strCivility;
+    }
+
+    public void setCivility( String _strCivility )
+    {
+        this._strCivility = _strCivility;
+    }
+
+    public String getStreet(  )
+    {
+        return _strStreet;
+    }
+
+    public void setStreet( String _strStreet )
+    {
+        this._strStreet = _strStreet;
+    }
+
+    public String getCityOfBirth(  )
+    {
+        return _strCityOfBirth;
+    }
+
+    public void setCityOfBirth( String _strCityOfBirth )
+    {
+        this._strCityOfBirth = _strCityOfBirth;
+    }
+
+    public boolean isStayConnected(  )
+    {
+        return _bStayConnected;
+    }
+
+    public void setStayConnected( boolean _strStayConnected )
+    {
+        this._bStayConnected = _strStayConnected;
+    }
+
+    public String getCity(  )
+    {
+        return _strCity;
+    }
+
+    public void setCity( String _strCity )
+    {
+        this._strCity = _strCity;
+    }
+
+    public String getPostalCode(  )
+    {
+        return _strPostalCode;
+    }
+
+    public void setPostalCode( String _strPostalCode )
+    {
+        this._strPostalCode = _strPostalCode;
+    }
+
+    public String getTelephoneNumber(  )
+    {
+        return _strTelephoneNumber;
+    }
+
+    public void setTelephoneNumber( String _strTelephoneNumber )
+    {
+        this._strTelephoneNumber = _strTelephoneNumber;
+    }
+
+    public String toJSON(  )
+    {
+        return "\"user_guid\": \"" + _lUserGuid + "\",\"email\": \"" + _strEmail + "\",\"name\": \"" + _strName + " " +
+        _strFirstName + "\",\"stayConnected\" : \"" + ( ( _bStayConnected ) ? "true" : "false" ) + "\"," +
+        "\"street\" : \"" + _strStreet + "\",\"telephoneNumber\" : \"" + _strTelephoneNumber + "\",\"city\" : \"" +
+        _strCity + "\",\"cityOfBirth\" : \"" + _strCityOfBirth + "\",\"birthday\" : \"" + _strBirthday +
+        "\",\"civility\" : \"" + _strCivility + "\"," + "\"postalCode\" : \"" + _strPostalCode +
+        "\",\"suggest\" : { \"input\": [ \"" + _strName + "\", \"" + _strFirstName + "\", \"" + _strTelephoneNumber +
+        "\", \"" + _strEmail + "\" ],\"output\": \"" + _strName + " " + _strFirstName +
+        "\",\"payload\" : { \"user_guid\" : \"" + _lUserGuid + "\"," + "\"birthday\" : \"" + _strBirthday +
+        "\",\"telephoneNumber\" : \"" + _strTelephoneNumber + "\",\"email\": \"" + _strEmail + "\"}}";
+    }
 }

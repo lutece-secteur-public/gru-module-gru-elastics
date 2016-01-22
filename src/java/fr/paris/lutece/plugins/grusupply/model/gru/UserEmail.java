@@ -36,81 +36,97 @@ package fr.paris.lutece.plugins.grusupply.model.gru;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+
 public class UserEmail
 {
-	private String _strSenderName;
-	private String _strSenderEmail;
-	private String _strRecipient;
-	private String _strSubject;
-	private String _strMessage;
-	// Constructors
-	public UserEmail( ) 
-	{
-		super( );
-	}	
-	public UserEmail( String _strSenderName, String _strSenderEmail, String _strRecipient, String _strSubject,
-			String _strMessage ) 
-	{
-		super( );
-		this._strSenderName = _strSenderName;
-		this._strSenderEmail = _strSenderEmail;
-		this._strRecipient = _strRecipient;
-		this._strSubject = _strSubject;
-		this._strMessage = _strMessage;
-	}
-	public UserEmail( JSONObject json ) throws JSONException 
-	{
-		super( );
-		this._strSenderName = json.getString("sender_name");
-		this._strSenderEmail = json.getString("sender_email");
-		this._strRecipient = json.getString("recipient");
-		this._strSubject = json.getString("subject");
-		this._strMessage = json.getString("message");
-	}
-	// Getters & Setters
-	public String getSenderName( )
-{
-		return _strSenderName;
-	}
-	public void setSenderName( String _strSenderName ) 
-	{
-		this._strSenderName = _strSenderName;
-	}
-	public String getSenderEmail( )
-{
-		return _strSenderEmail;
-	}
-	public void setSenderEmail( String _strSenderEmail ) 
-	{
-		this._strSenderEmail = _strSenderEmail;
-	}
-	public String getRecipient( ) 
-	{
-		return _strRecipient;
-	}
-	public void setRecipient( String _strRecipient )
-	{
-		this._strRecipient = _strRecipient;
-	}
-	public String getSubject( )
-	{
-		return _strSubject;
-	}
-	public void setSubject( String _strSubject )
-	{
-		this._strSubject = _strSubject;
-	}
-	public String getMessage( ) 
-	{
-		return _strMessage;
-	}
-	public void setMessage( String _strMessage )
-	{
-		this._strMessage = _strMessage;
-	}
-	public String toJSON( )
-	{
-		return "\"user_email\": {\"sender_name\": \""+_strSenderName+"\",\"sender_email\": \""+_strSenderEmail+"\","
-				+ "\"recipient\": \""+_strRecipient+"\",\"subject\": \""+_strSubject+"\",\"message\": \""+_strMessage+"\"}";
-	}
+    private String _strSenderName;
+    private String _strSenderEmail;
+    private String _strRecipient;
+    private String _strSubject;
+    private String _strMessage;
+
+    // Constructors
+    public UserEmail(  )
+    {
+        super(  );
+    }
+
+    public UserEmail( String _strSenderName, String _strSenderEmail, String _strRecipient, String _strSubject,
+        String _strMessage )
+    {
+        super(  );
+        this._strSenderName = _strSenderName;
+        this._strSenderEmail = _strSenderEmail;
+        this._strRecipient = _strRecipient;
+        this._strSubject = _strSubject;
+        this._strMessage = _strMessage;
+    }
+
+    public UserEmail( JSONObject json ) throws JSONException
+    {
+        super(  );
+        this._strSenderName = json.getString( "sender_name" );
+        this._strSenderEmail = json.getString( "sender_email" );
+        this._strRecipient = json.getString( "recipient" );
+        this._strSubject = json.getString( "subject" );
+        this._strMessage = json.getString( "message" );
+    }
+
+    // Getters & Setters
+    public String getSenderName(  )
+    {
+        return _strSenderName;
+    }
+
+    public void setSenderName( String _strSenderName )
+    {
+        this._strSenderName = _strSenderName;
+    }
+
+    public String getSenderEmail(  )
+    {
+        return _strSenderEmail;
+    }
+
+    public void setSenderEmail( String _strSenderEmail )
+    {
+        this._strSenderEmail = _strSenderEmail;
+    }
+
+    public String getRecipient(  )
+    {
+        return _strRecipient;
+    }
+
+    public void setRecipient( String _strRecipient )
+    {
+        this._strRecipient = _strRecipient;
+    }
+
+    public String getSubject(  )
+    {
+        return _strSubject;
+    }
+
+    public void setSubject( String _strSubject )
+    {
+        this._strSubject = _strSubject;
+    }
+
+    public String getMessage(  )
+    {
+        return _strMessage;
+    }
+
+    public void setMessage( String _strMessage )
+    {
+        this._strMessage = _strMessage;
+    }
+
+    public String toJSON(  )
+    {
+        return "\"user_email\": {\"sender_name\": \"" + _strSenderName + "\",\"sender_email\": \"" + _strSenderEmail +
+        "\"," + "\"recipient\": \"" + _strRecipient + "\",\"subject\": \"" + _strSubject + "\",\"message\": \"" +
+        _strMessage + "\"}";
+    }
 }

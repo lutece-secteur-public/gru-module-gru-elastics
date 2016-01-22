@@ -37,9 +37,12 @@ import fr.paris.lutece.plugins.grusupply.model.gru.Demand;
 import fr.paris.lutece.plugins.grusupply.model.gru.Notification;
 import fr.paris.lutece.plugins.grusupply.model.gru.User;
 
+
 public interface INotificationStorageService
 {
-	public void store( User _user );
-	public void store( Notification _Notification );
-	public void store( Demand _demand );
+    public void store( User _user );
+
+    public void store( Notification _Notification );
+
+    public void store( Demand _demand );
 }

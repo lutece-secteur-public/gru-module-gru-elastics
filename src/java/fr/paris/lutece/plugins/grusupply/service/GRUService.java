@@ -33,85 +33,79 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import fr.paris.lutece.plugins.grusupply.model.OpenAMUser;
+import fr.paris.lutece.plugins.grusupply.model.OpenAMUserDTO;
 import fr.paris.lutece.plugins.grusupply.model.gru.Demand;
 import fr.paris.lutece.plugins.grusupply.model.gru.Notification;
 import fr.paris.lutece.plugins.grusupply.model.gru.User;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
-public class GRUService  {
-	
-	private static final String BEAN_GRUSUPPLY_SERVICE="grusupply.gruService";
-	
-	private static List<INotificationStorageService> _notificationStorageService = new ArrayList<INotificationStorageService>( );
-	private static List<IUserInfoProvider> _userInfoProvider = new ArrayList<IUserInfoProvider>( );
-	private static GRUService _singleton;
-	
+import java.util.ArrayList;
+import java.util.List;
 
-    public static GRUService  getService( )
+
+public class GRUService
+{
+    private static final String BEAN_GRUSUPPLY_SERVICE = "grusupply.gruService";
+    private static List<INotificationStorageService> _notificationStorageService = new ArrayList<INotificationStorageService>(  );
+    private static List<IUserInfoProvider> _userInfoProvider = new ArrayList<IUserInfoProvider>(  );
+    private static GRUService _singleton;
+
+    public static GRUService getService(  )
     {
-    	if(_singleton == null){
-    		
-    		_singleton= SpringContextService.getBean( BEAN_GRUSUPPLY_SERVICE );
-    	}
+        if ( _singleton == null )
+        {
+            _singleton = SpringContextService.getBean( BEAN_GRUSUPPLY_SERVICE );
+        }
+
         return _singleton;
     }
-    
-    public void addNotificationStorageBean(INotificationStorageService nStorageService){
-    	
-    	_notificationStorageService.add(nStorageService);
+
+    public void addNotificationStorageBean( INotificationStorageService nStorageService )
+    {
+        _notificationStorageService.add( nStorageService );
     }
-    
-    public void addUserInfoProviderBean(IUserInfoProvider userInfoProvider){
-    	
-    	_userInfoProvider.add(userInfoProvider);
+
+    public void addUserInfoProviderBean( IUserInfoProvider userInfoProvider )
+    {
+        _userInfoProvider.add( userInfoProvider );
     }
+
     /**
-     * 
+     *
      * @param notification
      */
-    
-	public  void store(Notification _notification)
-	{
-        
-       for ( INotificationStorageService storageService : _notificationStorageService ){
-           	
-           	storageService.store(_notification);
-       }
-	}
-	
-	
-	public  void store(User _user)
-	{
-       
-        for ( INotificationStorageService storageService : _notificationStorageService ){
-        
-        	storageService.store(_user);
+    public void store( Notification _notification )
+    {
+        for ( INotificationStorageService storageService : _notificationStorageService )
+        {
+            storageService.store( _notification );
         }
-	}
-	
-	
-	public  void store(Demand _demand)
-	{
+    }
 
-            for ( INotificationStorageService storageService : _notificationStorageService ){
-            	
-            	storageService.store(_demand);
-            }
-	}
-	
-	
-	public OpenAMUser getUserInfo(String guid) {
-		
-		for ( IUserInfoProvider user : _userInfoProvider ){
-        	// A REVOIRE COMMENT FAIRE POUR LE MAPING
-			return (OpenAMUser) user.getUserInfo(guid);
+    public void store( User _user )
+    {
+        for ( INotificationStorageService storageService : _notificationStorageService )
+        {
+            storageService.store( _user );
         }
-		
-		return null;
-		
-	}
+    }
+
+    public void store( Demand _demand )
+    {
+        for ( INotificationStorageService storageService : _notificationStorageService )
+        {
+            storageService.store( _demand );
+        }
+    }
+
+    public OpenAMUserDTO getUserInfo( String guid )
+    {
+        for ( IUserInfoProvider user : _userInfoProvider )
+        {
+            // A REVOIRE COMMENT FAIRE POUR LE MAPING
+            return (OpenAMUserDTO) user.getUserInfo( guid );
+        }
+
+        return null;
+    }
 }

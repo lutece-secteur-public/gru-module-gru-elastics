@@ -35,74 +35,93 @@ package fr.paris.lutece.plugins.grusupply.model.gru;
 
 public class Notification
 {
-	private int _nDemandeId;
-	private int _nDemandIdType;
-	
-	private UserEmail _userEmail;
-	private UserDashboard _userDashBoard;
-	private UserSMS _userSms;
-	private UserBackoffice _userBackOffice;
-	
-	// GETTERS & SETTERS
-	public int getDemandeId( )
-	{
-		return _nDemandeId;
-	}
-	public void setDemandeId( int _nDemandeId )
-	{
-		this._nDemandeId = _nDemandeId;
-	}
-	public int getDemandIdType() {
-		return _nDemandIdType;
-	}
-	public void setDemandIdType( int _nDemandIdType ) 
-	{
-		this._nDemandIdType = _nDemandIdType;
-	}
-	public UserEmail getUserEmail( )
-	{
-		return _userEmail;
-	}
-	public void setUserEmail( UserEmail _userEmail ) 
-	{
-		this._userEmail = _userEmail;
-	}
-	public UserDashboard getUserDashBoard( )
-	{
-		return _userDashBoard;
-	}
-	public void setUserDashBoard( UserDashboard _userDashBoard )
-	{
-		this._userDashBoard = _userDashBoard;
-	}
-	public UserSMS getUserSms( )
-	{
-		return _userSms;
-	}
-	public void setUserSms( UserSMS _userSms ) 
-	{
-		this._userSms = _userSms;
-	}
-	public UserBackoffice getUserBackOffice( ) 
-	{
-		return _userBackOffice;
-	}
-	public void setUserBackOffice( UserBackoffice _userBackOffice )
-	{
-		this._userBackOffice = _userBackOffice;
-	}
-	public String toJSON( )
-	{
-		String retour = "\"demande\":{\"demand_id\": \""+_nDemandeId+"\",\"demand_id_type\": "+_nDemandIdType+"},\"status_text\": \""+_userBackOffice.getStatusText()+"\","
-				+ "\"message\": \""+_userBackOffice.getMessage()+"\",\"notified_on_dashboard\": "+_userBackOffice.getNotifiedDashboard()+",\"notified_by_email\": "+_userBackOffice.getNotifiedEmail()+","
-				+ "\"notified_by_sms\": "+_userBackOffice.getNotifiedSms()+",\"display_level_dashboard_notification\": "+_userBackOffice.getDisplayDashboard()+","
-				+ "\"view_dashboard_notification\": "+_userBackOffice.getViewDashboard()+",\"display_level_email_notification\": "+_userBackOffice.getDisplayEmail()+","
-				+ "\"view_email_notification\": \""+_userBackOffice.getViewEmail()+"\",\"display_level_sms_notification\": "+_userBackOffice.getDisplaySms()+","
-				+ "\"view_sms_notification\": \""+_userBackOffice.getViewSms()+"\",\"date_sollicitation\":\""+"TEST"+"\"";
-		retour += ","+_userEmail.toJSON();
-		retour += ","+_userDashBoard.toJSON();
-		retour += ","+_userSms.toJSON();
-		retour += "}";
-		return retour;
-	}
+    private int _nDemandeId;
+    private int _nDemandIdType;
+    private UserEmail _userEmail;
+    private UserDashboard _userDashBoard;
+    private UserSMS _userSms;
+    private UserBackoffice _userBackOffice;
+
+    // GETTERS & SETTERS
+    public int getDemandeId(  )
+    {
+        return _nDemandeId;
+    }
+
+    public void setDemandeId( int _nDemandeId )
+    {
+        this._nDemandeId = _nDemandeId;
+    }
+
+    public int getDemandIdType(  )
+    {
+        return _nDemandIdType;
+    }
+
+    public void setDemandIdType( int _nDemandIdType )
+    {
+        this._nDemandIdType = _nDemandIdType;
+    }
+
+    public UserEmail getUserEmail(  )
+    {
+        return _userEmail;
+    }
+
+    public void setUserEmail( UserEmail _userEmail )
+    {
+        this._userEmail = _userEmail;
+    }
+
+    public UserDashboard getUserDashBoard(  )
+    {
+        return _userDashBoard;
+    }
+
+    public void setUserDashBoard( UserDashboard _userDashBoard )
+    {
+        this._userDashBoard = _userDashBoard;
+    }
+
+    public UserSMS getUserSms(  )
+    {
+        return _userSms;
+    }
+
+    public void setUserSms( UserSMS _userSms )
+    {
+        this._userSms = _userSms;
+    }
+
+    public UserBackoffice getUserBackOffice(  )
+    {
+        return _userBackOffice;
+    }
+
+    public void setUserBackOffice( UserBackoffice _userBackOffice )
+    {
+        this._userBackOffice = _userBackOffice;
+    }
+
+    public String toJSON(  )
+    {
+        String retour = "\"demande\":{\"demand_id\": \"" + _nDemandeId + "\",\"demand_id_type\": " + _nDemandIdType +
+            "},\"status_text\": \"" + _userBackOffice.getStatusText(  ) + "\"," + "\"message\": \"" +
+            _userBackOffice.getMessage(  ) + "\",\"notified_on_dashboard\": " +
+            _userBackOffice.getNotifiedDashboard(  ) + ",\"notified_by_email\": " +
+            _userBackOffice.getNotifiedEmail(  ) + "," + "\"notified_by_sms\": " + _userBackOffice.getNotifiedSms(  ) +
+            ",\"display_level_dashboard_notification\": " + _userBackOffice.getDisplayDashboard(  ) + "," +
+            "\"view_dashboard_notification\": " + _userBackOffice.getViewDashboard(  ) +
+            ",\"display_level_email_notification\": " + _userBackOffice.getDisplayEmail(  ) + "," +
+            "\"view_email_notification\": \"" + _userBackOffice.getViewEmail(  ) +
+            "\",\"display_level_sms_notification\": " + _userBackOffice.getDisplaySms(  ) + "," +
+            "\"view_sms_notification\": \"" + _userBackOffice.getViewSms(  ) + "\",\"date_sollicitation\":\"" + "TEST" +
+            "\"";
+        retour += ( "," + _userEmail.toJSON(  ) );
+        retour += ( "," + _userDashBoard.toJSON(  ) );
+        retour += ( "," + _userSms.toJSON(  ) );
+        retour += "}";
+
+        return retour;
+    }
 }

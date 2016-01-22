@@ -36,48 +36,55 @@ package fr.paris.lutece.plugins.grusupply.model.gru;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-public class UserSMS 
+
+public class UserSMS
 {
-	private int _nPhoneNumber;
-	private String _strMessage;
-	
-	// Constructor
-	public UserSMS( )
-	{
-		super( );
-	}	
-	public UserSMS( int _nPhoneNumber, String _strMessage )
-	{
-		super( );
-		this._nPhoneNumber = _nPhoneNumber;
-		this._strMessage = _strMessage;
-	}
-	public UserSMS( JSONObject json ) throws JSONException 
-	{
-		super();
-		this._nPhoneNumber = json.getInt("phone_number");
-		this._strMessage = json.getString("message");
-	}
-	
-	// Getters & Setters
-	public int getPhoneNumber( ) 
-	{
-		return _nPhoneNumber;
-	}
-	public void setPhoneNumber( int _nPhoneNumber ) 
-	{
-		this._nPhoneNumber = _nPhoneNumber;
-	}
-	public String getMessage( ) 
-	{
-		return _strMessage;
-	}
-	public void setMessage( String _strMessage )
-	{
-		this._strMessage = _strMessage;
-	}
-	public String toJSON( )
-	{
-		return "\"user_sms\": {\"phone_number\": \""+_nPhoneNumber+"\",\"message\": \""+_strMessage+"\"}";
-	}
+    private int _nPhoneNumber;
+    private String _strMessage;
+
+    // Constructor
+    public UserSMS(  )
+    {
+        super(  );
+    }
+
+    public UserSMS( int _nPhoneNumber, String _strMessage )
+    {
+        super(  );
+        this._nPhoneNumber = _nPhoneNumber;
+        this._strMessage = _strMessage;
+    }
+
+    public UserSMS( JSONObject json ) throws JSONException
+    {
+        super(  );
+        this._nPhoneNumber = json.getInt( "phone_number" );
+        this._strMessage = json.getString( "message" );
+    }
+
+    // Getters & Setters
+    public int getPhoneNumber(  )
+    {
+        return _nPhoneNumber;
+    }
+
+    public void setPhoneNumber( int _nPhoneNumber )
+    {
+        this._nPhoneNumber = _nPhoneNumber;
+    }
+
+    public String getMessage(  )
+    {
+        return _strMessage;
+    }
+
+    public void setMessage( String _strMessage )
+    {
+        this._strMessage = _strMessage;
+    }
+
+    public String toJSON(  )
+    {
+        return "\"user_sms\": {\"phone_number\": \"" + _nPhoneNumber + "\",\"message\": \"" + _strMessage + "\"}";
+    }
 }
