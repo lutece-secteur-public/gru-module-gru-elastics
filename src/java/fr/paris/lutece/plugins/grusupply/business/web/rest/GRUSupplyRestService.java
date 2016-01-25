@@ -31,14 +31,14 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.rest;
+package fr.paris.lutece.plugins.grusupply.business.web.rest;
 
+import fr.paris.lutece.plugins.grusupply.business.dto.ESBNotificationDTO;
+import fr.paris.lutece.plugins.grusupply.business.dto.OpenAMUserDTO;
+import fr.paris.lutece.plugins.grusupply.business.gru.Demand;
+import fr.paris.lutece.plugins.grusupply.business.gru.Notification;
+import fr.paris.lutece.plugins.grusupply.business.gru.User;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
-import fr.paris.lutece.plugins.grusupply.model.ESBNotificationDTO;
-import fr.paris.lutece.plugins.grusupply.model.OpenAMUserDTO;
-import fr.paris.lutece.plugins.grusupply.model.gru.Demand;
-import fr.paris.lutece.plugins.grusupply.model.gru.Notification;
-import fr.paris.lutece.plugins.grusupply.model.gru.User;
 import fr.paris.lutece.plugins.grusupply.service.GRUService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 

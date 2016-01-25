@@ -33,7 +33,16 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+/**
+ * IUserInfoProvider Interface
+ */
+
 public interface IUserInfoProvider
 {
+	/**
+	 * Ruturns user Info
+	 * @param guid
+	 * @return user info 
+	 */
     public Object getUserInfo( String guid );
 }

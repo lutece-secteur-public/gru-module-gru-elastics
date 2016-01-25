@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2002-2015, Mairie de Paris
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
+ * Copyright (c) 2002-2013, Mairie de Paris
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  *
@@ -30,42 +30,52 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */
-package fr.paris.lutece.plugins.grusupply.service;
+ */ 
+package fr.paris.lutece.plugins.grusupply.business.gru;
 
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-
-
-public class PluginRegistrationBeanPostProcessor implements BeanPostProcessor
+/**
+ * This is the business class for the object UserSMS
+ */ 
+public class UserSMS
 {
-    private GRUService _manager;
-
-    public PluginRegistrationBeanPostProcessor( GRUService manager )
+    // Variables declarations 
+    private int _nPhoneNumber;
+    private String _strMessage;
+    
+    
+       /**
+        * Returns the PhoneNumber
+        * @return The PhoneNumber
+        */ 
+    public int getPhoneNumber()
     {
-        this._manager = manager;
+        return _nPhoneNumber;
     }
-
-    @Override
-    public Object postProcessAfterInitialization( Object bean, String strBeanName )
-        throws BeansException
+    
+       /**
+        * Sets the PhoneNumber
+        * @param nPhoneNumber The PhoneNumber
+        */ 
+    public void setPhoneNumber( int nPhoneNumber )
     {
-        if ( bean instanceof AbsractStorageService )
-        {
-            _manager.addNotificationStorageBean( (INotificationStorageService) bean );
-        }
-        else if ( bean instanceof IUserInfoProvider )
-        {
-            _manager.addUserInfoProviderBean( (IUserInfoProvider) bean );
-        }
-
-        return bean;
+        _nPhoneNumber = nPhoneNumber;
     }
-
-    @Override
-    public Object postProcessBeforeInitialization( Object bean, String strBeanName )
-        throws BeansException
+    
+       /**
+        * Returns the Message
+        * @return The Message
+        */ 
+    public String getMessage()
     {
-        return bean;
+        return _strMessage;
     }
-}
+    
+       /**
+        * Sets the Message
+        * @param strMessage The Message
+        */ 
+    public void setMessage( String strMessage )
+    {
+        _strMessage = strMessage;
+    }
+ }

@@ -33,21 +33,19 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.grusupply.model.OpenAMUserDTO;
-import fr.paris.lutece.plugins.grusupply.model.gru.Demand;
-import fr.paris.lutece.plugins.grusupply.model.gru.Notification;
-import fr.paris.lutece.plugins.grusupply.model.gru.User;
+import fr.paris.lutece.plugins.grusupply.business.dto.OpenAMUserDTO;
+import fr.paris.lutece.plugins.grusupply.business.gru.Demand;
+import fr.paris.lutece.plugins.grusupply.business.gru.Notification;
+import fr.paris.lutece.plugins.grusupply.business.gru.User;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class GRUService
 {
     private static final String BEAN_GRUSUPPLY_SERVICE = "grusupply.gruService";
-    private static List<INotificationStorageService> _notificationStorageService = new ArrayList<INotificationStorageService>(  );
-    private static List<IUserInfoProvider> _userInfoProvider = new ArrayList<IUserInfoProvider>(  );
+    private INotificationStorageService _notificationStorageService;
+    private IUserInfoProvider _userInfoProvider;
     private static GRUService _singleton;
 
     public static GRUService getService(  )
@@ -60,52 +58,48 @@ public class GRUService
         return _singleton;
     }
 
-    public void addNotificationStorageBean( INotificationStorageService nStorageService )
+   
+    /**
+     * Store notification
+     * @param notification
+     */
+    public void store( Notification notification )
     {
-        _notificationStorageService.add( nStorageService );
-    }
-
-    public void addUserInfoProviderBean( IUserInfoProvider userInfoProvider )
-    {
-        _userInfoProvider.add( userInfoProvider );
+    	
+        	_notificationStorageService.store( notification );
+        
     }
 
     /**
-     *
-     * @param notification
+     * Store user
+     * @param user
      */
-    public void store( Notification _notification )
+    public void store( User user )
     {
-        for ( INotificationStorageService storageService : _notificationStorageService )
-        {
-            storageService.store( _notification );
-        }
+      
+    	     _notificationStorageService.store( user );
+        
+    }
+    /**
+     * Store demand 
+     * @param demand
+     */
+    public void store( Demand demand )
+    {
+      
+    		_notificationStorageService.store( demand );
+        
     }
 
-    public void store( User _user )
-    {
-        for ( INotificationStorageService storageService : _notificationStorageService )
-        {
-            storageService.store( _user );
-        }
-    }
-
-    public void store( Demand _demand )
-    {
-        for ( INotificationStorageService storageService : _notificationStorageService )
-        {
-            storageService.store( _demand );
-        }
-    }
-
+    /**
+     * Store guid
+     * @param guid
+     * @return
+     */
     public OpenAMUserDTO getUserInfo( String guid )
     {
-        for ( IUserInfoProvider user : _userInfoProvider )
-        {
-            // A REVOIRE COMMENT FAIRE POUR LE MAPING
-            return (OpenAMUserDTO) user.getUserInfo( guid );
-        }
-
-        return null;
+   
+            return (OpenAMUserDTO) _userInfoProvider.getUserInfo( guid );
+      
     }
 }

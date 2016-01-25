@@ -31,60 +31,97 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.model.gru;
+package fr.paris.lutece.plugins.grusupply.service;
 
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+import fr.paris.lutece.portal.service.i18n.I18nService;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.util.Locale;
 
 
-public class UserSMS
+public abstract class AbstractStorageService implements INotificationStorageService
 {
-    private int _nPhoneNumber;
-    private String _strMessage;
+    private String _strKey;
+    private String _strtitleI18nKey;
+    private String _strbeanName;
 
-    // Constructor
-    public UserSMS(  )
+    /**
+     *
+     * @return _strKey
+     */
+    public String getKey(  )
     {
-        super(  );
+        return _strKey;
     }
 
-    public UserSMS( int _nPhoneNumber, String _strMessage )
+    /**
+     *
+     * @return _strbeanName
+     */
+    public String getBeanName(  )
     {
-        super(  );
-        this._nPhoneNumber = _nPhoneNumber;
-        this._strMessage = _strMessage;
+        return _strbeanName;
     }
 
-    public UserSMS( JSONObject json ) throws JSONException
+    /**
+     *
+     * @param strKey to set _strKey
+     */
+    public void setKey( String strKey )
     {
-        super(  );
-        this._nPhoneNumber = json.getInt( "phone_number" );
-        this._strMessage = json.getString( "message" );
+        _strKey = strKey;
     }
 
-    // Getters & Setters
-    public int getPhoneNumber(  )
+    /**
+     *
+     * @param strbeanName to set _strbeanName
+     */
+    public void setBeanName( String strbeanName )
     {
-        return _nPhoneNumber;
+        _strbeanName = strbeanName;
     }
 
-    public void setPhoneNumber( int _nPhoneNumber )
+    /**
+     *
+     * @param locale to localize the title
+     * @return the title
+     */
+    public String getTitle( Locale locale )
     {
-        this._nPhoneNumber = _nPhoneNumber;
+        return I18nService.getLocalizedString( _strtitleI18nKey, locale );
     }
 
-    public String getMessage(  )
+    /**
+     *
+     * @return _strtitleI18nKey
+     */
+    public String gettitleI18nKey(  )
     {
-        return _strMessage;
+        return _strtitleI18nKey;
     }
 
-    public void setMessage( String _strMessage )
+    /**
+     *
+     * @param strtitleI18nKey to set _strtitleI18nKey
+     */
+    public void settitleI18nKey( String strtitleI18nKey )
     {
-        this._strMessage = _strMessage;
+        _strtitleI18nKey = strtitleI18nKey;
     }
 
-    public String toJSON(  )
+    /**
+     *
+     * @param strType
+     * @return true if the provider is invoked
+     */
+    public boolean isInvoked( String strType )
     {
-        return "\"user_sms\": {\"phone_number\": \"" + _nPhoneNumber + "\",\"message\": \"" + _strMessage + "\"}";
+        if ( StringUtils.isNotBlank( strType ) )
+        {
+            return getKey(  ).equals( strType );
+        }
+
+        return false;
     }
 }
