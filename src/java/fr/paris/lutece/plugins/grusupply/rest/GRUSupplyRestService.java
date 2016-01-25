@@ -39,10 +39,6 @@ import fr.paris.lutece.plugins.grusupply.model.OpenAMUserDTO;
 import fr.paris.lutece.plugins.grusupply.model.gru.Demand;
 import fr.paris.lutece.plugins.grusupply.model.gru.Notification;
 import fr.paris.lutece.plugins.grusupply.model.gru.User;
-import fr.paris.lutece.plugins.grusupply.model.gru.UserBackoffice;
-import fr.paris.lutece.plugins.grusupply.model.gru.UserDashboard;
-import fr.paris.lutece.plugins.grusupply.model.gru.UserEmail;
-import fr.paris.lutece.plugins.grusupply.model.gru.UserSMS;
 import fr.paris.lutece.plugins.grusupply.service.GRUService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 
@@ -56,11 +52,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 
-@Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME + GruSupplyConstants.MODULE_NAME_DB )
-public class GRURestDataBase
+@Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME + GruSupplyConstants.MODULE_NAME_ES )
+public class GRUSupplyRestService
 {
     /**
-     * Web Service methode which permit to store notification in a database
+     * Web Service methode which permit to store notification in elasticsearch
      * @param strJson
      * @return
      */
@@ -104,7 +100,7 @@ public class GRURestDataBase
             GRUService.getService(  ).store( _user );
 
             // Parse to Demand
-            Demand _demand = new Demand(  );
+             Demand _demand = new Demand(  );
             _demand.setUserGuid( Long.parseLong( _esbNotif.getUserGuid(  ) ) );
             _demand.setDemandId( _esbNotif.getDemandeId(  ) );
             _demand.setDemandIdType( _esbNotif.getDemandIdType(  ) );
