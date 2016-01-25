@@ -1,4 +1,3 @@
-    
 /*
  * Copyright (c) 2002-2013, Mairie de Paris
 * All rights reserved.
@@ -31,13 +30,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
-package fr.paris.lutece.plugins.grusupply.business.gru;
+ */
+package fr.paris.lutece.plugins.grusupply.business;
+
 
 /**
  * This is the business class for the object UserDashboard
- */ 
-public class UserBackoffice
+ */
+public class BackofficeNotification
 {
     // Variables declarations 
     private String _strMessage;
@@ -51,203 +51,202 @@ public class UserBackoffice
     private int _nNotifiedSms;
     private int _nDisplaySms;
     private String _strViewSms;
-    
-    
-       /**
-        * Returns the Message
-        * @return The Message
-        */ 
-    public String getMessage()
+
+    /**
+     * Returns the Message
+     * @return The Message
+     */
+    public String getMessage(  )
     {
         return _strMessage;
     }
-    
-       /**
-        * Sets the Message
-        * @param strMessage The Message
-        */ 
+
+    /**
+     * Sets the Message
+     * @param strMessage The Message
+     */
     public void setMessage( String strMessage )
     {
         _strMessage = strMessage;
     }
-    
-       /**
-        * Returns the StatusText
-        * @return The StatusText
-        */ 
-    public String getStatusText()
+
+    /**
+     * Returns the StatusText
+     * @return The StatusText
+     */
+    public String getStatusText(  )
     {
         return _strStatusText;
     }
-    
-       /**
-        * Sets the StatusText
-        * @param strStatusText The StatusText
-        */ 
+
+    /**
+     * Sets the StatusText
+     * @param strStatusText The StatusText
+     */
     public void setStatusText( String strStatusText )
     {
         _strStatusText = strStatusText;
     }
-    
-       /**
-        * Returns the NotifiedDashboard
-        * @return The NotifiedDashboard
-        */ 
-    public String getNotifiedDashboard()
+
+    /**
+     * Returns the NotifiedDashboard
+     * @return The NotifiedDashboard
+     */
+    public String getNotifiedDashboard(  )
     {
         return _strNotifiedDashboard;
     }
-    
-       /**
-        * Sets the NotifiedDashboard
-        * @param strNotifiedDashboard The NotifiedDashboard
-        */ 
+
+    /**
+     * Sets the NotifiedDashboard
+     * @param strNotifiedDashboard The NotifiedDashboard
+     */
     public void setNotifiedDashboard( String strNotifiedDashboard )
     {
         _strNotifiedDashboard = strNotifiedDashboard;
     }
-    
-       /**
-        * Returns the DisplayDashboard
-        * @return The DisplayDashboard
-        */ 
-    public String getDisplayDashboard()
+
+    /**
+     * Returns the DisplayDashboard
+     * @return The DisplayDashboard
+     */
+    public String getDisplayDashboard(  )
     {
         return _strDisplayDashboard;
     }
-    
-       /**
-        * Sets the DisplayDashboard
-        * @param strDisplayDashboard The DisplayDashboard
-        */ 
+
+    /**
+     * Sets the DisplayDashboard
+     * @param strDisplayDashboard The DisplayDashboard
+     */
     public void setDisplayDashboard( String strDisplayDashboard )
     {
         _strDisplayDashboard = strDisplayDashboard;
     }
-    
-       /**
-        * Returns the ViewDashboard
-        * @return The ViewDashboard
-        */ 
-    public String getViewDashboard()
+
+    /**
+     * Returns the ViewDashboard
+     * @return The ViewDashboard
+     */
+    public String getViewDashboard(  )
     {
         return _strViewDashboard;
     }
-    
-       /**
-        * Sets the ViewDashboard
-        * @param strViewDashboard The ViewDashboard
-        */ 
+
+    /**
+     * Sets the ViewDashboard
+     * @param strViewDashboard The ViewDashboard
+     */
     public void setViewDashboard( String strViewDashboard )
     {
         _strViewDashboard = strViewDashboard;
     }
-    
-       /**
-        * Returns the NotifiedEmail
-        * @return The NotifiedEmail
-        */ 
-    public String getNotifiedEmail()
+
+    /**
+     * Returns the NotifiedEmail
+     * @return The NotifiedEmail
+     */
+    public String getNotifiedEmail(  )
     {
         return _strNotifiedEmail;
     }
-    
-       /**
-        * Sets the NotifiedEmail
-        * @param strNotifiedEmail The NotifiedEmail
-        */ 
+
+    /**
+     * Sets the NotifiedEmail
+     * @param strNotifiedEmail The NotifiedEmail
+     */
     public void setNotifiedEmail( String strNotifiedEmail )
     {
         _strNotifiedEmail = strNotifiedEmail;
     }
-    
-       /**
-        * Returns the DisplayEmail
-        * @return The DisplayEmail
-        */ 
-    public String getDisplayEmail()
+
+    /**
+     * Returns the DisplayEmail
+     * @return The DisplayEmail
+     */
+    public String getDisplayEmail(  )
     {
         return _strDisplayEmail;
     }
-    
-       /**
-        * Sets the DisplayEmail
-        * @param strDisplayEmail The DisplayEmail
-        */ 
+
+    /**
+     * Sets the DisplayEmail
+     * @param strDisplayEmail The DisplayEmail
+     */
     public void setDisplayEmail( String strDisplayEmail )
     {
         _strDisplayEmail = strDisplayEmail;
     }
-    
-       /**
-        * Returns the ViewEmail
-        * @return The ViewEmail
-        */ 
-    public String getViewEmail()
+
+    /**
+     * Returns the ViewEmail
+     * @return The ViewEmail
+     */
+    public String getViewEmail(  )
     {
         return _strViewEmail;
     }
-    
-       /**
-        * Sets the ViewEmail
-        * @param strViewEmail The ViewEmail
-        */ 
+
+    /**
+     * Sets the ViewEmail
+     * @param strViewEmail The ViewEmail
+     */
     public void setViewEmail( String strViewEmail )
     {
         _strViewEmail = strViewEmail;
     }
-    
-       /**
-        * Returns the NNotifiedSms
-        * @return The NNotifiedSms
-        */ 
-    public int getNotifiedSms()
+
+    /**
+     * Returns the NNotifiedSms
+     * @return The NNotifiedSms
+     */
+    public int getNotifiedSms(  )
     {
         return _nNotifiedSms;
     }
-    
-       /**
-        * Sets the NotifiedSms
-        * @param nNotifiedSms The NotifiedSms
-        */ 
+
+    /**
+     * Sets the NotifiedSms
+     * @param nNotifiedSms The NotifiedSms
+     */
     public void setNotifiedSms( int nNotifiedSms )
     {
         _nNotifiedSms = nNotifiedSms;
     }
-    
-       /**
-        * Returns the DisplaySms
-        * @return The DisplaySms
-        */ 
-    public int getDisplaySms()
+
+    /**
+     * Returns the DisplaySms
+     * @return The DisplaySms
+     */
+    public int getDisplaySms(  )
     {
         return _nDisplaySms;
     }
-    
-       /**
-        * Sets the DisplaySms
-        * @param nDisplaySms The DisplaySms
-        */ 
+
+    /**
+     * Sets the DisplaySms
+     * @param nDisplaySms The DisplaySms
+     */
     public void setDisplaySms( int nDisplaySms )
     {
         _nDisplaySms = nDisplaySms;
     }
-    
-       /**
-        * Returns the ViewSms
-        * @return The ViewSms
-        */ 
-    public String getViewSms()
+
+    /**
+     * Returns the ViewSms
+     * @return The ViewSms
+     */
+    public String getViewSms(  )
     {
         return _strViewSms;
     }
-    
-       /**
-        * Sets the ViewSms
-        * @param strViewSms The ViewSms
-        */ 
+
+    /**
+     * Sets the ViewSms
+     * @param strViewSms The ViewSms
+     */
     public void setViewSms( String strViewSms )
     {
         _strViewSms = strViewSms;
     }
- }
+}

@@ -30,12 +30,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
-package fr.paris.lutece.plugins.grusupply.business.gru;
+ */
+package fr.paris.lutece.plugins.grusupply.business;
+
 
 /**
  * This is the business class for the object Demand
- */ 
+ */
 public class Demand
 {
     // Variables declarations 
@@ -49,185 +50,184 @@ public class Demand
     private String _strDateDemand;
     private int _nCRMStatus;
     private String _strReference;
-    
-    
-       /**
-        * Returns the UserGuid
-        * @return The UserGuid
-        */ 
-    public long getUserGuid()
+
+    /**
+     * Returns the UserGuid
+     * @return The UserGuid
+     */
+    public long getUserGuid(  )
     {
         return _UserGuid;
     }
-    
-       /**
-        * Sets the UserGuid
-        * @param UserGuid The UserGuid
-        */ 
+
+    /**
+     * Sets the UserGuid
+     * @param UserGuid The UserGuid
+     */
     public void setUserGuid( long UserGuid )
     {
         _UserGuid = UserGuid;
     }
-    
-       /**
-        * Returns the DemandId
-        * @return The DemandId
-        */ 
-    public int getDemandId()
+
+    /**
+     * Returns the DemandId
+     * @return The DemandId
+     */
+    public int getDemandId(  )
     {
         return _nDemandId;
     }
-    
-       /**
-        * Sets the DemandId
-        * @param nDemandId The DemandId
-        */ 
+
+    /**
+     * Sets the DemandId
+     * @param nDemandId The DemandId
+     */
     public void setDemandId( int nDemandId )
     {
         _nDemandId = nDemandId;
     }
-    
-       /**
-        * Returns the DemandIdType
-        * @return The DemandIdType
-        */ 
-    public int getDemandIdType()
+
+    /**
+     * Returns the DemandIdType
+     * @return The DemandIdType
+     */
+    public int getDemandIdType(  )
     {
         return _nDemandIdType;
     }
-    
-       /**
-        * Sets the DemandIdType
-        * @param nDemandIdType The DemandIdType
-        */ 
+
+    /**
+     * Sets the DemandIdType
+     * @param nDemandIdType The DemandIdType
+     */
     public void setDemandIdType( int nDemandIdType )
     {
         _nDemandIdType = nDemandIdType;
     }
-    
-       /**
-        * Returns the DemandMaxStep
-        * @return The DemandMaxStep
-        */ 
-    public int getDemandMaxStep()
+
+    /**
+     * Returns the DemandMaxStep
+     * @return The DemandMaxStep
+     */
+    public int getDemandMaxStep(  )
     {
         return _nDemandMaxStep;
     }
-    
-       /**
-        * Sets the DemandMaxStep
-        * @param nDemandMaxStep The DemandMaxStep
-        */ 
+
+    /**
+     * Sets the DemandMaxStep
+     * @param nDemandMaxStep The DemandMaxStep
+     */
     public void setDemandMaxStep( int nDemandMaxStep )
     {
         _nDemandMaxStep = nDemandMaxStep;
     }
-    
-       /**
-        * Returns the DemandUserCurrentStep
-        * @return The DemandUserCurrentStep
-        */ 
-    public int getDemandUserCurrentStep()
+
+    /**
+     * Returns the DemandUserCurrentStep
+     * @return The DemandUserCurrentStep
+     */
+    public int getDemandUserCurrentStep(  )
     {
         return _nDemandUserCurrentStep;
     }
-    
-       /**
-        * Sets the DemandUserCurrentStep
-        * @param nDemandUserCurrentStep The DemandUserCurrentStep
-        */ 
+
+    /**
+     * Sets the DemandUserCurrentStep
+     * @param nDemandUserCurrentStep The DemandUserCurrentStep
+     */
     public void setDemandUserCurrentStep( int nDemandUserCurrentStep )
     {
         _nDemandUserCurrentStep = nDemandUserCurrentStep;
     }
-    
-       /**
-        * Returns the DemandState
-        * @return The DemandState
-        */ 
-    public int getDemandState()
+
+    /**
+     * Returns the DemandState
+     * @return The DemandState
+     */
+    public int getDemandState(  )
     {
         return _nDemandState;
     }
-    
-       /**
-        * Sets the DemandState
-        * @param nDemandState The DemandState
-        */ 
+
+    /**
+     * Sets the DemandState
+     * @param nDemandState The DemandState
+     */
     public void setDemandState( int nDemandState )
     {
         _nDemandState = nDemandState;
     }
-    
-       /**
-        * Returns the NotifType
-        * @return The NotifType
-        */ 
-    public String getNotifType()
+
+    /**
+     * Returns the NotifType
+     * @return The NotifType
+     */
+    public String getNotifType(  )
     {
         return _strNotifType;
     }
-    
-       /**
-        * Sets the NotifType
-        * @param strNotifType The NotifType
-        */ 
+
+    /**
+     * Sets the NotifType
+     * @param strNotifType The NotifType
+     */
     public void setNotifType( String strNotifType )
     {
         _strNotifType = strNotifType;
     }
-    
-       /**
-        * Returns the DateDemand
-        * @return The DateDemand
-        */ 
-    public String getDateDemand()
+
+    /**
+     * Returns the DateDemand
+     * @return The DateDemand
+     */
+    public String getDateDemand(  )
     {
         return _strDateDemand;
     }
-    
-       /**
-        * Sets the DateDemand
-        * @param strDateDemand The DateDemand
-        */ 
+
+    /**
+     * Sets the DateDemand
+     * @param strDateDemand The DateDemand
+     */
     public void setDateDemand( String strDateDemand )
     {
         _strDateDemand = strDateDemand;
     }
-    
-       /**
-        * Returns the CRMStatus
-        * @return The CRMStatus
-        */ 
-    public int getCRMStatus()
+
+    /**
+     * Returns the CRMStatus
+     * @return The CRMStatus
+     */
+    public int getCRMStatus(  )
     {
         return _nCRMStatus;
     }
-    
-       /**
-        * Sets the CRMStatus
-        * @param nCRMStatus The CRMStatus
-        */ 
+
+    /**
+     * Sets the CRMStatus
+     * @param nCRMStatus The CRMStatus
+     */
     public void setCRMStatus( int nCRMStatus )
     {
         _nCRMStatus = nCRMStatus;
     }
-    
-       /**
-        * Returns the Reference
-        * @return The Reference
-        */ 
-    public String getReference()
+
+    /**
+     * Returns the Reference
+     * @return The Reference
+     */
+    public String getReference(  )
     {
         return _strReference;
     }
-    
-       /**
-        * Sets the Reference
-        * @param strReference The Reference
-        */ 
+
+    /**
+     * Sets the Reference
+     * @param strReference The Reference
+     */
     public void setReference( String strReference )
     {
         _strReference = strReference;
     }
- }
+}

@@ -33,20 +33,19 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+import fr.paris.lutece.plugins.grusupply.business.Customer;
+import fr.paris.lutece.plugins.grusupply.business.Demand;
+import fr.paris.lutece.plugins.grusupply.business.Notification;
 import fr.paris.lutece.plugins.grusupply.business.dto.OpenAMUserDTO;
-import fr.paris.lutece.plugins.grusupply.business.gru.Demand;
-import fr.paris.lutece.plugins.grusupply.business.gru.Notification;
-import fr.paris.lutece.plugins.grusupply.business.gru.User;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
-
 
 
 public class GRUService
 {
     private static final String BEAN_GRUSUPPLY_SERVICE = "grusupply.gruService";
+    private static GRUService _singleton;
     private INotificationStorageService _notificationStorageService;
     private IUserInfoProvider _userInfoProvider;
-    private static GRUService _singleton;
 
     public static GRUService getService(  )
     {
@@ -58,37 +57,31 @@ public class GRUService
         return _singleton;
     }
 
-   
     /**
      * Store notification
      * @param notification
      */
     public void store( Notification notification )
     {
-    	
-        	_notificationStorageService.store( notification );
-        
+        _notificationStorageService.store( notification );
     }
 
     /**
      * Store user
      * @param user
      */
-    public void store( User user )
+    public void store( Customer user )
     {
-      
-    	     _notificationStorageService.store( user );
-        
+        _notificationStorageService.store( user );
     }
+
     /**
-     * Store demand 
+     * Store demand
      * @param demand
      */
     public void store( Demand demand )
     {
-      
-    		_notificationStorageService.store( demand );
-        
+        _notificationStorageService.store( demand );
     }
 
     /**
@@ -98,8 +91,6 @@ public class GRUService
      */
     public OpenAMUserDTO getUserInfo( String guid )
     {
-   
-            return (OpenAMUserDTO) _userInfoProvider.getUserInfo( guid );
-      
+        return (OpenAMUserDTO) _userInfoProvider.getUserInfo( guid );
     }
 }

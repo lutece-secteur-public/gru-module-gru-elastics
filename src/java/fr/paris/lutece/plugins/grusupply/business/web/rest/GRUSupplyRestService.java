@@ -33,11 +33,11 @@
  */
 package fr.paris.lutece.plugins.grusupply.business.web.rest;
 
+import fr.paris.lutece.plugins.grusupply.business.Customer;
+import fr.paris.lutece.plugins.grusupply.business.Demand;
+import fr.paris.lutece.plugins.grusupply.business.Notification;
 import fr.paris.lutece.plugins.grusupply.business.dto.ESBNotificationDTO;
 import fr.paris.lutece.plugins.grusupply.business.dto.OpenAMUserDTO;
-import fr.paris.lutece.plugins.grusupply.business.gru.Demand;
-import fr.paris.lutece.plugins.grusupply.business.gru.Notification;
-import fr.paris.lutece.plugins.grusupply.business.gru.User;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.GRUService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
@@ -72,13 +72,13 @@ public class GRUSupplyRestService
             JSONObject jsonNotif = new JSONObject( strJson );
 
             // Create JSON flux to Object
-            ESBNotificationDTO _esbNotif = new ESBNotificationDTO( jsonNotif );
+            ESBNotificationDTO _esbNotif = new ESBNotificationDTO(  );
 
             // Search in OpenAM
             OpenAMUserDTO userOpenam = GRUService.getService(  ).getUserInfo( _esbNotif.getUserGuid(  ) );
 
-            // Parse to User (TODO HAVE TO ADD WITH OPENAM)
-            User _user = new User(  );
+            // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
+            Customer _user = new Customer(  );
 
             if ( userOpenam != null )
             {
@@ -94,13 +94,13 @@ public class GRUSupplyRestService
             }
 
             _user.setEmail( _esbNotif.getEmail(  ) );
-            _user.setUserGuid( Long.parseLong( _esbNotif.getUserGuid(  ) ) );
+            _user.setGUID( _esbNotif.getUserGuid(  ) );
             _user.setStayConnected( true );
 
             GRUService.getService(  ).store( _user );
 
             // Parse to Demand
-             Demand _demand = new Demand(  );
+            Demand _demand = new Demand(  );
             _demand.setUserGuid( Long.parseLong( _esbNotif.getUserGuid(  ) ) );
             _demand.setDemandId( _esbNotif.getDemandeId(  ) );
             _demand.setDemandIdType( _esbNotif.getDemandIdType(  ) );

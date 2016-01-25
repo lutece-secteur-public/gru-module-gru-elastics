@@ -30,16 +30,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
-package fr.paris.lutece.plugins.grusupply.business.gru;
+ */
+package fr.paris.lutece.plugins.grusupply.business;
+
 
 /**
- * This is the business class for the object User
- */ 
-public class User
+ * This is the business class for the object Customer
+ */
+public class Customer
 {
     // Variables declarations 
-    private long _luserGuid;
+    private int _nCustomerId;
+    private String _strGUID;
     private String _strName;
     private String _strFirstName;
     private String _strEmail;
@@ -51,221 +53,238 @@ public class User
     private String _strCity;
     private String _strPostalCode;
     private String _strTelephoneNumber;
-    
-    
-       /**
-        * Returns the UserGuid
-        * @return The UserGuid
-        */ 
-    public long getUserGuid()
+
+    /**
+     * Returns the CustomerId
+     * @return The CustomerId
+     */
+    public int getCustomerId(  )
     {
-        return _luserGuid;
+        return _nCustomerId;
     }
-    
-       /**
-        * Sets the UserGuid
-        * @param UserGuid The UserGuid
-        */ 
-    public void setUserGuid( long luserGuid )
+
+    /**
+     * Sets the CustomerId
+     * @param CustomerId The CustomerId
+     */
+    public void setCustomerId( int luserGuid )
     {
-        _luserGuid = luserGuid;
+        _nCustomerId = luserGuid;
     }
-    
-       /**
-        * Returns the Name
-        * @return The Name
-        */ 
-    public String getName()
+
+    /**
+     * Returns the GUID
+     * @return The GUID
+     */
+    public String getGUID(  )
+    {
+        return _strGUID;
+    }
+
+    /**
+     * Sets the GUID
+     * @param strGUID The GUID
+     */
+    public void setGUID( String strGUID )
+    {
+        _strGUID = strGUID;
+    }
+
+    /**
+     * Returns the Name
+     * @return The Name
+     */
+    public String getName(  )
     {
         return _strName;
     }
-    
-       /**
-        * Sets the Name
-        * @param strName The Name
-        */ 
+
+    /**
+     * Sets the Name
+     * @param strName The Name
+     */
     public void setName( String strName )
     {
         _strName = strName;
     }
-    
-       /**
-        * Returns the FirstName
-        * @return The FirstName
-        */ 
-    public String getFirstName()
+
+    /**
+     * Returns the FirstName
+     * @return The FirstName
+     */
+    public String getFirstName(  )
     {
         return _strFirstName;
     }
-    
-       /**
-        * Sets the FirstName
-        * @param strFirstName The FirstName
-        */ 
+
+    /**
+     * Sets the FirstName
+     * @param strFirstName The FirstName
+     */
     public void setFirstName( String strFirstName )
     {
         _strFirstName = strFirstName;
     }
-    
-       /**
-        * Returns the Email
-        * @return The Email
-        */ 
-    public String getEmail()
+
+    /**
+     * Returns the Email
+     * @return The Email
+     */
+    public String getEmail(  )
     {
         return _strEmail;
     }
-    
-       /**
-        * Sets the Email
-        * @param strEmail The Email
-        */ 
+
+    /**
+     * Sets the Email
+     * @param strEmail The Email
+     */
     public void setEmail( String strEmail )
     {
         _strEmail = strEmail;
     }
-    
-       /**
-        * Returns the Birthday
-        * @return The Birthday
-        */ 
-    public String getBirthday()
+
+    /**
+     * Returns the Birthday
+     * @return The Birthday
+     */
+    public String getBirthday(  )
     {
         return _strBirthday;
     }
-    
-       /**
-        * Sets the Birthday
-        * @param strBirthday The Birthday
-        */ 
+
+    /**
+     * Sets the Birthday
+     * @param strBirthday The Birthday
+     */
     public void setBirthday( String strBirthday )
     {
         _strBirthday = strBirthday;
     }
-    
-       /**
-        * Returns the Civility
-        * @return The Civility
-        */ 
-    public String getCivility()
+
+    /**
+     * Returns the Civility
+     * @return The Civility
+     */
+    public String getCivility(  )
     {
         return _strCivility;
     }
-    
-       /**
-        * Sets the Civility
-        * @param strCivility The Civility
-        */ 
+
+    /**
+     * Sets the Civility
+     * @param strCivility The Civility
+     */
     public void setCivility( String strCivility )
     {
         _strCivility = strCivility;
     }
-    
-       /**
-        * Returns the Street
-        * @return The Street
-        */ 
-    public String getStreet()
+
+    /**
+     * Returns the Street
+     * @return The Street
+     */
+    public String getStreet(  )
     {
         return _strStreet;
     }
-    
-       /**
-        * Sets the Street
-        * @param strStreet The Street
-        */ 
+
+    /**
+     * Sets the Street
+     * @param strStreet The Street
+     */
     public void setStreet( String strStreet )
     {
         _strStreet = strStreet;
     }
-    
-       /**
-        * Returns the CityOfBirth
-        * @return The CityOfBirth
-        */ 
-    public String getCityOfBirth()
+
+    /**
+     * Returns the CityOfBirth
+     * @return The CityOfBirth
+     */
+    public String getCityOfBirth(  )
     {
         return _strCityOfBirth;
     }
-    
-       /**
-        * Sets the CityOfBirth
-        * @param strCityOfBirth The CityOfBirth
-        */ 
+
+    /**
+     * Sets the CityOfBirth
+     * @param strCityOfBirth The CityOfBirth
+     */
     public void setCityOfBirth( String strCityOfBirth )
     {
         _strCityOfBirth = strCityOfBirth;
     }
-    
-       /**
-        * Returns the StayConnected
-        * @return The StayConnected
-        */ 
-    public boolean getStayConnected()
+
+    /**
+     * Returns the StayConnected
+     * @return The StayConnected
+     */
+    public boolean getStayConnected(  )
     {
         return _bStayConnected;
     }
-    
-       /**
-        * Sets the StayConnected
-        * @param StayConnected The StayConnected
-        */ 
+
+    /**
+     * Sets the StayConnected
+     * @param StayConnected The StayConnected
+     */
     public void setStayConnected( boolean StayConnected )
     {
         _bStayConnected = StayConnected;
     }
-    
-       /**
-        * Returns the City
-        * @return The City
-        */ 
-    public String getCity()
+
+    /**
+     * Returns the City
+     * @return The City
+     */
+    public String getCity(  )
     {
         return _strCity;
     }
-    
-       /**
-        * Sets the City
-        * @param strCity The City
-        */ 
+
+    /**
+     * Sets the City
+     * @param strCity The City
+     */
     public void setCity( String strCity )
     {
         _strCity = strCity;
     }
-    
-       /**
-        * Returns the PostalCode
-        * @return The PostalCode
-        */ 
-    public String getPostalCode()
+
+    /**
+     * Returns the PostalCode
+     * @return The PostalCode
+     */
+    public String getPostalCode(  )
     {
         return _strPostalCode;
     }
-    
-       /**
-        * Sets the PostalCode
-        * @param strPostalCode The PostalCode
-        */ 
+
+    /**
+     * Sets the PostalCode
+     * @param strPostalCode The PostalCode
+     */
     public void setPostalCode( String strPostalCode )
     {
         _strPostalCode = strPostalCode;
     }
-    
-       /**
-        * Returns the TelephoneNumber
-        * @return The TelephoneNumber
-        */ 
-    public String getTelephoneNumber()
+
+    /**
+     * Returns the TelephoneNumber
+     * @return The TelephoneNumber
+     */
+    public String getTelephoneNumber(  )
     {
         return _strTelephoneNumber;
     }
-    
-       /**
-        * Sets the TelephoneNumber
-        * @param strTelephoneNumber The TelephoneNumber
-        */ 
+
+    /**
+     * Sets the TelephoneNumber
+     * @param strTelephoneNumber The TelephoneNumber
+     */
     public void setTelephoneNumber( String strTelephoneNumber )
     {
         _strTelephoneNumber = strTelephoneNumber;
     }
- }
+}

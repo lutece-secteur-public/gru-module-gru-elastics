@@ -30,17 +30,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
+ */
 package fr.paris.lutece.plugins.grusupply.business.dto;
 
-import fr.paris.lutece.plugins.grusupply.business.gru.UserBackoffice;
-import fr.paris.lutece.plugins.grusupply.business.gru.UserDashboard;
-import fr.paris.lutece.plugins.grusupply.business.gru.UserEmail;
-import fr.paris.lutece.plugins.grusupply.business.gru.UserSMS;
+import fr.paris.lutece.plugins.grusupply.business.BackofficeNotification;
+import fr.paris.lutece.plugins.grusupply.business.DashboardNotification;
+import fr.paris.lutece.plugins.grusupply.business.EmailNotification;
+import fr.paris.lutece.plugins.grusupply.business.SMSNotification;
+
 
 /**
  * This is the business class for the object ESBNotificationDTO
- */ 
+ */
 public class ESBNotificationDTO
 {
     // Variables declarations 
@@ -53,243 +54,242 @@ public class ESBNotificationDTO
     private int _nMaxStep;
     private int _nUserCurrentStep;
     private int _nDemandState;
-    private UserEmail _userEmail;
-    private UserDashboard _userDashBoard;
-    private UserSMS _userSms;
-    private UserBackoffice _userBackOffice;
-    
-    
-       /**
-        * Returns the UserGuid
-        * @return The UserGuid
-        */ 
-    public String getUserGuid()
+    private EmailNotification _userEmail;
+    private DashboardNotification _userDashBoard;
+    private SMSNotification _userSms;
+    private BackofficeNotification _userBackOffice;
+
+    /**
+     * Returns the UserGuid
+     * @return The UserGuid
+     */
+    public String getUserGuid(  )
     {
         return _strUserGuid;
     }
-    
-       /**
-        * Sets the UserGuid
-        * @param strUserGuid The UserGuid
-        */ 
+
+    /**
+     * Sets the UserGuid
+     * @param strUserGuid The UserGuid
+     */
     public void setUserGuid( String strUserGuid )
     {
         _strUserGuid = strUserGuid;
     }
-    
-       /**
-        * Returns the Email
-        * @return The Email
-        */ 
-    public String getEmail()
+
+    /**
+     * Returns the Email
+     * @return The Email
+     */
+    public String getEmail(  )
     {
         return _strEmail;
     }
-    
-       /**
-        * Sets the Email
-        * @param strEmail The Email
-        */ 
+
+    /**
+     * Sets the Email
+     * @param strEmail The Email
+     */
     public void setEmail( String strEmail )
     {
         _strEmail = strEmail;
     }
-    
-       /**
-        * Returns the CrmStatusId
-        * @return The CrmStatusId
-        */ 
-    public int getCrmStatusId()
+
+    /**
+     * Returns the CrmStatusId
+     * @return The CrmStatusId
+     */
+    public int getCrmStatusId(  )
     {
         return _nCrmStatusId;
     }
-    
-       /**
-        * Sets the CrmStatusId
-        * @param nCrmStatusId The CrmStatusId
-        */ 
+
+    /**
+     * Sets the CrmStatusId
+     * @param nCrmStatusId The CrmStatusId
+     */
     public void setCrmStatusId( int nCrmStatusId )
     {
         _nCrmStatusId = nCrmStatusId;
     }
-    
-       /**
-        * Returns the NotificationType
-        * @return The NotificationType
-        */ 
-    public String getNotificationType()
+
+    /**
+     * Returns the NotificationType
+     * @return The NotificationType
+     */
+    public String getNotificationType(  )
     {
         return _strNotificationType;
     }
-    
-       /**
-        * Sets the NotificationType
-        * @param strNotificationType The NotificationType
-        */ 
+
+    /**
+     * Sets the NotificationType
+     * @param strNotificationType The NotificationType
+     */
     public void setNotificationType( String strNotificationType )
     {
         _strNotificationType = strNotificationType;
     }
-    
-       /**
-        * Returns the DemandeId
-        * @return The DemandeId
-        */ 
-    public int getDemandeId()
+
+    /**
+     * Returns the DemandeId
+     * @return The DemandeId
+     */
+    public int getDemandeId(  )
     {
         return _nDemandeId;
     }
-    
-       /**
-        * Sets the DemandeId
-        * @param nDemandeId The DemandeId
-        */ 
+
+    /**
+     * Sets the DemandeId
+     * @param nDemandeId The DemandeId
+     */
     public void setDemandeId( int nDemandeId )
     {
         _nDemandeId = nDemandeId;
     }
-    
-       /**
-        * Returns the DemandIdType
-        * @return The DemandIdType
-        */ 
-    public int getDemandIdType()
+
+    /**
+     * Returns the DemandIdType
+     * @return The DemandIdType
+     */
+    public int getDemandIdType(  )
     {
         return _nDemandIdType;
     }
-    
-       /**
-        * Sets the DemandIdType
-        * @param nDemandIdType The DemandIdType
-        */ 
+
+    /**
+     * Sets the DemandIdType
+     * @param nDemandIdType The DemandIdType
+     */
     public void setDemandIdType( int nDemandIdType )
     {
         _nDemandIdType = nDemandIdType;
     }
-    
-       /**
-        * Returns the MaxStep
-        * @return The MaxStep
-        */ 
-    public int getMaxStep()
+
+    /**
+     * Returns the MaxStep
+     * @return The MaxStep
+     */
+    public int getMaxStep(  )
     {
         return _nMaxStep;
     }
-    
-       /**
-        * Sets the MaxStep
-        * @param nMaxStep The MaxStep
-        */ 
+
+    /**
+     * Sets the MaxStep
+     * @param nMaxStep The MaxStep
+     */
     public void setMaxStep( int nMaxStep )
     {
         _nMaxStep = nMaxStep;
     }
-    
-       /**
-        * Returns the UserCurrentStep
-        * @return The UserCurrentStep
-        */ 
-    public int getUserCurrentStep()
+
+    /**
+     * Returns the UserCurrentStep
+     * @return The UserCurrentStep
+     */
+    public int getUserCurrentStep(  )
     {
         return _nUserCurrentStep;
     }
-    
-       /**
-        * Sets the UserCurrentStep
-        * @param nUserCurrentStep The UserCurrentStep
-        */ 
+
+    /**
+     * Sets the UserCurrentStep
+     * @param nUserCurrentStep The UserCurrentStep
+     */
     public void setUserCurrentStep( int nUserCurrentStep )
     {
         _nUserCurrentStep = nUserCurrentStep;
     }
-    
-       /**
-        * Returns the DemandState
-        * @return The DemandState
-        */ 
-    public int getDemandState()
+
+    /**
+     * Returns the DemandState
+     * @return The DemandState
+     */
+    public int getDemandState(  )
     {
         return _nDemandState;
     }
-    
-       /**
-        * Sets the DemandState
-        * @param nDemandState The DemandState
-        */ 
+
+    /**
+     * Sets the DemandState
+     * @param nDemandState The DemandState
+     */
     public void setDemandState( int nDemandState )
     {
         _nDemandState = nDemandState;
     }
-    
-       /**
-        * Returns the UserEmail
-        * @return The UserEmail
-        */ 
-    public UserEmail getUserEmail()
+
+    /**
+     * Returns the EmailNotification
+     * @return The EmailNotification
+     */
+    public EmailNotification getUserEmail(  )
     {
         return _userEmail;
     }
-    
-       /**
-        * Sets the userEmail
-        * @param userEmail The UserEmail
-        */ 
-    public void setUserEmail( UserEmail userEmail )
+
+    /**
+     * Sets the userEmail
+     * @param userEmail The EmailNotification
+     */
+    public void setUserEmail( EmailNotification userEmail )
     {
         _userEmail = userEmail;
     }
-    
-       /**
-        * Returns the UserDashBoard
-        * @return The UserDashBoard
-        */ 
-    public UserDashboard getUserDashBoard()
+
+    /**
+     * Returns the UserDashBoard
+     * @return The UserDashBoard
+     */
+    public DashboardNotification getUserDashBoard(  )
     {
         return _userDashBoard;
     }
-    
-       /**
-        * Sets the UserDashBoard
-        * @param UserDashBoard The UserDashBoard
-        */ 
-    public void setUserDashBoard( UserDashboard userDashBoard )
+
+    /**
+     * Sets the UserDashBoard
+     * @param UserDashBoard The UserDashBoard
+     */
+    public void setUserDashBoard( DashboardNotification userDashBoard )
     {
         _userDashBoard = userDashBoard;
     }
-    
-       /**
-        * Returns the UserSms
-        * @return The UserSms
-        */ 
-    public UserSMS getUserSms()
+
+    /**
+     * Returns the UserSms
+     * @return The UserSms
+     */
+    public SMSNotification getUserSms(  )
     {
         return _userSms;
     }
-    
-       /**
-        * Sets the UserSms
-        * @param UserSms The UserSms
-        */ 
-    public void setUserSms( UserSMS userSms )
+
+    /**
+     * Sets the UserSms
+     * @param UserSms The UserSms
+     */
+    public void setUserSms( SMSNotification userSms )
     {
         _userSms = userSms;
     }
-    
-       /**
-        * Returns the UserBackOffice
-        * @return The UserBackOffice
-        */ 
-    public UserBackoffice getUserBackOffice()
+
+    /**
+     * Returns the UserBackOffice
+     * @return The UserBackOffice
+     */
+    public BackofficeNotification getUserBackOffice(  )
     {
         return _userBackOffice;
     }
-    
-       /**
-        * Sets the UserBackOffice
-        * @param UserBackOffice The UserBackOffice
-        */ 
-    public void setUserBackOffice( UserBackoffice UserBackOffice )
+
+    /**
+     * Sets the UserBackOffice
+     * @param UserBackOffice The UserBackOffice
+     */
+    public void setUserBackOffice( BackofficeNotification UserBackOffice )
     {
         _userBackOffice = UserBackOffice;
     }
- }
+}

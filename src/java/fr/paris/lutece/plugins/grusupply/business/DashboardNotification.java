@@ -1,4 +1,3 @@
-    
 /*
  * Copyright (c) 2002-2013, Mairie de Paris
 * All rights reserved.
@@ -31,13 +30,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
-package fr.paris.lutece.plugins.grusupply.business.gru;
+ */
+package fr.paris.lutece.plugins.grusupply.business;
+
 
 /**
- * This is the business class for the object UserDashboard
- */ 
-public class UserDashboard
+ * This is the business class for the object DashboardNotification
+ */
+public class DashboardNotification
 {
     // Variables declarations 
     private String _strStatusText;
@@ -45,95 +45,94 @@ public class UserDashboard
     private String _strSubject;
     private String _strSenderName;
     private String _strData;
-    
-    
-       /**
-        * Returns the StatusText
-        * @return The StatusText
-        */ 
-    public String getStatusText()
+
+    /**
+     * Returns the StatusText
+     * @return The StatusText
+     */
+    public String getStatusText(  )
     {
         return _strStatusText;
     }
-    
-       /**
-        * Sets the StatusText
-        * @param strStatusText The StatusText
-        */ 
+
+    /**
+     * Sets the StatusText
+     * @param strStatusText The StatusText
+     */
     public void setStatusText( String strStatusText )
     {
         _strStatusText = strStatusText;
     }
-    
-       /**
-        * Returns the Message
-        * @return The Message
-        */ 
-    public String getMessage()
+
+    /**
+     * Returns the Message
+     * @return The Message
+     */
+    public String getMessage(  )
     {
         return _strMessage;
     }
-    
-       /**
-        * Sets the Message
-        * @param strMessage The Message
-        */ 
+
+    /**
+     * Sets the Message
+     * @param strMessage The Message
+     */
     public void setMessage( String strMessage )
     {
         _strMessage = strMessage;
     }
-    
-       /**
-        * Returns the Subject
-        * @return The Subject
-        */ 
-    public String getSubject()
+
+    /**
+     * Returns the Subject
+     * @return The Subject
+     */
+    public String getSubject(  )
     {
         return _strSubject;
     }
-    
-       /**
-        * Sets the Subject
-        * @param strSubject The Subject
-        */ 
+
+    /**
+     * Sets the Subject
+     * @param strSubject The Subject
+     */
     public void setSubject( String strSubject )
     {
         _strSubject = strSubject;
     }
-    
-       /**
-        * Returns the SenderName
-        * @return The SenderName
-        */ 
-    public String getSenderName()
+
+    /**
+     * Returns the SenderName
+     * @return The SenderName
+     */
+    public String getSenderName(  )
     {
         return _strSenderName;
     }
-    
-       /**
-        * Sets the SenderName
-        * @param strSenderName The SenderName
-        */ 
+
+    /**
+     * Sets the SenderName
+     * @param strSenderName The SenderName
+     */
     public void setSenderName( String strSenderName )
     {
         _strSenderName = strSenderName;
     }
-    
-       /**
-        * Returns the Data
-        * @return The Data
-        */ 
-    public String getData()
+
+    /**
+     * Returns the Data
+     * @return The Data
+     */
+    public String getData(  )
     {
         return _strData;
     }
-    
-       /**
-        * Sets the Data
-        * @param strData The Data
-        */ 
+
+    /**
+     * Sets the Data
+     * @param strData The Data
+     */
     public void setData( String strData )
     {
         _strData = strData;
     }
- }
+}

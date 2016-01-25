@@ -11,7 +11,7 @@
     <artifactId>plugin-grusupply</artifactId>
     <packaging>lutece-plugin</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Lutece Gru Supply plugin</name>
+    <name>Lutece grusupply plugin</name>
     
     <repositories>
         <repository>

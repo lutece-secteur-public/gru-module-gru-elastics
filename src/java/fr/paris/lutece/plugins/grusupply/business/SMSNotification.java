@@ -30,52 +30,52 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
-package fr.paris.lutece.plugins.grusupply.business.gru;
+ */
+package fr.paris.lutece.plugins.grusupply.business;
+
 
 /**
- * This is the business class for the object UserSMS
- */ 
-public class UserSMS
+ * This is the business class for the object SMSNotification
+ */
+public class SMSNotification
 {
     // Variables declarations 
     private int _nPhoneNumber;
     private String _strMessage;
-    
-    
-       /**
-        * Returns the PhoneNumber
-        * @return The PhoneNumber
-        */ 
-    public int getPhoneNumber()
+
+    /**
+     * Returns the PhoneNumber
+     * @return The PhoneNumber
+     */
+    public int getPhoneNumber(  )
     {
         return _nPhoneNumber;
     }
-    
-       /**
-        * Sets the PhoneNumber
-        * @param nPhoneNumber The PhoneNumber
-        */ 
+
+    /**
+     * Sets the PhoneNumber
+     * @param nPhoneNumber The PhoneNumber
+     */
     public void setPhoneNumber( int nPhoneNumber )
     {
         _nPhoneNumber = nPhoneNumber;
     }
-    
-       /**
-        * Returns the Message
-        * @return The Message
-        */ 
-    public String getMessage()
+
+    /**
+     * Returns the Message
+     * @return The Message
+     */
+    public String getMessage(  )
     {
         return _strMessage;
     }
-    
-       /**
-        * Sets the Message
-        * @param strMessage The Message
-        */ 
+
+    /**
+     * Sets the Message
+     * @param strMessage The Message
+     */
     public void setMessage( String strMessage )
     {
         _strMessage = strMessage;
     }
- }
+}

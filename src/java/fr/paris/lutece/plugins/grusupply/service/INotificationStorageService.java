@@ -31,35 +31,33 @@
  *
  * License 1.0
  */
- 
 package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.grusupply.business.gru.Demand;
-import fr.paris.lutece.plugins.grusupply.business.gru.Notification;
-import fr.paris.lutece.plugins.grusupply.business.gru.User;
+import fr.paris.lutece.plugins.grusupply.business.Customer;
+import fr.paris.lutece.plugins.grusupply.business.Demand;
+import fr.paris.lutece.plugins.grusupply.business.Notification;
+
 
 /**
  * INotificationStorageService Interface
  */
 public interface INotificationStorageService
 {
-	 /**
-     * Store the user
-     * @param user the reference of the User
-     */
-     public void store( User user );
-     
-     
-     /**
-      * Store the notification
-      * @param notification the reference of the Notification
-      */
-     
-     public void store( Notification notification );
+    /**
+    * Store the user
+    * @param user the reference of the Customer
+    */
+    public void store( Customer user );
 
-     /**
-      *  Store the demand
-      * @param demand
-      */
-     public void store( Demand demand );
+    /**
+     * Store the notification
+     * @param notification the reference of the Notification
+     */
+    public void store( Notification notification );
+
+    /**
+     *  Store the demand
+     * @param demand
+     */
+    public void store( Demand demand );
 }
