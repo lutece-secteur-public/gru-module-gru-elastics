@@ -40,7 +40,7 @@ package fr.paris.lutece.plugins.grusupply.business;
 public class Demand
 {
     // Variables declarations 
-    private long _UserGuid;
+    private int _nUserCid;
     private int _nDemandId;
     private int _nDemandIdType;
     private int _nDemandMaxStep;
@@ -55,18 +55,18 @@ public class Demand
      * Returns the UserGuid
      * @return The UserGuid
      */
-    public long getUserGuid(  )
+    public int getUserCid(  )
     {
-        return _UserGuid;
+        return _nUserCid;
     }
 
     /**
      * Sets the UserGuid
      * @param UserGuid The UserGuid
      */
-    public void setUserGuid( long UserGuid )
+    public void setUserCid( int nUserGuid )
     {
-        _UserGuid = UserGuid;
+        _nUserCid = nUserGuid;
     }
 
     /**

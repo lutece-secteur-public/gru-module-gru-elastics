@@ -36,14 +36,23 @@ package fr.paris.lutece.plugins.grusupply.web.rs;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.business.Notification;
-import fr.paris.lutece.plugins.grusupply.business.dto.ESBNotificationDTO;
-import fr.paris.lutece.plugins.grusupply.business.dto.OpenAMUserDTO;
+import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
+import fr.paris.lutece.plugins.grusupply.business.dto.UserDTO;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.GRUService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
+import fr.paris.lutece.portal.service.util.AppLogService;
 
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.DeserializationConfig.Feature;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.drew.lang.StringUtil;
+import com.mysql.jdbc.StringUtils;
+
+import java.io.IOException;
+import java.util.Objects;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -52,7 +61,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 
-@Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME + GruSupplyConstants.MODULE_NAME_ES )
+@Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME )
 public class GRUSupplyRestService
 {
     /**
@@ -69,68 +78,103 @@ public class GRUSupplyRestService
         try
         {
             // Format to JSON
-            JSONObject jsonNotif = new JSONObject( strJson );
+        	ObjectMapper esbMapper = new ObjectMapper( );
+        	esbMapper.configure( Feature.UNWRAP_ROOT_VALUE, true );
+            NotificationDTO _notif = esbMapper.readValue( strJson, NotificationDTO.class );
 
-            // Create JSON flux to Object
-            ESBNotificationDTO _esbNotif = new ESBNotificationDTO(  );
-
-            // Search in OpenAM
-            OpenAMUserDTO userOpenam = GRUService.instance(  ).getUserInfo( _esbNotif.getUserGuid(  ) );
-
-            // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
-            Customer _user = new Customer(  );
-
-            if ( userOpenam != null )
+            // Find CID in GRU Database
+            fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = null;
+            Customer grusupplyCustomer = new Customer(  );
+            
+            	// NOT Customerid IN ESB FLUX
+            if(StringUtils.isNullOrEmpty(_notif.getCustomerid()))
             {
-                _user.setName( userOpenam.getLastname(  ) );
-                _user.setFirstName( userOpenam.getFirstname(  ) );
-                _user.setBirthday( userOpenam.getBirthday(  ) );
-                _user.setCivility( userOpenam.getCivility(  ) );
-                _user.setStreet( userOpenam.getStreet(  ) );
-                _user.setCityOfBirth( userOpenam.getCityOfBirth(  ) );
-                _user.setCity( userOpenam.getCity(  ) );
-                _user.setPostalCode( userOpenam.getPostalCode(  ) );
-                _user.setTelephoneNumber( userOpenam.getTelephoneNumber(  ) );
+            	if(StringUtils.isNullOrEmpty(_notif.getUserGuid()))
+    			{
+            		AppLogService.error("Need for Guid and Cid");
+    			}
+            	else
+            	{
+                	gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByGuid(_notif.getUserGuid());
+                	if(gruCustomer == null)
+                	{
+                		String strGuid = _notif.getUserGuid(  );
+                		
+                		// TODO recup info openAM
+                		UserDTO userDto = GRUService.instance(  ).getUserInfo( strGuid );
+                		
+                		// insertion gru
+                		gruCustomer = new fr.paris.lutece.plugins.gru.business.customer.Customer();
+                		gruCustomer.setFirstname(userDto.getFirstname());
+                		gruCustomer.setLastname(userDto.getLastname());
+                		gruCustomer.setEmail(userDto.getEmail());
+                		gruCustomer.setAccountGuid(strGuid);
+                		gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.create(gruCustomer);
+                		
+                		
+                	}
+            	}
             }
+            else
+            {
+            	gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByPrimaryKey(Integer.parseInt(_notif.getCustomerid()));
+            }
+          
+            // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
 
-            _user.setEmail( _esbNotif.getEmail(  ) );
-            _user.setGUID( _esbNotif.getUserGuid(  ) );
-            _user.setStayConnected( true );
+            if ( gruCustomer != null )
+            {
+            	grusupplyCustomer.setCustomerId( gruCustomer.getId( ) );
+            	grusupplyCustomer.setName( gruCustomer.getLastname(  ) );
+            	grusupplyCustomer.setFirstName( gruCustomer.getFirstname(  ) );
+            /*	grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
+            	grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
+            	grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
+            	grusupplyCustomer.setCityOfBirth( gruCustomer.getCityOfBirth(  ) );
+            	grusupplyCustomer.setCity( gruCustomer.getCity(  ) );
+            	grusupplyCustomer.setPostalCode( gruCustomer.getPostalCode(  ) );
+            	grusupplyCustomer.setTelephoneNumber( gruCustomer.getTelephoneNumber(  ) );*/
+            	grusupplyCustomer.setEmail( gruCustomer.getEmail( ) );
+            }
+            grusupplyCustomer.setStayConnected( true );
 
-            GRUService.instance(  ).store( _user );
+            GRUService.instance(  ).store( grusupplyCustomer );
 
             // Parse to Demand
-            Demand _demand = new Demand(  );
-            _demand.setUserGuid( Long.parseLong( _esbNotif.getUserGuid(  ) ) );
-            _demand.setDemandId( _esbNotif.getDemandeId(  ) );
-            _demand.setDemandIdType( _esbNotif.getDemandIdType(  ) );
-            _demand.setDemandMaxStep( -1 );
-            _demand.setDemandUserCurrentStep( -1 );
-            _demand.setDemandState( _esbNotif.getDemandState(  ) );
-            _demand.setNotifType( _esbNotif.getNotificationType(  ) );
-            _demand.setDateDemand( "NON RENSEIGNE" );
-            _demand.setCRMStatus( _esbNotif.getCrmStatusId(  ) );
-            _demand.setReference( "NON RENSEIGNE" );
+            Demand demand = new Demand(  );
+            demand.setUserCid( grusupplyCustomer.getCustomerId( ) );
+            demand.setDemandId( _notif.getDemandeId(  ) );
+            demand.setDemandIdType( _notif.getDemandIdType(  ) );
+            demand.setDemandMaxStep( -1 );
+            demand.setDemandUserCurrentStep( -1 );
+            demand.setDemandState( _notif.getDemandState(  ) );
+            demand.setNotifType( _notif.getNotificationType(  ) );
+            demand.setDateDemand( "NON RENSEIGNE" );
+            demand.setCRMStatus( _notif.getCrmStatusId(  ) );
+            demand.setReference( "NON RENSEIGNE" );
 
-            GRUService.instance(  ).store( _demand );
+            GRUService.instance(  ).store( demand );
 
             // Parse to Notification
-            Notification _notification = new Notification(  );
-            _notification.setDemandeId( _esbNotif.getDemandeId(  ) );
-            _notification.setDemandIdType( _esbNotif.getDemandIdType(  ) );
-            _notification.setUserEmail( _esbNotif.getUserEmail(  ) );
-            _notification.setUserDashBoard( _esbNotif.getUserDashBoard(  ) );
-            _notification.setUserSms( _esbNotif.getUserSms(  ) );
-            _notification.setUserBackOffice( _esbNotif.getUserBackOffice(  ) );
+            Notification notification = new Notification(  );
+            notification.setDemandeId( _notif.getDemandeId(  ) );
+            notification.setDemandIdType( _notif.getDemandIdType(  ) );
+            notification.setUserEmail( _notif.getUserEmail(  ) );
+            notification.setUserDashBoard( _notif.getUserDashBoard(  ) );
+            notification.setUserSms( _notif.getUserSms(  ) );
+            notification.setUserBackOffice( _notif.getUserBackOffice(  ) );
 
-            GRUService.instance(  ).store( _notification );
-        }
-        catch ( JSONException e )
-        {
-            e.getMessage(  );
-
-            return GruSupplyConstants.STATUS_404;
-        }
+            GRUService.instance(  ).store( notification );
+        }catch (JsonParseException ex) {
+        	AppLogService.error( ex + " :" + ex.getMessage(  ), ex );
+            return GruSupplyConstants.STATUS_404;			
+		} catch (JsonMappingException ex) {
+			AppLogService.error( ex + " :" + ex.getMessage(  ), ex );
+	        return GruSupplyConstants.STATUS_404;
+		} catch (IOException ex) {
+			AppLogService.error( ex + " :" + ex.getMessage(  ), ex );
+	        return GruSupplyConstants.STATUS_404;
+		}
 
         return GruSupplyConstants.STATUS_201;
     }

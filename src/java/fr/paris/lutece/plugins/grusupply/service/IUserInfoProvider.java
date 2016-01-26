@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+import fr.paris.lutece.plugins.grusupply.business.dto.UserDTO;
 
 /**
  * IUserInfoProvider Interface
@@ -44,5 +45,5 @@ public interface IUserInfoProvider
      * @param guid
      * @return user info
      */
-    public Object getUserInfo( String guid );
+    public UserDTO getUserInfo( String guid );
 }

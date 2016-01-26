@@ -37,7 +37,7 @@ package fr.paris.lutece.plugins.grusupply.business.dto;
 /**
  * This is the business class for the object OpenAMUserDTO
  */
-public class OpenAMUserDTO
+public class UserDTO
 {
     // Variables declarations 
     private String _strUid;
@@ -50,6 +50,7 @@ public class OpenAMUserDTO
     private String _strPostalCode;
     private String _strCity;
     private String _strCityOfBirth;
+    private String _strEmail;
     private String _strStayConnected;
 
     /**
@@ -231,8 +232,24 @@ public class OpenAMUserDTO
     {
         _strCityOfBirth = strCityOfBirth;
     }
-
     /**
+     * 
+     * @return
+     */
+    public String getEmail( )
+    {
+		return _strEmail;
+	}
+    /**
+     * 
+     * @param _strEmail
+     */
+	public void setEmail( String _strEmail ) 
+	{
+		this._strEmail = _strEmail;
+	}
+
+	/**
      * Returns the StayConnected
      * @return The StayConnected
      */

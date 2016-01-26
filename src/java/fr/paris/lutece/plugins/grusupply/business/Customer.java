@@ -41,7 +41,6 @@ public class Customer
 {
     // Variables declarations 
     private int _nCustomerId;
-    private String _strGUID;
     private String _strName;
     private String _strFirstName;
     private String _strEmail;
@@ -70,24 +69,6 @@ public class Customer
     public void setCustomerId( int luserGuid )
     {
         _nCustomerId = luserGuid;
-    }
-
-    /**
-     * Returns the GUID
-     * @return The GUID
-     */
-    public String getGUID(  )
-    {
-        return _strGUID;
-    }
-
-    /**
-     * Sets the GUID
-     * @param strGUID The GUID
-     */
-    public void setGUID( String strGUID )
-    {
-        _strGUID = strGUID;
     }
 
     /**

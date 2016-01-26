@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * This is the business class for the object EmailNotification
@@ -59,6 +60,7 @@ public class EmailNotification
      * Sets the SenderName
      * @param strSenderName The SenderName
      */
+    @JsonProperty("sender_name")
     public void setSenderName( String strSenderName )
     {
         _strSenderName = strSenderName;
@@ -77,6 +79,7 @@ public class EmailNotification
      * Sets the SenderEmail
      * @param strSenderEmail The SenderEmail
      */
+    @JsonProperty("sender_email")
     public void setSenderEmail( String strSenderEmail )
     {
         _strSenderEmail = strSenderEmail;
@@ -95,6 +98,7 @@ public class EmailNotification
      * Sets the Recipient
      * @param strRecipient The Recipient
      */
+    @JsonProperty("recipient")
     public void setRecipient( String strRecipient )
     {
         _strRecipient = strRecipient;
@@ -113,6 +117,7 @@ public class EmailNotification
      * Sets the Subject
      * @param strSubject The Subject
      */
+    @JsonProperty("subject")
     public void setSubject( String strSubject )
     {
         _strSubject = strSubject;
@@ -131,6 +136,7 @@ public class EmailNotification
      * Sets the Message
      * @param strMessage The Message
      */
+    @JsonProperty("message")
     public void setMessage( String strMessage )
     {
         _strMessage = strMessage;

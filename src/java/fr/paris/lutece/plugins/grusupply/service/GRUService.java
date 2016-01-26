@@ -36,29 +36,25 @@ package fr.paris.lutece.plugins.grusupply.service;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.business.Notification;
-import fr.paris.lutece.plugins.grusupply.business.dto.OpenAMUserDTO;
+import fr.paris.lutece.plugins.grusupply.business.dto.UserDTO;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 
 public class GRUService
 {
     private static final String BEAN_STORAGE_SERVICE = "grusupply.storageService";
-    
+    private static final String BEAN_USER_INFO_SERVICE = "grusupply.userinfoService";
     private static GRUService _singleton;
     private static INotificationStorageService _notificationStorageService;
-    private IUserInfoProvider _userInfoProvider;
-
-    /** Private constructor */
-    private GRUService()
-    {
-    }
+    private static IUserInfoProvider _userInfoProvider;
     
     public static GRUService instance(  )
     {
         if ( _singleton == null )
         {
             _singleton = new GRUService();
-            _notificationStorageService = SpringContextService.getBean(BEAN_STORAGE_SERVICE);
+            _notificationStorageService = SpringContextService.getBean( BEAN_STORAGE_SERVICE );
+            _userInfoProvider = SpringContextService.getBean( BEAN_USER_INFO_SERVICE );
         }
 
         return _singleton;
@@ -96,8 +92,8 @@ public class GRUService
      * @param guid
      * @return
      */
-    public OpenAMUserDTO getUserInfo( String guid )
+    public UserDTO getUserInfo( String guid )
     {
-        return (OpenAMUserDTO) _userInfoProvider.getUserInfo( guid );
+        return (UserDTO) _userInfoProvider.getUserInfo( guid );
     }
 }

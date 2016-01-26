@@ -33,6 +33,10 @@
  */
 package fr.paris.lutece.plugins.grusupply.business.dto;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonRootName;
+
 import fr.paris.lutece.plugins.grusupply.business.BackofficeNotification;
 import fr.paris.lutece.plugins.grusupply.business.DashboardNotification;
 import fr.paris.lutece.plugins.grusupply.business.EmailNotification;
@@ -42,10 +46,13 @@ import fr.paris.lutece.plugins.grusupply.business.SMSNotification;
 /**
  * This is the business class for the object ESBNotificationDTO
  */
-public class ESBNotificationDTO
+@JsonRootName( value = "notification" )
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class NotificationDTO
 {
     // Variables declarations 
     private String _strUserGuid;
+    private String _strCustomerid;
     private String _strEmail;
     private int _nCrmStatusId;
     private String _strNotificationType;
@@ -59,6 +66,11 @@ public class ESBNotificationDTO
     private SMSNotification _userSms;
     private BackofficeNotification _userBackOffice;
 
+    public NotificationDTO( )
+    {
+    	
+    }
+    
     /**
      * Returns the UserGuid
      * @return The UserGuid
@@ -72,12 +84,22 @@ public class ESBNotificationDTO
      * Sets the UserGuid
      * @param strUserGuid The UserGuid
      */
+    @JsonProperty("user_guid")
     public void setUserGuid( String strUserGuid )
     {
         _strUserGuid = strUserGuid;
     }
+    
+    public String getCustomerid() {
+		return _strCustomerid;
+	}
 
-    /**
+    @JsonProperty("customer_id")
+	public void setCustomerid(String _strCustomerid) {
+		this._strCustomerid = _strCustomerid;
+	}
+
+	/**
      * Returns the Email
      * @return The Email
      */
@@ -90,6 +112,7 @@ public class ESBNotificationDTO
      * Sets the Email
      * @param strEmail The Email
      */
+    @JsonProperty("email")
     public void setEmail( String strEmail )
     {
         _strEmail = strEmail;
@@ -108,6 +131,7 @@ public class ESBNotificationDTO
      * Sets the CrmStatusId
      * @param nCrmStatusId The CrmStatusId
      */
+    @JsonProperty("crm_status_id")
     public void setCrmStatusId( int nCrmStatusId )
     {
         _nCrmStatusId = nCrmStatusId;
@@ -126,6 +150,7 @@ public class ESBNotificationDTO
      * Sets the NotificationType
      * @param strNotificationType The NotificationType
      */
+    @JsonProperty("notification_type")
     public void setNotificationType( String strNotificationType )
     {
         _strNotificationType = strNotificationType;
@@ -144,6 +169,7 @@ public class ESBNotificationDTO
      * Sets the DemandeId
      * @param nDemandeId The DemandeId
      */
+    @JsonProperty("demand_id")
     public void setDemandeId( int nDemandeId )
     {
         _nDemandeId = nDemandeId;
@@ -162,6 +188,7 @@ public class ESBNotificationDTO
      * Sets the DemandIdType
      * @param nDemandIdType The DemandIdType
      */
+    @JsonProperty("demand_id_type")
     public void setDemandIdType( int nDemandIdType )
     {
         _nDemandIdType = nDemandIdType;
@@ -180,6 +207,7 @@ public class ESBNotificationDTO
      * Sets the MaxStep
      * @param nMaxStep The MaxStep
      */
+    @JsonProperty("demand_max_step")
     public void setMaxStep( int nMaxStep )
     {
         _nMaxStep = nMaxStep;
@@ -198,6 +226,7 @@ public class ESBNotificationDTO
      * Sets the UserCurrentStep
      * @param nUserCurrentStep The UserCurrentStep
      */
+    @JsonProperty("demand_user_current_step")
     public void setUserCurrentStep( int nUserCurrentStep )
     {
         _nUserCurrentStep = nUserCurrentStep;
@@ -216,6 +245,7 @@ public class ESBNotificationDTO
      * Sets the DemandState
      * @param nDemandState The DemandState
      */
+    @JsonProperty("demand_state")
     public void setDemandState( int nDemandState )
     {
         _nDemandState = nDemandState;
@@ -234,6 +264,7 @@ public class ESBNotificationDTO
      * Sets the userEmail
      * @param userEmail The EmailNotification
      */
+    @JsonProperty("user_email")
     public void setUserEmail( EmailNotification userEmail )
     {
         _userEmail = userEmail;
@@ -252,6 +283,7 @@ public class ESBNotificationDTO
      * Sets the UserDashBoard
      * @param UserDashBoard The UserDashBoard
      */
+    @JsonProperty("user_dashboard")
     public void setUserDashBoard( DashboardNotification userDashBoard )
     {
         _userDashBoard = userDashBoard;
@@ -270,6 +302,7 @@ public class ESBNotificationDTO
      * Sets the UserSms
      * @param UserSms The UserSms
      */
+    @JsonProperty("user_sms")
     public void setUserSms( SMSNotification userSms )
     {
         _userSms = userSms;
@@ -288,6 +321,7 @@ public class ESBNotificationDTO
      * Sets the UserBackOffice
      * @param UserBackOffice The UserBackOffice
      */
+    @JsonProperty("backoffice_logging")
     public void setUserBackOffice( BackofficeNotification UserBackOffice )
     {
         _userBackOffice = UserBackOffice;

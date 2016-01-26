@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * This is the business class for the object DashboardNotification
@@ -59,6 +60,7 @@ public class DashboardNotification
      * Sets the StatusText
      * @param strStatusText The StatusText
      */
+    @JsonProperty("status_text")
     public void setStatusText( String strStatusText )
     {
         _strStatusText = strStatusText;
@@ -77,6 +79,7 @@ public class DashboardNotification
      * Sets the Message
      * @param strMessage The Message
      */
+    @JsonProperty("message")
     public void setMessage( String strMessage )
     {
         _strMessage = strMessage;
@@ -95,6 +98,7 @@ public class DashboardNotification
      * Sets the Subject
      * @param strSubject The Subject
      */
+    @JsonProperty("subject")
     public void setSubject( String strSubject )
     {
         _strSubject = strSubject;
@@ -113,6 +117,7 @@ public class DashboardNotification
      * Sets the SenderName
      * @param strSenderName The SenderName
      */
+    @JsonProperty("sender_name")
     public void setSenderName( String strSenderName )
     {
         _strSenderName = strSenderName;
@@ -131,6 +136,7 @@ public class DashboardNotification
      * Sets the Data
      * @param strData The Data
      */
+    @JsonProperty("data")
     public void setData( String strData )
     {
         _strData = strData;
