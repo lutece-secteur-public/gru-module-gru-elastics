@@ -42,16 +42,23 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 public class GRUService
 {
-    private static final String BEAN_GRUSUPPLY_SERVICE = "grusupply.gruService";
+    private static final String BEAN_STORAGE_SERVICE = "grusupply.storageService";
+    
     private static GRUService _singleton;
-    private INotificationStorageService _notificationStorageService;
+    private static INotificationStorageService _notificationStorageService;
     private IUserInfoProvider _userInfoProvider;
 
-    public static GRUService getService(  )
+    /** Private constructor */
+    private GRUService()
+    {
+    }
+    
+    public static GRUService instance(  )
     {
         if ( _singleton == null )
         {
-            _singleton = SpringContextService.getBean( BEAN_GRUSUPPLY_SERVICE );
+            _singleton = new GRUService();
+            _notificationStorageService = SpringContextService.getBean(BEAN_STORAGE_SERVICE);
         }
 
         return _singleton;

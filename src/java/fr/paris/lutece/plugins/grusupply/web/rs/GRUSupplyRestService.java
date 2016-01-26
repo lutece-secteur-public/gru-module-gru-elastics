@@ -31,7 +31,7 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business.web.rest;
+package fr.paris.lutece.plugins.grusupply.web.rs;
 
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
@@ -75,7 +75,7 @@ public class GRUSupplyRestService
             ESBNotificationDTO _esbNotif = new ESBNotificationDTO(  );
 
             // Search in OpenAM
-            OpenAMUserDTO userOpenam = GRUService.getService(  ).getUserInfo( _esbNotif.getUserGuid(  ) );
+            OpenAMUserDTO userOpenam = GRUService.instance(  ).getUserInfo( _esbNotif.getUserGuid(  ) );
 
             // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
             Customer _user = new Customer(  );
@@ -97,7 +97,7 @@ public class GRUSupplyRestService
             _user.setGUID( _esbNotif.getUserGuid(  ) );
             _user.setStayConnected( true );
 
-            GRUService.getService(  ).store( _user );
+            GRUService.instance(  ).store( _user );
 
             // Parse to Demand
             Demand _demand = new Demand(  );
@@ -112,7 +112,7 @@ public class GRUSupplyRestService
             _demand.setCRMStatus( _esbNotif.getCrmStatusId(  ) );
             _demand.setReference( "NON RENSEIGNE" );
 
-            GRUService.getService(  ).store( _demand );
+            GRUService.instance(  ).store( _demand );
 
             // Parse to Notification
             Notification _notification = new Notification(  );
@@ -123,7 +123,7 @@ public class GRUSupplyRestService
             _notification.setUserSms( _esbNotif.getUserSms(  ) );
             _notification.setUserBackOffice( _esbNotif.getUserBackOffice(  ) );
 
-            GRUService.getService(  ).store( _notification );
+            GRUService.instance(  ).store( _notification );
         }
         catch ( JSONException e )
         {

@@ -5,14 +5,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd" >
     
     <!-- REST -->
-    <bean id="grusupply.grurestelasticsearch" class="fr.paris.lutece.plugins.grusupply.rest.GRURestElasticSearch"/>
-    <bean id="grusupply.grurestdatabase" class="fr.paris.lutece.plugins.grusupply.rest.GRURestDataBase"/>
+    <bean id="grusupply.grurestdatabase" class="fr.paris.lutece.plugins.grusupply.web.rs.GRUSupplyRestService"/>
        
     
-    <!-- SERVICE -->
-    <bean id="grusupply.gruService" class="fr.paris.lutece.plugins.grusupply.service.GRUService"/>
-    <bean class="fr.paris.lutece.plugins.grusupply.service.PluginRegistrationBeanPostProcessor">
-		<constructor-arg ref="grusupply.gruService"/>
-	</bean>	
+    <!-- STORAGE SERVICE -->
+    <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustoragedb.service.DatabaseNotificationStorageService"/>
     
 </beans>
