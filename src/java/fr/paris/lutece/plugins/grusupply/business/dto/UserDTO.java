@@ -53,10 +53,10 @@ public class UserDTO
     private String _strEmail;
     private String _strStayConnected;
 
-	/**
-     * Returns the Uid
-     * @return The Uid
-     */
+    /**
+    * Returns the Uid
+    * @return The Uid
+    */
     public String getUid(  )
     {
         return _strUid;
@@ -232,27 +232,29 @@ public class UserDTO
     {
         _strCityOfBirth = strCityOfBirth;
     }
+
     /**
-     * 
+     *
      * @return
      */
-    public String getEmail( )
+    public String getEmail(  )
     {
-		return _strEmail;
-	}
+        return _strEmail;
+    }
+
     /**
-     * 
+     *
      * @param _strEmail
      */
-	public void setEmail( String _strEmail ) 
-	{
-		this._strEmail = _strEmail;
-	}
+    public void setEmail( String _strEmail )
+    {
+        this._strEmail = _strEmail;
+    }
 
-	/**
-     * Returns the StayConnected
-     * @return The StayConnected
-     */
+    /**
+    * Returns the StayConnected
+    * @return The StayConnected
+    */
     public String getStayConnected(  )
     {
         return _strStayConnected;

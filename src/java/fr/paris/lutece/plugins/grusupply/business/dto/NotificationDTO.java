@@ -33,21 +33,21 @@
  */
 package fr.paris.lutece.plugins.grusupply.business.dto;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonRootName;
-
 import fr.paris.lutece.plugins.grusupply.business.BackofficeNotification;
 import fr.paris.lutece.plugins.grusupply.business.DashboardNotification;
 import fr.paris.lutece.plugins.grusupply.business.EmailNotification;
 import fr.paris.lutece.plugins.grusupply.business.SMSNotification;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonRootName;
 
 
 /**
  * This is the business class for the object ESBNotificationDTO
  */
 @JsonRootName( value = "notification" )
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties( ignoreUnknown = true )
 public class NotificationDTO
 {
     // Variables declarations 
@@ -66,11 +66,10 @@ public class NotificationDTO
     private SMSNotification _userSms;
     private BackofficeNotification _userBackOffice;
 
-    public NotificationDTO( )
+    public NotificationDTO(  )
     {
-    	
     }
-    
+
     /**
      * Returns the UserGuid
      * @return The UserGuid
@@ -84,25 +83,35 @@ public class NotificationDTO
      * Sets the UserGuid
      * @param strUserGuid The UserGuid
      */
-    @JsonProperty("user_guid")
+    @JsonProperty( "user_guid" )
     public void setUserGuid( String strUserGuid )
     {
         _strUserGuid = strUserGuid;
     }
-    
-    public String getCustomerid() {
-		return _strCustomerid;
-	}
 
-    @JsonProperty("customer_id")
-	public void setCustomerid(String _strCustomerid) {
-		this._strCustomerid = _strCustomerid;
-	}
-
-	/**
-     * Returns the Email
-     * @return The Email
+    /**
+     * Return the customer id
+     * @return
      */
+    public String getCustomerid(  )
+    {
+        return _strCustomerid;
+    }
+
+    /**
+     * Sets the customer id
+     * @param _strCustomerid
+     */
+    @JsonProperty( "customer_id" )
+    public void setCustomerid( String _strCustomerid )
+    {
+        this._strCustomerid = _strCustomerid;
+    }
+
+    /**
+    * Returns the Email
+    * @return The Email
+    */
     public String getEmail(  )
     {
         return _strEmail;
@@ -112,7 +121,7 @@ public class NotificationDTO
      * Sets the Email
      * @param strEmail The Email
      */
-    @JsonProperty("email")
+    @JsonProperty( "email" )
     public void setEmail( String strEmail )
     {
         _strEmail = strEmail;
@@ -131,7 +140,7 @@ public class NotificationDTO
      * Sets the CrmStatusId
      * @param nCrmStatusId The CrmStatusId
      */
-    @JsonProperty("crm_status_id")
+    @JsonProperty( "crm_status_id" )
     public void setCrmStatusId( int nCrmStatusId )
     {
         _nCrmStatusId = nCrmStatusId;
@@ -150,7 +159,7 @@ public class NotificationDTO
      * Sets the NotificationType
      * @param strNotificationType The NotificationType
      */
-    @JsonProperty("notification_type")
+    @JsonProperty( "notification_type" )
     public void setNotificationType( String strNotificationType )
     {
         _strNotificationType = strNotificationType;
@@ -169,7 +178,7 @@ public class NotificationDTO
      * Sets the DemandeId
      * @param nDemandeId The DemandeId
      */
-    @JsonProperty("demand_id")
+    @JsonProperty( "demand_id" )
     public void setDemandeId( int nDemandeId )
     {
         _nDemandeId = nDemandeId;
@@ -188,7 +197,7 @@ public class NotificationDTO
      * Sets the DemandIdType
      * @param nDemandIdType The DemandIdType
      */
-    @JsonProperty("demand_id_type")
+    @JsonProperty( "demand_id_type" )
     public void setDemandIdType( int nDemandIdType )
     {
         _nDemandIdType = nDemandIdType;
@@ -207,7 +216,7 @@ public class NotificationDTO
      * Sets the MaxStep
      * @param nMaxStep The MaxStep
      */
-    @JsonProperty("demand_max_step")
+    @JsonProperty( "demand_max_step" )
     public void setMaxStep( int nMaxStep )
     {
         _nMaxStep = nMaxStep;
@@ -226,7 +235,7 @@ public class NotificationDTO
      * Sets the UserCurrentStep
      * @param nUserCurrentStep The UserCurrentStep
      */
-    @JsonProperty("demand_user_current_step")
+    @JsonProperty( "demand_user_current_step" )
     public void setUserCurrentStep( int nUserCurrentStep )
     {
         _nUserCurrentStep = nUserCurrentStep;
@@ -245,7 +254,7 @@ public class NotificationDTO
      * Sets the DemandState
      * @param nDemandState The DemandState
      */
-    @JsonProperty("demand_state")
+    @JsonProperty( "demand_state" )
     public void setDemandState( int nDemandState )
     {
         _nDemandState = nDemandState;
@@ -264,7 +273,7 @@ public class NotificationDTO
      * Sets the userEmail
      * @param userEmail The EmailNotification
      */
-    @JsonProperty("user_email")
+    @JsonProperty( "user_email" )
     public void setUserEmail( EmailNotification userEmail )
     {
         _userEmail = userEmail;
@@ -283,7 +292,7 @@ public class NotificationDTO
      * Sets the UserDashBoard
      * @param UserDashBoard The UserDashBoard
      */
-    @JsonProperty("user_dashboard")
+    @JsonProperty( "user_dashboard" )
     public void setUserDashBoard( DashboardNotification userDashBoard )
     {
         _userDashBoard = userDashBoard;
@@ -302,7 +311,7 @@ public class NotificationDTO
      * Sets the UserSms
      * @param UserSms The UserSms
      */
-    @JsonProperty("user_sms")
+    @JsonProperty( "user_sms" )
     public void setUserSms( SMSNotification userSms )
     {
         _userSms = userSms;
@@ -321,7 +330,7 @@ public class NotificationDTO
      * Sets the UserBackOffice
      * @param UserBackOffice The UserBackOffice
      */
-    @JsonProperty("backoffice_logging")
+    @JsonProperty( "backoffice_logging" )
     public void setUserBackOffice( BackofficeNotification UserBackOffice )
     {
         _userBackOffice = UserBackOffice;

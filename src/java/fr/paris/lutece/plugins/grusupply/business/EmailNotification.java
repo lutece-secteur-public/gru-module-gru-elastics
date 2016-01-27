@@ -35,6 +35,7 @@ package fr.paris.lutece.plugins.grusupply.business;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+
 /**
  * This is the business class for the object EmailNotification
  */
@@ -51,6 +52,7 @@ public class EmailNotification
      * Returns the SenderName
      * @return The SenderName
      */
+    @JsonProperty( "sender_name" )
     public String getSenderName(  )
     {
         return _strSenderName;
@@ -60,7 +62,7 @@ public class EmailNotification
      * Sets the SenderName
      * @param strSenderName The SenderName
      */
-    @JsonProperty("sender_name")
+    @JsonProperty( "sender_name" )
     public void setSenderName( String strSenderName )
     {
         _strSenderName = strSenderName;
@@ -70,6 +72,7 @@ public class EmailNotification
      * Returns the SenderEmail
      * @return The SenderEmail
      */
+    @JsonProperty( "sender_email" )
     public String getSenderEmail(  )
     {
         return _strSenderEmail;
@@ -79,7 +82,7 @@ public class EmailNotification
      * Sets the SenderEmail
      * @param strSenderEmail The SenderEmail
      */
-    @JsonProperty("sender_email")
+    @JsonProperty( "sender_email" )
     public void setSenderEmail( String strSenderEmail )
     {
         _strSenderEmail = strSenderEmail;
@@ -89,6 +92,7 @@ public class EmailNotification
      * Returns the Recipient
      * @return The Recipient
      */
+    @JsonProperty( "recipient" )
     public String getRecipient(  )
     {
         return _strRecipient;
@@ -98,7 +102,7 @@ public class EmailNotification
      * Sets the Recipient
      * @param strRecipient The Recipient
      */
-    @JsonProperty("recipient")
+    @JsonProperty( "recipient" )
     public void setRecipient( String strRecipient )
     {
         _strRecipient = strRecipient;
@@ -108,6 +112,7 @@ public class EmailNotification
      * Returns the Subject
      * @return The Subject
      */
+    @JsonProperty( "subject" )
     public String getSubject(  )
     {
         return _strSubject;
@@ -117,7 +122,7 @@ public class EmailNotification
      * Sets the Subject
      * @param strSubject The Subject
      */
-    @JsonProperty("subject")
+    @JsonProperty( "subject" )
     public void setSubject( String strSubject )
     {
         _strSubject = strSubject;
@@ -127,6 +132,7 @@ public class EmailNotification
      * Returns the Message
      * @return The Message
      */
+    @JsonProperty( "message" )
     public String getMessage(  )
     {
         return _strMessage;
@@ -136,7 +142,7 @@ public class EmailNotification
      * Sets the Message
      * @param strMessage The Message
      */
-    @JsonProperty("message")
+    @JsonProperty( "message" )
     public void setMessage( String strMessage )
     {
         _strMessage = strMessage;

@@ -33,6 +33,8 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 
 /**
  * This is the business class for the object Demand
@@ -73,6 +75,7 @@ public class Demand
      * Returns the DemandId
      * @return The DemandId
      */
+    @JsonProperty( "demand_id" )
     public int getDemandId(  )
     {
         return _nDemandId;
@@ -91,6 +94,7 @@ public class Demand
      * Returns the DemandIdType
      * @return The DemandIdType
      */
+    @JsonProperty( "demand_id_type" )
     public int getDemandIdType(  )
     {
         return _nDemandIdType;
@@ -109,6 +113,7 @@ public class Demand
      * Returns the DemandMaxStep
      * @return The DemandMaxStep
      */
+    @JsonProperty( "demand_max_step" )
     public int getDemandMaxStep(  )
     {
         return _nDemandMaxStep;
@@ -127,6 +132,7 @@ public class Demand
      * Returns the DemandUserCurrentStep
      * @return The DemandUserCurrentStep
      */
+    @JsonProperty( "demand_user_max_step" )
     public int getDemandUserCurrentStep(  )
     {
         return _nDemandUserCurrentStep;
@@ -145,6 +151,7 @@ public class Demand
      * Returns the DemandState
      * @return The DemandState
      */
+    @JsonProperty( "demand_state" )
     public int getDemandState(  )
     {
         return _nDemandState;
@@ -163,6 +170,7 @@ public class Demand
      * Returns the NotifType
      * @return The NotifType
      */
+    @JsonProperty( "notification_type" )
     public String getNotifType(  )
     {
         return _strNotifType;
@@ -181,6 +189,7 @@ public class Demand
      * Returns the DateDemand
      * @return The DateDemand
      */
+    @JsonProperty( "date_demand" )
     public String getDateDemand(  )
     {
         return _strDateDemand;
@@ -199,6 +208,7 @@ public class Demand
      * Returns the CRMStatus
      * @return The CRMStatus
      */
+    @JsonProperty( "crm_status_id" )
     public int getCRMStatus(  )
     {
         return _nCRMStatus;
@@ -217,6 +227,7 @@ public class Demand
      * Returns the Reference
      * @return The Reference
      */
+    @JsonProperty( "reference" )
     public String getReference(  )
     {
         return _strReference;

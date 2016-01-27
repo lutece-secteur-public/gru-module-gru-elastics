@@ -35,6 +35,7 @@ package fr.paris.lutece.plugins.grusupply.service;
 
 import fr.paris.lutece.plugins.grusupply.business.dto.UserDTO;
 
+
 /**
  * IUserInfoProvider Interface
  */

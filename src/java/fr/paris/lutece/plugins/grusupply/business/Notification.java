@@ -155,7 +155,7 @@ public class Notification
     {
         _backOfficeNotification = UserBackOffice;
     }
-    
+
     /**
      * Returns the Json
      * @return The Json
@@ -173,6 +173,4 @@ public class Notification
     {
         _strJson = strJson;
     }
-
-    
 }

@@ -47,14 +47,15 @@ public class GRUService
     private static GRUService _singleton;
     private static INotificationStorageService _notificationStorageService;
     private static IUserInfoProvider _userInfoProvider;
-    
+
     public static GRUService instance(  )
     {
         if ( _singleton == null )
         {
-            _singleton = new GRUService();
+            _singleton = new GRUService(  );
             _notificationStorageService = SpringContextService.getBean( BEAN_STORAGE_SERVICE );
-            _userInfoProvider = SpringContextService.getBean( BEAN_USER_INFO_SERVICE );
+
+            // _userInfoProvider = SpringContextService.getBean( BEAN_USER_INFO_SERVICE );
         }
 
         return _singleton;
