@@ -46,6 +46,7 @@ public class Notification
     private DashboardNotification _dashBoardNotification;
     private SMSNotification _smsNotification;
     private BackofficeNotification _backOfficeNotification;
+    private String _strJson;
 
     /**
      * Returns the DemandeId
@@ -154,4 +155,24 @@ public class Notification
     {
         _backOfficeNotification = UserBackOffice;
     }
+    
+    /**
+     * Returns the Json
+     * @return The Json
+     */
+    public String getJson(  )
+    {
+        return _strJson;
+    }
+
+    /**
+     * Sets the Json
+     * @param strJson The Json
+     */
+    public void setJson( String strJson )
+    {
+        _strJson = strJson;
+    }
+
+    
 }
