@@ -13,6 +13,7 @@
    <!--     <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustorageelastic.service.ElasticNotificationStorageService"/>  -->
     
     <!-- USER INFO SERVICE -->
+    <bean id="grusupply.userinfoService" class="fr.paris.lutece.plugins.grusupply.service.MokeUserInfoProvider" />
     <!-- <bean id="grusupply.userinfoService" class="fr.paris.lutece.plugins.grustorage"/> -->
     
 </beans>
