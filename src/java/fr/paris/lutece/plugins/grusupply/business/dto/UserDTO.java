@@ -53,7 +53,7 @@ public class UserDTO
     private String _strEmail;
     private String _strStayConnected;
 
-    /**
+	/**
      * Returns the Uid
      * @return The Uid
      */

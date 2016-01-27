@@ -77,22 +77,23 @@ public class GRUSupplyRestService
     {
         try
         {
-            // Format to JSON
+            // Format from JSON
         	ObjectMapper esbMapper = new ObjectMapper( );
         	esbMapper.configure( Feature.UNWRAP_ROOT_VALUE, true );
             NotificationDTO _notif = esbMapper.readValue( strJson, NotificationDTO.class );
 
             // Find CID in GRU Database
             fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = null;
-            Customer grusupplyCustomer = new Customer(  );
             
-            	// NOT Customerid IN ESB FLUX
+            	// CASE 1 NOT CID
             if(StringUtils.isNullOrEmpty(_notif.getCustomerid()))
             {
+            	// CASE 1.1 : no cid and no guid:  break the flux and wait for a new flux with one of them
             	if(StringUtils.isNullOrEmpty(_notif.getUserGuid()))
     			{
             		AppLogService.error("Need for Guid and Cid");
     			}
+            	// CASE 1.2  : no cid and guid:  look for a mapping beween an existing guid
             	else
             	{
                 	gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByGuid(_notif.getUserGuid());
@@ -110,61 +111,25 @@ public class GRUSupplyRestService
                 		gruCustomer.setEmail(userDto.getEmail());
                 		gruCustomer.setAccountGuid(strGuid);
                 		gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.create(gruCustomer);
-                		
-                		
                 	}
             	}
             }
+        	// CASE 2 : cid and (guid or no guid):  find customer info in GRU database
             else
             {
             	gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByPrimaryKey(Integer.parseInt(_notif.getCustomerid()));
             }
           
             // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
-
-            if ( gruCustomer != null )
-            {
-            	grusupplyCustomer.setCustomerId( gruCustomer.getId( ) );
-            	grusupplyCustomer.setName( gruCustomer.getLastname(  ) );
-            	grusupplyCustomer.setFirstName( gruCustomer.getFirstname(  ) );
-            /*	grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
-            	grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
-            	grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
-            	grusupplyCustomer.setCityOfBirth( gruCustomer.getCityOfBirth(  ) );
-            	grusupplyCustomer.setCity( gruCustomer.getCity(  ) );
-            	grusupplyCustomer.setPostalCode( gruCustomer.getPostalCode(  ) );
-            	grusupplyCustomer.setTelephoneNumber( gruCustomer.getTelephoneNumber(  ) );*/
-            	grusupplyCustomer.setEmail( gruCustomer.getEmail( ) );
-            }
-            grusupplyCustomer.setStayConnected( true );
-
-            GRUService.instance(  ).store( grusupplyCustomer );
+            GRUService.instance(  ).store( parseCustomer( gruCustomer ) );
 
             // Parse to Demand
-            Demand demand = new Demand(  );
-            demand.setUserCid( grusupplyCustomer.getCustomerId( ) );
-            demand.setDemandId( _notif.getDemandeId(  ) );
-            demand.setDemandIdType( _notif.getDemandIdType(  ) );
-            demand.setDemandMaxStep( -1 );
-            demand.setDemandUserCurrentStep( -1 );
-            demand.setDemandState( _notif.getDemandState(  ) );
-            demand.setNotifType( _notif.getNotificationType(  ) );
-            demand.setDateDemand( "NON RENSEIGNE" );
-            demand.setCRMStatus( _notif.getCrmStatusId(  ) );
-            demand.setReference( "NON RENSEIGNE" );
-
-            GRUService.instance(  ).store( demand );
+            GRUService.instance(  ).store( parseDemand( _notif, gruCustomer.getId( ) ) );
 
             // Parse to Notification
-            Notification notification = new Notification(  );
-            notification.setDemandeId( _notif.getDemandeId(  ) );
-            notification.setDemandIdType( _notif.getDemandIdType(  ) );
-            notification.setUserEmail( _notif.getUserEmail(  ) );
-            notification.setUserDashBoard( _notif.getUserDashBoard(  ) );
-            notification.setUserSms( _notif.getUserSms(  ) );
-            notification.setUserBackOffice( _notif.getUserBackOffice(  ) );
-
-            GRUService.instance(  ).store( notification );
+            GRUService.instance(  ).store( parseNotif( _notif ) );
+            
+            
         }catch (JsonParseException ex) {
         	AppLogService.error( ex + " :" + ex.getMessage(  ), ex );
             return GruSupplyConstants.STATUS_404;			
@@ -177,5 +142,67 @@ public class GRUSupplyRestService
 		}
 
         return GruSupplyConstants.STATUS_201;
+    }
+    /**
+     * Method which create a demand from OpenAm, a flux and GRU database
+     * @param gruCustomer
+     * @return
+     */
+    private static Customer parseCustomer( fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer)
+    {
+    	Customer grusupplyCustomer = new Customer(  );
+        if ( gruCustomer != null )
+        {
+        	grusupplyCustomer.setCustomerId( gruCustomer.getId( ) );
+        	grusupplyCustomer.setName( gruCustomer.getLastname(  ) );
+        	grusupplyCustomer.setFirstName( gruCustomer.getFirstname(  ) );
+        /*	grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
+        	grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
+        	grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
+        	grusupplyCustomer.setCityOfBirth( gruCustomer.getCityOfBirth(  ) );
+        	grusupplyCustomer.setCity( gruCustomer.getCity(  ) );
+        	grusupplyCustomer.setPostalCode( gruCustomer.getPostalCode(  ) );
+        	grusupplyCustomer.setTelephoneNumber( gruCustomer.getTelephoneNumber(  ) );*/
+        	grusupplyCustomer.setEmail( gruCustomer.getEmail( ) );
+        }
+        grusupplyCustomer.setStayConnected( true );
+        return grusupplyCustomer;
+    }
+    /**
+     * Method which create a demand from an flux
+     * @param notifDTO
+     * @param nCustomerId
+     * @return
+     */
+    private static Demand parseDemand( NotificationDTO notifDTO, int nCustomerId )
+    {
+        Demand demand = new Demand(  );
+        demand.setUserCid( nCustomerId );
+        demand.setDemandId( notifDTO.getDemandeId(  ) );
+        demand.setDemandIdType( notifDTO.getDemandIdType(  ) );
+        demand.setDemandMaxStep( -1 );
+        demand.setDemandUserCurrentStep( -1 );
+        demand.setDemandState( notifDTO.getDemandState(  ) );
+        demand.setNotifType( notifDTO.getNotificationType(  ) );
+        demand.setDateDemand( "NON RENSEIGNE" );
+        demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
+        demand.setReference( "NON RENSEIGNE" );   
+        return demand;
+    }
+    /**
+     * Method which create a notification from a flux
+     * @param notifDTO
+     * @return
+     */
+    private static Notification parseNotif( NotificationDTO notifDTO)
+    {
+        Notification notification = new Notification(  );
+        notification.setDemandeId( notifDTO.getDemandeId(  ) );
+        notification.setDemandIdType( notifDTO.getDemandIdType(  ) );
+        notification.setUserEmail( notifDTO.getUserEmail(  ) );
+        notification.setUserDashBoard( notifDTO.getUserDashBoard(  ) );
+        notification.setUserSms( notifDTO.getUserSms(  ) );
+        notification.setUserBackOffice( notifDTO.getUserBackOffice(  ) );
+        return notification;
     }
 }
