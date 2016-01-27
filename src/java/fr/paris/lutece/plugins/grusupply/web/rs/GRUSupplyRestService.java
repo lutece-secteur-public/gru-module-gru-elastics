@@ -57,11 +57,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME )
 public class GRUSupplyRestService
 {
+    private static final String STATUS_RECEIVED = "{ \"status\": \"received\" }";
+    
     /**
      * Web Service methode which permit to store notification in elasticsearch
      *
@@ -72,7 +75,7 @@ public class GRUSupplyRestService
     @Path( "notification" )
     @Consumes( MediaType.APPLICATION_JSON )
     @Produces( MediaType.APPLICATION_JSON )
-    public String notification( String strJson )
+    public Response notification( String strJson )
     {
         try
         {
@@ -149,7 +152,7 @@ public class GRUSupplyRestService
             return error( ex + " :" + ex.getMessage(  ), ex );
         }
 
-        return GruSupplyConstants.STATUS_201;
+        return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build();
     }
 
     /**
@@ -221,12 +224,23 @@ public class GRUSupplyRestService
         return notification;
     }
 
-    private String error( String strMessage )
+    /**
+     * Build an error response
+     * @param strMessage The error message
+     * @return The response
+     */
+    private Response error( String strMessage )
     {
         return error( strMessage, null );
     }
 
-    private String error( String strMessage, Throwable ex )
+    /**
+     * Build an error response
+     * @param strMessage The error message
+     * @param ex An exception
+     * @return The response
+     */
+    private Response error( String strMessage, Throwable ex )
     {
         if ( ex != null )
         {
@@ -236,7 +250,7 @@ public class GRUSupplyRestService
         {
             AppLogService.error( strMessage );
         }
-
-        return "{ \"status\": \"Error : " + strMessage + "\" }";
+        String strError = "{ \"status\": \"Error : " + strMessage + "\" }";
+        return Response.ok().entity( strError ).build();
     }
 }
