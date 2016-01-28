@@ -69,7 +69,9 @@ public class GRUSupplyRestService
     
     /**
      * Web Service methode which permit to store flux notification into a data store
-     *
+     * @exception JsonParseException  exception for parsing json to object
+     * @exception JsonMappingException exception for mapping json obj to DTO object
+     * @exception IOException
      * @param strJson
      * @return
      */
@@ -162,7 +164,7 @@ public class GRUSupplyRestService
     }
 
     /**
-     * Method which create a demand from OpenAm, a flux and GRU database
+     * Method which create a demand from Data base, a flux and GRU database
      *
      * @param gruCustomer
      * @return
