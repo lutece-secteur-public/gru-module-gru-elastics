@@ -66,14 +66,11 @@ import javax.ws.rs.core.Response;
 public class GRUSupplyRestService
 {
     private static final String STATUS_RECEIVED = "{ \"status\": \"received\" }";
-    
+
     /**
-     * Web Service methode which permit to store flux notification into a data store
-     * @exception JsonParseException  exception for parsing json to object
-     * @exception JsonMappingException exception for mapping json obj to DTO object
-     * @exception IOException
-     * @param strJson
-     * @return
+     * Web Service methode which permit to store the notification flow into a data store
+     * @param strJson The JSON flow
+     * @return The response
      */
     @POST
     @Path( "notification" )
@@ -105,6 +102,8 @@ public class GRUSupplyRestService
                 {
                 	gruCustomer = CustomerService.instance().getCustomerByGuid( notif.getUserGuid(  ) );
 
+
+                    // gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByGuid( notif.getUserGuid(  ) );
                     if ( gruCustomer == null )
                     {
                         String strGuid = notif.getUserGuid(  );
@@ -119,7 +118,7 @@ public class GRUSupplyRestService
 
                         gruCustomer = CustomerService.instance().createCustomer( gruCustomer );
                         
-                        
+
                         AppLogService.info( "New user created into the GRU for the guid : " + strGuid +
                             " its customer id is : " + gruCustomer.getId(  ) );
                     }
@@ -127,9 +126,10 @@ public class GRUSupplyRestService
             } // CASE 2 : cid and (guid or no guid):  find customer info in GRU database
             else
             {
-            	gruCustomer = CustomerService.instance().getCustomerByCid(notif.getCustomerid(  ) );
-                
 
+                gruCustomer = CustomerService.instance(  ).getCustomerByCid( notif.getCustomerid(  ) );
+
+                //gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByPrimaryKey( Integer.parseInt( notif.getCustomerid(  ) ) );
                 if ( gruCustomer == null )
                 {
                     return error( "grusupply - Error : No user found with the customer ID : " +
@@ -159,7 +159,7 @@ public class GRUSupplyRestService
             return error( ex + " :" + ex.getMessage(  ), ex );
         }
 
-        return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build();
+        return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build(  );
     }
 
     /**
@@ -257,7 +257,9 @@ public class GRUSupplyRestService
         {
             AppLogService.error( strMessage );
         }
+
         String strError = "{ \"status\": \"Error : " + strMessage + "\" }";
-        return Response.status( Response.Status.INTERNAL_SERVER_ERROR ).entity( strError ).build();
+
+        return Response.status( Response.Status.INTERNAL_SERVER_ERROR ).entity( strError ).build(  );
     }
 }

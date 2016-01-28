@@ -35,27 +35,30 @@ package fr.paris.lutece.plugins.grusupply.service;
 
 import fr.paris.lutece.plugins.gru.business.customer.Customer;
 
-public interface ICustomerInfoService {
 
-	
-	/**
-	 * Methode which find a user in gru database
-	 * @param guid
-	 * @return
-	 */
-	public Customer getCustomerByGuid( String strGid );
-	
-	/**
-	 * Methode which find a customer by cid
-	 * @param cid
-	 * @return
-	 */
-	public Customer getCustomerByCid( String strCid );
-	
-	/**
-	 * Method which create a new customer in gru
-	 * @param c
-	 * @return
-	 */
-	public Customer createCustomer( Customer c);
+public interface ICustomerInfoService
+{
+    /**
+     * Retrieve a Customer by its GUID
+     *
+     * @param strGuid The GUID
+     * @return The customer
+     */
+    public Customer getCustomerByGuid( String strGuid );
+
+    /**
+     * Retrieve a Customer by its ID
+     *
+     * @param strCustomerId The customer ID
+     * @return The customer
+     */
+    public Customer getCustomerByCid( String strCustomerId );
+
+    /**
+     * Create a new customer in the customer base
+     *
+     * @param customer The customer to create
+     * @return The created customer
+     */
+    public Customer createCustomer( Customer customer );
 }

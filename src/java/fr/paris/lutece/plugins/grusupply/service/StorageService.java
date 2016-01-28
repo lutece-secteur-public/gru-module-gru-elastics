@@ -38,16 +38,25 @@ import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.business.Notification;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
-public class StorageService {
+
+/**
+ * StorageService
+ */
+public class StorageService
+{
     private static final String BEAN_STORAGE_SERVICE = "grusupply.storageService";
     private static StorageService _singleton;
     private static INotificationStorageService _notificationStorageService;
 
-    private StorageService( )
+    /** private constructor */
+    private StorageService(  )
     {
-    	
     }
-    
+
+    /**
+     * Returns the unique instance
+     * @return The unique instance
+     */
     public static StorageService instance(  )
     {
         if ( _singleton == null )
@@ -58,10 +67,11 @@ public class StorageService {
 
         return _singleton;
     }
-    
+
     /**
      * Store notification
-     * @param notification
+     *
+     * @param notification The notification
      */
     public void store( Notification notification )
     {
@@ -69,17 +79,19 @@ public class StorageService {
     }
 
     /**
-     * Store user
-     * @param user
+     * Store the customer
+     *
+     * @param customer The customer
      */
-    public void store( Customer user )
+    public void store( Customer customer )
     {
-        _notificationStorageService.store( user );
+        _notificationStorageService.store( customer );
     }
 
     /**
-     * Store demand
-     * @param demand
+     * Store the demand
+     *
+     * @param demand The demand
      */
     public void store( Demand demand )
     {

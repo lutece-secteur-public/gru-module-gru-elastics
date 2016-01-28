@@ -36,6 +36,7 @@ package fr.paris.lutece.plugins.grusupply.service;
 import fr.paris.lutece.plugins.gru.business.customer.Customer;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
+
 /**
  * CustomerService
  */
@@ -46,7 +47,7 @@ public class CustomerService
     private static CustomerService _singleton;
 
     /** private constructor */
-    private CustomerService()
+    private CustomerService(  )
     {
     }
 
@@ -56,9 +57,9 @@ public class CustomerService
      */
     public static CustomerService instance( )
     {
-        if( _singleton == null )
+        if ( _singleton == null )
         {
-            _singleton = new CustomerService( );
+            _singleton = new CustomerService(  );
             _customerInfoService = SpringContextService.getBean( BEAN_CUSTOMER_INFO_SERVICE );
         }
         return _singleton;

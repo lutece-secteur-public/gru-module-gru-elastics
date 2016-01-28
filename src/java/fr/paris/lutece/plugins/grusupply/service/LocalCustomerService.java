@@ -36,12 +36,12 @@ package fr.paris.lutece.plugins.grusupply.service;
 import fr.paris.lutece.plugins.gru.business.customer.Customer;
 import fr.paris.lutece.plugins.gru.business.customer.CustomerHome;
 
+
 /**
  * LocalCustomerService
  */
 public class LocalCustomerService implements ICustomerInfoService
 {
-
     /**
      * {@inheritDoc }
      */
@@ -68,5 +68,4 @@ public class LocalCustomerService implements ICustomerInfoService
     {
         return CustomerHome.create( c );
     }
-
 }
