@@ -42,7 +42,7 @@ import fr.paris.lutece.plugins.grusupply.business.dto.UserDTO;
 public interface IUserInfoProvider
 {
     /**
-     * Ruturns user Info
+     * Returns user Info
      * @param guid
      * @return user info
      */

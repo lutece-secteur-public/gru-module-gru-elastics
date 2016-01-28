@@ -41,7 +41,9 @@ import fr.paris.lutece.plugins.grusupply.business.Notification;
 import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
 import fr.paris.lutece.plugins.grusupply.business.dto.UserDTO;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
-import fr.paris.lutece.plugins.grusupply.service.GRUService;
+import fr.paris.lutece.plugins.grusupply.service.CustomerService;
+import fr.paris.lutece.plugins.grusupply.service.StorageService;
+import fr.paris.lutece.plugins.grusupply.service.UserInfoService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -66,7 +68,7 @@ public class GRUSupplyRestService
     private static final String STATUS_RECEIVED = "{ \"status\": \"received\" }";
     
     /**
-     * Web Service methode which permit to store notification in elasticsearch
+     * Web Service methode which permit to store flux notification into a data store
      *
      * @param strJson
      * @return
@@ -99,20 +101,24 @@ public class GRUSupplyRestService
                 } // CASE 1.2  : no cid and guid:  look for a mapping beween an existing guid
                 else
                 {
-                    gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByGuid( notif.getUserGuid(  ) );
+                	gruCustomer = CustomerService.instance().getCustomerByGuid( notif.getUserGuid(  ) );
+                    // gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByGuid( notif.getUserGuid(  ) );
 
                     if ( gruCustomer == null )
                     {
                         String strGuid = notif.getUserGuid(  );
 
-                        UserDTO userDto = GRUService.instance(  ).getUserInfo( strGuid );
+                        UserDTO userDto = UserInfoService.instance(  ).getUserInfo( strGuid );
 
                         gruCustomer = new fr.paris.lutece.plugins.gru.business.customer.Customer(  );
                         gruCustomer.setFirstname( userDto.getFirstname(  ) );
                         gruCustomer.setLastname( userDto.getLastname(  ) );
                         gruCustomer.setEmail( userDto.getEmail(  ) );
                         gruCustomer.setAccountGuid( strGuid );
-                        gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.create( gruCustomer );
+                        //gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.create( gruCustomer );
+                        gruCustomer = CustomerService.instance().createCustomer( gruCustomer );
+                        
+                        
                         AppLogService.info( "New user created into the GRU for the guid : " + strGuid +
                             " its customer id is : " + gruCustomer.getId(  ) );
                     }
@@ -120,8 +126,8 @@ public class GRUSupplyRestService
             } // CASE 2 : cid and (guid or no guid):  find customer info in GRU database
             else
             {
-                gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByPrimaryKey( Integer.parseInt( 
-                            notif.getCustomerid(  ) ) );
+            	gruCustomer = CustomerService.instance().getCustomerByCid(notif.getCustomerid(  ) );
+                //gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByPrimaryKey( Integer.parseInt( notif.getCustomerid(  ) ) );
 
                 if ( gruCustomer == null )
                 {
@@ -131,13 +137,13 @@ public class GRUSupplyRestService
             }
 
             // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
-            GRUService.instance(  ).store( parseCustomer( gruCustomer ) );
+            StorageService.instance(  ).store( buildCustomer( gruCustomer ) );
 
             // Parse to Demand
-            GRUService.instance(  ).store( parseDemand( notif, gruCustomer.getId(  ) ) );
+            StorageService.instance(  ).store( buildDemand( notif, gruCustomer.getId(  ) ) );
 
             // Parse to Notification
-            GRUService.instance(  ).store( parseNotif( notif, strJson ) );
+            StorageService.instance(  ).store( buildNotif( notif, strJson ) );
         }
         catch ( JsonParseException ex )
         {
@@ -161,7 +167,7 @@ public class GRUSupplyRestService
      * @param gruCustomer
      * @return
      */
-    private static Customer parseCustomer( fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer )
+    private static Customer buildCustomer( fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer )
     {
         Customer grusupplyCustomer = new Customer(  );
         grusupplyCustomer.setCustomerId( gruCustomer.getId(  ) );
@@ -187,7 +193,7 @@ public class GRUSupplyRestService
      * @param nCustomerId
      * @return
      */
-    private static Demand parseDemand( NotificationDTO notifDTO, int nCustomerId )
+    private static Demand buildDemand( NotificationDTO notifDTO, int nCustomerId )
     {
         Demand demand = new Demand(  );
         demand.setUserCid( nCustomerId );
@@ -210,7 +216,7 @@ public class GRUSupplyRestService
      * @param notifDTO
      * @return
      */
-    private static Notification parseNotif( NotificationDTO notifDTO, String strJson )
+    private static Notification buildNotif( NotificationDTO notifDTO, String strJson )
     {
         Notification notification = new Notification(  );
         notification.setDemandeId( notifDTO.getDemandeId(  ) );
