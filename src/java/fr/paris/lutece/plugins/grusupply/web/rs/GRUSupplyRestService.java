@@ -89,12 +89,15 @@ public class GRUSupplyRestService
 
             // Find CID in GRU Database
             fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer;
+            
+            String strTempCid = notif.getCustomerid(  );
+            String strTempGuid = notif.getUserGuid(  );
 
             // CASE 1 NOT CID
-            if ( StringUtils.isNullOrEmpty( notif.getCustomerid(  ) ) )
+            if ( StringUtils.isNullOrEmpty( strTempCid ) )
             {
                 // CASE 1.1 : no cid and no guid:  break the flux and wait for a new flux with one of them
-                if ( StringUtils.isNullOrEmpty( notif.getUserGuid(  ) ) )
+                if ( StringUtils.isNullOrEmpty( strTempGuid ) )
                 {
                     return error( "grusupply - Error : JSON doesnit contains any GUID nor Customer ID" );
                 } // CASE 1.2  : no cid and guid:  look for a mapping beween an existing guid
@@ -102,24 +105,20 @@ public class GRUSupplyRestService
                 {
                 	gruCustomer = CustomerService.instance().getCustomerByGuid( notif.getUserGuid(  ) );
 
-
-                    // gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByGuid( notif.getUserGuid(  ) );
                     if ( gruCustomer == null )
                     {
-                        String strGuid = notif.getUserGuid(  );
-
-                        UserDTO userDto = UserInfoService.instance(  ).getUserInfo( strGuid );
+                        UserDTO userDto = UserInfoService.instance(  ).getUserInfo( strTempGuid );
 
                         gruCustomer = new fr.paris.lutece.plugins.gru.business.customer.Customer(  );
                         gruCustomer.setFirstname( userDto.getFirstname(  ) );
                         gruCustomer.setLastname( userDto.getLastname(  ) );
                         gruCustomer.setEmail( userDto.getEmail(  ) );
-                        gruCustomer.setAccountGuid( strGuid );
+                        gruCustomer.setAccountGuid( strTempGuid );
 
                         gruCustomer = CustomerService.instance().createCustomer( gruCustomer );
                         
 
-                        AppLogService.info( "New user created into the GRU for the guid : " + strGuid +
+                        AppLogService.info( "New user created into the GRU for the guid : " + strTempGuid +
                             " its customer id is : " + gruCustomer.getId(  ) );
                     }
                 }
@@ -127,13 +126,10 @@ public class GRUSupplyRestService
             else
             {
 
-                gruCustomer = CustomerService.instance(  ).getCustomerByCid( notif.getCustomerid(  ) );
-
-                //gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByPrimaryKey( Integer.parseInt( notif.getCustomerid(  ) ) );
+                gruCustomer = CustomerService.instance(  ).getCustomerByCid( strTempCid );
                 if ( gruCustomer == null )
                 {
-                    return error( "grusupply - Error : No user found with the customer ID : " +
-                        notif.getCustomerid(  ) );
+                    return error( "grusupply - Error : No user found with the customer ID : " + strTempCid );
                 }
             }
 
