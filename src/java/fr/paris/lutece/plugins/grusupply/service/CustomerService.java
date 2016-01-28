@@ -1,6 +1,7 @@
 package fr.paris.lutece.plugins.grusupply.service;
 
 import fr.paris.lutece.plugins.gru.business.customer.Customer;
+import fr.paris.lutece.plugins.gru.business.customer.CustomerHome;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 public class CustomerService {
@@ -27,16 +28,16 @@ public class CustomerService {
     
     public Customer getCustomerByGuid( String strGid )
    	{
-   		return _customerInfoService.getCustomerByGuid(strGid);
+   		return CustomerHome.findByGuid( strGid );
    	}
 
     public Customer getCustomerByCid( String strCid )
    	{
-   		return _customerInfoService.getCustomerByCid(strCid);
+    	return CustomerHome.findByPrimaryKey( Integer.parseInt( strCid ) );
    	}	
 
     public Customer createCustomer( Customer c)
    	{
-   		return _customerInfoService.createCustomer(c);
+    	return CustomerHome.create( c );
    	}   
 }
