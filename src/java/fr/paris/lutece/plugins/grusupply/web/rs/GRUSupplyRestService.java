@@ -117,7 +117,6 @@ public class GRUSupplyRestService
                         gruCustomer.setLastname( userDto.getLastname(  ) );
                         gruCustomer.setEmail( userDto.getEmail(  ) );
                         gruCustomer.setAccountGuid( strGuid );
-                        //gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.create( gruCustomer );
                         gruCustomer = CustomerService.instance().createCustomer( gruCustomer );
                         
                         

@@ -1,43 +1,65 @@
 package fr.paris.lutece.plugins.grusupply.service;
 
 import fr.paris.lutece.plugins.gru.business.customer.Customer;
-import fr.paris.lutece.plugins.gru.business.customer.CustomerHome;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
-public class CustomerService {
+/**
+ * CustomerService
+ */
+public class CustomerService
+{
 
     private static final String BEAN_CUSTOMER_INFO_SERVICE = "grusupply.customerinfoService";
     private static ICustomerInfoService _customerInfoService;
     private static CustomerService _singleton;
-    
-    private CustomerService( )
+
+    /** private constructor */
+    private CustomerService()
     {
-    	
     }
-    
-    public static CustomerService instance( )
+
+    /**
+     * Return the unique instance
+     * @return The instance
+     */
+    public static CustomerService instance()
     {
-        if ( _singleton == null )
+        if( _singleton == null )
         {
-            _singleton = new CustomerService(  );
+            _singleton = new CustomerService();
             _customerInfoService = SpringContextService.getBean( BEAN_CUSTOMER_INFO_SERVICE );
         }
 
-        return _singleton;  	
+        return _singleton;
     }
-    
-    public Customer getCustomerByGuid( String strGid )
-   	{
-   		return CustomerHome.findByGuid( strGid );
-   	}
 
+    /**
+     * Retrieve a customer by its guid
+     * @param strGuid The GUID
+     * @return The customer
+     */
+    public Customer getCustomerByGuid( String strGuid )
+    {
+        return _customerInfoService.getCustomerByGuid( strGuid );
+    }
+
+    /**
+     * Retrieve the customer by its ID
+     * @param strCid The customer ID
+     * @return The customer
+     */
     public Customer getCustomerByCid( String strCid )
-   	{
-    	return CustomerHome.findByPrimaryKey( Integer.parseInt( strCid ) );
-   	}	
+    {
+        return _customerInfoService.getCustomerByCid( strCid );
+    }
 
-    public Customer createCustomer( Customer c)
-   	{
-    	return CustomerHome.create( c );
-   	}   
+    /**
+     * Create a new customer
+     * @param customer The customer
+     * @return  The created customer
+     */
+    public Customer createCustomer( Customer customer )
+    {
+        return _customerInfoService.createCustomer( customer );
+    }
 }
