@@ -251,6 +251,6 @@ public class GRUSupplyRestService
             AppLogService.error( strMessage );
         }
         String strError = "{ \"status\": \"Error : " + strMessage + "\" }";
-        return Response.ok().entity( strError ).build();
+        return Response.status( Response.Status.INTERNAL_SERVER_ERROR ).entity( strError ).build();
     }
 }
