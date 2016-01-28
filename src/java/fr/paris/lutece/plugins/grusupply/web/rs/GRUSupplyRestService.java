@@ -104,7 +104,6 @@ public class GRUSupplyRestService
                 else
                 {
                 	gruCustomer = CustomerService.instance().getCustomerByGuid( notif.getUserGuid(  ) );
-                    // gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByGuid( notif.getUserGuid(  ) );
 
                     if ( gruCustomer == null )
                     {
@@ -117,6 +116,7 @@ public class GRUSupplyRestService
                         gruCustomer.setLastname( userDto.getLastname(  ) );
                         gruCustomer.setEmail( userDto.getEmail(  ) );
                         gruCustomer.setAccountGuid( strGuid );
+
                         gruCustomer = CustomerService.instance().createCustomer( gruCustomer );
                         
                         
@@ -128,7 +128,7 @@ public class GRUSupplyRestService
             else
             {
             	gruCustomer = CustomerService.instance().getCustomerByCid(notif.getCustomerid(  ) );
-                //gruCustomer = fr.paris.lutece.plugins.gru.business.customer.CustomerHome.findByPrimaryKey( Integer.parseInt( notif.getCustomerid(  ) ) );
+                
 
                 if ( gruCustomer == null )
                 {
