@@ -33,12 +33,14 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 
 /**
  * This is the business class for the object EmailNotification
  */
+@JsonIgnoreProperties( ignoreUnknown = true )
 public class EmailNotification
 {
     // Variables declarations 
