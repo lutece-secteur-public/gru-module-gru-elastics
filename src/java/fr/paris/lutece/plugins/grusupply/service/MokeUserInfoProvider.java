@@ -46,6 +46,7 @@ public class MokeUserInfoProvider implements IUserInfoProvider
         user.setLastname( "DOE" );
         user.setCity( "Paris" );
         user.setEmail( "john.doe@email.com" );
+        user.setTelephoneNumber( "0606060606" );
 
         return user;
     }

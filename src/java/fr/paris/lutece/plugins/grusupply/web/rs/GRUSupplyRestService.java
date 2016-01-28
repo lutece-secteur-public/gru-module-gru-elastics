@@ -103,23 +103,12 @@ public class GRUSupplyRestService
                 } // CASE 1.2  : no cid and guid:  look for a mapping beween an existing guid
                 else
                 {
-                	gruCustomer = CustomerService.instance().getCustomerByGuid( notif.getUserGuid(  ) );
+                	gruCustomer = CustomerService.instance( ).getCustomerByGuid( notif.getUserGuid(  ) );
 
                     if ( gruCustomer == null )
                     {
-                        UserDTO userDto = UserInfoService.instance(  ).getUserInfo( strTempGuid );
-
-                        gruCustomer = new fr.paris.lutece.plugins.gru.business.customer.Customer(  );
-                        gruCustomer.setFirstname( userDto.getFirstname(  ) );
-                        gruCustomer.setLastname( userDto.getLastname(  ) );
-                        gruCustomer.setEmail( userDto.getEmail(  ) );
-                        gruCustomer.setAccountGuid( strTempGuid );
-
-                        gruCustomer = CustomerService.instance().createCustomer( gruCustomer );
-                        
-
-                        AppLogService.info( "New user created into the GRU for the guid : " + strTempGuid +
-                            " its customer id is : " + gruCustomer.getId(  ) );
+                        gruCustomer = CustomerService.instance().createCustomer( buildCustomer( UserInfoService.instance(  ).getUserInfo( strTempGuid ), strTempGuid ) );
+                        AppLogService.info( "New user created into the GRU for the guid : " + strTempGuid + " its customer id is : " + gruCustomer.getId(  ) );
                     }
                 }
             } // CASE 2 : cid and (guid or no guid):  find customer info in GRU database
@@ -158,6 +147,20 @@ public class GRUSupplyRestService
         return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build(  );
     }
 
+    private static fr.paris.lutece.plugins.gru.business.customer.Customer buildCustomer( UserDTO user , String strUserId )
+    {
+		fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = new fr.paris.lutece.plugins.gru.business.customer.Customer(  );
+		gruCustomer.setFirstname( user.getFirstname(  ) );
+		gruCustomer.setLastname( user.getLastname(  ) );
+		gruCustomer.setEmail( user.getEmail(  ) );
+		//gruCustomer.setAccountGuid( user.getUid( ) );
+		gruCustomer.setAccountGuid( strUserId );
+		gruCustomer.setAccountLogin( user.getFirstname( ) +"-"+ user.getLastname( ) );
+		gruCustomer.setMobilePhone( user.getTelephoneNumber( ) );
+		gruCustomer.setExtrasAttributes( "NON RENSEIGNE" );
+		return gruCustomer;
+		
+    }
     /**
      * Method which create a demand from Data base, a flux and GRU database
      *
