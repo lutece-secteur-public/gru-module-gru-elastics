@@ -290,7 +290,7 @@ public class NotificationDTO
 
     /**
      * Sets the UserDashBoard
-     * @param UserDashBoard The UserDashBoard
+     * @param userDashBoard The UserDashBoard
      */
     @JsonProperty( "user_dashboard" )
     public void setUserDashBoard( DashboardNotification userDashBoard )
@@ -309,7 +309,7 @@ public class NotificationDTO
 
     /**
      * Sets the UserSms
-     * @param UserSms The UserSms
+     * @param userSms The UserSms
      */
     @JsonProperty( "user_sms" )
     public void setUserSms( SMSNotification userSms )
