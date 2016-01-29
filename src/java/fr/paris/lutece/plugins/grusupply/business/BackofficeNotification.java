@@ -33,9 +33,6 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
-
 /**
  * This is the business class for the object UserDashboard
  */
@@ -58,7 +55,6 @@ public class BackofficeNotification
      * Returns the Message
      * @return The Message
      */
-    @JsonProperty( "message" )
     public String getMessage(  )
     {
         return _strMessage;
@@ -68,7 +64,6 @@ public class BackofficeNotification
      * Sets the Message
      * @param strMessage The Message
      */
-    @JsonProperty( "message" )
     public void setMessage( String strMessage )
     {
         _strMessage = strMessage;
@@ -78,7 +73,6 @@ public class BackofficeNotification
      * Returns the StatusText
      * @return The StatusText
      */
-    @JsonProperty( "status_text" )
     public String getStatusText(  )
     {
         return _strStatusText;
@@ -88,7 +82,6 @@ public class BackofficeNotification
      * Sets the StatusText
      * @param strStatusText The StatusText
      */
-    @JsonProperty( "status_text" )
     public void setStatusText( String strStatusText )
     {
         _strStatusText = strStatusText;
@@ -98,7 +91,6 @@ public class BackofficeNotification
      * Returns the NotifiedDashboard
      * @return The NotifiedDashboard
      */
-    @JsonProperty( "notified_on_dashboard" )
     public String getNotifiedDashboard(  )
     {
         return _strNotifiedDashboard;
@@ -108,7 +100,6 @@ public class BackofficeNotification
      * Sets the NotifiedDashboard
      * @param strNotifiedDashboard The NotifiedDashboard
      */
-    @JsonProperty( "notified_on_dashboard" )
     public void setNotifiedDashboard( String strNotifiedDashboard )
     {
         _strNotifiedDashboard = strNotifiedDashboard;
@@ -118,7 +109,6 @@ public class BackofficeNotification
      * Returns the DisplayDashboard
      * @return The DisplayDashboard
      */
-    @JsonProperty( "display_level_dashboard_notification" )
     public String getDisplayDashboard(  )
     {
         return _strDisplayDashboard;
@@ -128,7 +118,6 @@ public class BackofficeNotification
      * Sets the DisplayDashboard
      * @param strDisplayDashboard The DisplayDashboard
      */
-    @JsonProperty( "display_level_dashboard_notification" )
     public void setDisplayDashboard( String strDisplayDashboard )
     {
         _strDisplayDashboard = strDisplayDashboard;
@@ -138,7 +127,6 @@ public class BackofficeNotification
      * Returns the ViewDashboard
      * @return The ViewDashboard
      */
-    @JsonProperty( "view_dashboard_notification" )
     public String getViewDashboard(  )
     {
         return _strViewDashboard;
@@ -148,7 +136,6 @@ public class BackofficeNotification
      * Sets the ViewDashboard
      * @param strViewDashboard The ViewDashboard
      */
-    @JsonProperty( "view_dashboard_notification" )
     public void setViewDashboard( String strViewDashboard )
     {
         _strViewDashboard = strViewDashboard;
@@ -158,7 +145,6 @@ public class BackofficeNotification
      * Returns the NotifiedEmail
      * @return The NotifiedEmail
      */
-    @JsonProperty( "notified_by_email" )
     public String getNotifiedEmail(  )
     {
         return _strNotifiedEmail;
@@ -168,7 +154,6 @@ public class BackofficeNotification
      * Sets the NotifiedEmail
      * @param strNotifiedEmail The NotifiedEmail
      */
-    @JsonProperty( "notified_by_email" )
     public void setNotifiedEmail( String strNotifiedEmail )
     {
         _strNotifiedEmail = strNotifiedEmail;
@@ -178,7 +163,6 @@ public class BackofficeNotification
      * Returns the DisplayEmail
      * @return The DisplayEmail
      */
-    @JsonProperty( "display_level_email_notification" )
     public String getDisplayEmail(  )
     {
         return _strDisplayEmail;
@@ -188,7 +172,6 @@ public class BackofficeNotification
      * Sets the DisplayEmail
      * @param strDisplayEmail The DisplayEmail
      */
-    @JsonProperty( "display_level_email_notification" )
     public void setDisplayEmail( String strDisplayEmail )
     {
         _strDisplayEmail = strDisplayEmail;
@@ -198,7 +181,6 @@ public class BackofficeNotification
      * Returns the ViewEmail
      * @return The ViewEmail
      */
-    @JsonProperty( "view_email_notification" )
     public String getViewEmail(  )
     {
         return _strViewEmail;
@@ -208,7 +190,6 @@ public class BackofficeNotification
      * Sets the ViewEmail
      * @param strViewEmail The ViewEmail
      */
-    @JsonProperty( "view_email_notification" )
     public void setViewEmail( String strViewEmail )
     {
         _strViewEmail = strViewEmail;
@@ -218,7 +199,6 @@ public class BackofficeNotification
      * Returns the NNotifiedSms
      * @return The NNotifiedSms
      */
-    @JsonProperty( "notified_by_sms" )
     public int getNotifiedSms(  )
     {
         return _nNotifiedSms;
@@ -228,7 +208,6 @@ public class BackofficeNotification
      * Sets the NotifiedSms
      * @param nNotifiedSms The NotifiedSms
      */
-    @JsonProperty( "notified_by_sms" )
     public void setNotifiedSms( int nNotifiedSms )
     {
         _nNotifiedSms = nNotifiedSms;
@@ -238,7 +217,6 @@ public class BackofficeNotification
      * Returns the DisplaySms
      * @return The DisplaySms
      */
-    @JsonProperty( "display_level_sms_notification" )
     public int getDisplaySms(  )
     {
         return _nDisplaySms;
@@ -248,7 +226,6 @@ public class BackofficeNotification
      * Sets the DisplaySms
      * @param nDisplaySms The DisplaySms
      */
-    @JsonProperty( "display_level_sms_notification" )
     public void setDisplaySms( int nDisplaySms )
     {
         _nDisplaySms = nDisplaySms;
@@ -258,7 +235,6 @@ public class BackofficeNotification
      * Returns the ViewSms
      * @return The ViewSms
      */
-    @JsonProperty( "view_sms_notification" )
     public String getViewSms(  )
     {
         return _strViewSms;
@@ -268,7 +244,6 @@ public class BackofficeNotification
      * Sets the ViewSms
      * @param strViewSms The ViewSms
      */
-    @JsonProperty( "view_sms_notification" )
     public void setViewSms( String strViewSms )
     {
         _strViewSms = strViewSms;

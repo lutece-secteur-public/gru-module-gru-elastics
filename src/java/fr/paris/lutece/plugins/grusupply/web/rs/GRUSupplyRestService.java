@@ -124,13 +124,15 @@ public class GRUSupplyRestService
 
             // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
             Customer user = buildCustomer( gruCustomer );
+            Demand demand = buildDemand( notif, user );
+            Notification notification = buildNotif( notif, demand, strJson );
             StorageService.instance(  ).store( user );
 
             // Parse to Demand
-            StorageService.instance(  ).store( buildDemand( notif, user ) );
+            StorageService.instance(  ).store( demand );
 
             // Parse to Notification
-            StorageService.instance(  ).store( buildNotif( notif, strJson ) );
+            StorageService.instance(  ).store( notification );
         }
         catch ( JsonParseException ex )
         {
@@ -188,7 +190,6 @@ public class GRUSupplyRestService
          grusupplyCustomer.setTelephoneNumber( gruCustomer.getTelephoneNumber(  ) );*/
         grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
         grusupplyCustomer.setStayConnected( true );
-        grusupplyCustomer.set_oSuggest();
 
         return grusupplyCustomer;
     }
@@ -202,7 +203,7 @@ public class GRUSupplyRestService
     private static Demand buildDemand( NotificationDTO notifDTO, Customer user )
     {
         Demand demand = new Demand(  );
-        demand.setUserCid( user.getCustomerId( ) );
+        demand.setCustomer(user);
         demand.setDemandId( notifDTO.getDemandeId(  ) );
         demand.setDemandIdType( notifDTO.getDemandIdType(  ) );
         demand.setDemandMaxStep( -1 );
@@ -212,8 +213,6 @@ public class GRUSupplyRestService
         demand.setDateDemand( "NON RENSEIGNE" );
         demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
         demand.setReference( "NON RENSEIGNE" );
-        demand.setSuggest(user);
-
         return demand;
     }
 
@@ -222,11 +221,10 @@ public class GRUSupplyRestService
      * @param notifDTO
      * @return
      */
-    private static Notification buildNotif( NotificationDTO notifDTO, String strJson )
+    private static Notification buildNotif( NotificationDTO notifDTO, Demand demand, String strJson )
     {
         Notification notification = new Notification(  );
-        notification.setDemandeId( notifDTO.getDemandeId(  ) );
-        notification.setDemandIdType( notifDTO.getDemandIdType(  ) );
+        notification.setDemand(demand);
         notification.setUserEmail( notifDTO.getUserEmail(  ) );
         notification.setUserDashBoard( notifDTO.getUserDashBoard(  ) );
         notification.setUserSms( notifDTO.getUserSms(  ) );

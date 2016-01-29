@@ -33,18 +33,13 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
-
 /**
  * This is the business class for the object Notification
  */
-@JsonPropertyOrder({"demande","user_backoffice","date_sollicitation","user_email","user_dashboard","user_sms"})
 public class Notification
 {
     // Variables declarations 
-    private int _nDemandeId;
-    private int _nDemandIdType;
+	private Demand _oDemand;
     private String _strDateSollicitation;
     private EmailNotification _emailNotification;
     private DashboardNotification _dashBoardNotification;
@@ -53,47 +48,26 @@ public class Notification
     private String _strJson;
 
     /**
-     * Returns the DemandeId
-     * @return The DemandeId
+     * Returns the Demand
+     * @return
      */
-    @JsonProperty( "demande" )
-    public int getDemandId(  )
-    {
-        return _nDemandeId;
-    }
-
-    /**
-     * Sets the DemandeId
-     * @param nDemandeId The DemandeId
-     */
-    public void setDemandeId( int nDemandeId )
-    {
-        _nDemandeId = nDemandeId;
-    }
-
-    /**
-     * Returns the DemandIdType
-     * @return The DemandIdType
-     */
-    public int getDemandIdType(  )
-    {
-        return _nDemandIdType;
-    }
-
-    /**
-     * Sets the DemandIdType
-     * @param nDemandIdType The DemandIdType
-     */
-    public void setDemandIdType( int nDemandIdType )
-    {
-        _nDemandIdType = nDemandIdType;
-    }
+    public Demand getDemand() {
+		return _oDemand;
+	}
     
+    /**
+     * Gets the Demand
+     * @param _oDemand
+     */
+	public void setDemand(Demand _oDemand) {
+		this._oDemand = _oDemand;
+	}
+
+	
     /**
      * Returns the Date of Sollicitation
      * @return
      */
-    @JsonProperty( "date_sollicitation" )
     public String getDateSollicitation() {
 		return _strDateSollicitation;
 	}
@@ -109,7 +83,6 @@ public class Notification
      * Returns the EmailNotification
      * @return The EmailNotification
      */
-    @JsonProperty( "user_email" )
     public EmailNotification getUserEmail(  )
     {
         return _emailNotification;
@@ -128,7 +101,6 @@ public class Notification
      * Returns the UserDashBoard
      * @return The UserDashBoard
      */
-    @JsonProperty( "user_dashboard" )
     public DashboardNotification getUserDashBoard(  )
     {
         return _dashBoardNotification;
@@ -147,7 +119,6 @@ public class Notification
      * Returns the UserSms
      * @return The UserSms
      */
-    @JsonProperty( "user_sms" )
     public SMSNotification getUserSms(  )
     {
         return _smsNotification;
@@ -166,7 +137,6 @@ public class Notification
      * Returns the UserBackOffice
      * @return The UserBackOffice
      */
-    @JsonProperty( "user_backoffice" )
     public BackofficeNotification getUserBackOffice(  )
     {
         return _backOfficeNotification;

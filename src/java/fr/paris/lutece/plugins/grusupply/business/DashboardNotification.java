@@ -33,9 +33,6 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
-
 /**
  * This is the business class for the object DashboardNotification
  */
@@ -52,7 +49,6 @@ public class DashboardNotification
      * Returns the StatusText
      * @return The StatusText
      */
-    @JsonProperty( "status_text" )
     public String getStatusText(  )
     {
         return _strStatusText;
@@ -62,7 +58,6 @@ public class DashboardNotification
      * Sets the StatusText
      * @param strStatusText The StatusText
      */
-    @JsonProperty( "status_text" )
     public void setStatusText( String strStatusText )
     {
         _strStatusText = strStatusText;
@@ -72,7 +67,6 @@ public class DashboardNotification
      * Returns the Message
      * @return The Message
      */
-    @JsonProperty( "message" )
     public String getMessage(  )
     {
         return _strMessage;
@@ -82,7 +76,6 @@ public class DashboardNotification
      * Sets the Message
      * @param strMessage The Message
      */
-    @JsonProperty( "message" )
     public void setMessage( String strMessage )
     {
         _strMessage = strMessage;
@@ -92,7 +85,6 @@ public class DashboardNotification
      * Returns the Subject
      * @return The Subject
      */
-    @JsonProperty( "subject" )
     public String getSubject(  )
     {
         return _strSubject;
@@ -102,7 +94,6 @@ public class DashboardNotification
      * Sets the Subject
      * @param strSubject The Subject
      */
-    @JsonProperty( "subject" )
     public void setSubject( String strSubject )
     {
         _strSubject = strSubject;
@@ -112,7 +103,6 @@ public class DashboardNotification
      * Returns the SenderName
      * @return The SenderName
      */
-    @JsonProperty( "sender_name" )
     public String getSenderName(  )
     {
         return _strSenderName;
@@ -122,7 +112,6 @@ public class DashboardNotification
      * Sets the SenderName
      * @param strSenderName The SenderName
      */
-    @JsonProperty( "sender_name" )
     public void setSenderName( String strSenderName )
     {
         _strSenderName = strSenderName;
@@ -132,7 +121,6 @@ public class DashboardNotification
      * Returns the Data
      * @return The Data
      */
-    @JsonProperty( "data" )
     public String getData(  )
     {
         return _strData;
@@ -142,7 +130,6 @@ public class DashboardNotification
      * Sets the Data
      * @param strData The Data
      */
-    @JsonProperty( "data" )
     public void setData( String strData )
     {
         _strData = strData;

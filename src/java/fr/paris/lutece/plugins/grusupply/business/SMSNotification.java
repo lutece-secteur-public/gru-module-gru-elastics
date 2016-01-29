@@ -33,8 +33,6 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 
 /**
  * This is the business class for the object SMSNotification
@@ -49,7 +47,6 @@ public class SMSNotification
      * Returns the PhoneNumber
      * @return The PhoneNumber
      */
-    @JsonProperty( "phone_number" )
     public int getPhoneNumber(  )
     {
         return _nPhoneNumber;
@@ -59,7 +56,6 @@ public class SMSNotification
      * Sets the PhoneNumber
      * @param nPhoneNumber The PhoneNumber
      */
-    @JsonProperty( "phone_number" )
     public void setPhoneNumber( int nPhoneNumber )
     {
         _nPhoneNumber = nPhoneNumber;
@@ -69,7 +65,6 @@ public class SMSNotification
      * Returns the Message
      * @return The Message
      */
-    @JsonProperty( "message" )
     public String getMessage(  )
     {
         return _strMessage;
@@ -79,7 +74,6 @@ public class SMSNotification
      * Sets the Message
      * @param strMessage The Message
      */
-    @JsonProperty( "message" )
     public void setMessage( String strMessage )
     {
         _strMessage = strMessage;

@@ -33,15 +33,9 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
-import java.util.ArrayList;
-
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
-
 /**
  * This is the business class for the object Customer
  */
-@JsonPropertyOrder({ "user_cid","email","last_name","first_name","stayConnected","street","telephoneNumber","city","cityOfBirth","birthday","civility","postalCode","suggest"})
 public class Customer
 {
     // Variables declarations 
@@ -57,13 +51,11 @@ public class Customer
     private String _strCity;
     private String _strPostalCode;
     private String _strTelephoneNumber;
-    private Suggest _oSuggest;
 
     /**
      * Returns the CustomerId
      * @return The CustomerId
      */
-    @JsonProperty( "user_cid" )
     public int getCustomerId(  )
     {
         return _nCustomerId;
@@ -82,7 +74,6 @@ public class Customer
      * Returns the Name
      * @return The Name
      */
-    @JsonProperty( "last_name" )
     public String getName(  )
     {
         return _strName;
@@ -101,7 +92,6 @@ public class Customer
      * Returns the FirstName
      * @return The FirstName
      */
-    @JsonProperty( "first_name" )
     public String getFirstName(  )
     {
         return _strFirstName;
@@ -120,7 +110,6 @@ public class Customer
      * Returns the Email
      * @return The Email
      */
-    @JsonProperty( "email" )
     public String getEmail(  )
     {
         return _strEmail;
@@ -139,7 +128,6 @@ public class Customer
      * Returns the Birthday
      * @return The Birthday
      */
-    @JsonProperty( "birthday" )
     public String getBirthday(  )
     {
         return _strBirthday;
@@ -158,7 +146,6 @@ public class Customer
      * Returns the Civility
      * @return The Civility
      */
-    @JsonProperty( "civility" )
     public String getCivility(  )
     {
         return _strCivility;
@@ -177,7 +164,6 @@ public class Customer
      * Returns the Street
      * @return The Street
      */
-    @JsonProperty( "street" )
     public String getStreet(  )
     {
         return _strStreet;
@@ -196,7 +182,6 @@ public class Customer
      * Returns the CityOfBirth
      * @return The CityOfBirth
      */
-    @JsonProperty( "cityOfBirth" )
     public String getCityOfBirth(  )
     {
         return _strCityOfBirth;
@@ -215,7 +200,6 @@ public class Customer
      * Returns the StayConnected
      * @return The StayConnected
      */
-    @JsonProperty( "stayConnected" )
     public boolean getStayConnected(  )
     {
         return _bStayConnected;
@@ -234,7 +218,6 @@ public class Customer
      * Returns the City
      * @return The City
      */
-    @JsonProperty( "city" )
     public String getCity(  )
     {
         return _strCity;
@@ -253,7 +236,6 @@ public class Customer
      * Returns the PostalCode
      * @return The PostalCode
      */
-    @JsonProperty( "postalCode" )
     public String getPostalCode(  )
     {
         return _strPostalCode;
@@ -272,7 +254,6 @@ public class Customer
      * Returns the TelephoneNumber
      * @return The TelephoneNumber
      */
-    @JsonProperty( "telephoneNumber" )
     public String getTelephoneNumber(  )
     {
         return _strTelephoneNumber;
@@ -286,31 +267,5 @@ public class Customer
     {
         _strTelephoneNumber = strTelephoneNumber;
     }
-    /**
-     * Returns the suggest
-     */
-    @JsonProperty( "suggest" )
-	public Suggest get_oSuggest( )
-    {
-		return _oSuggest;
-	}
-	/**
-	 * Sets the suggest
-	 */
-	public void set_oSuggest( ) 
-	{
-		Suggest s = new Suggest( );
-		String[ ] input = { _strName,_strFirstName,_strTelephoneNumber,_strEmail };
-		s.setInput(input);
-		s.setOutput(_strName+" "+_strFirstName);
-		
-    	ArrayList<String> retour = new ArrayList<String>();
-    	retour.add(String.valueOf(_nCustomerId));
-    	retour.add(_strBirthday);
-    	retour.add(_strTelephoneNumber);
-    	retour.add(_strEmail);
-    	s.setPayload(retour);
-    	_oSuggest = s;
-	}
 
 }
