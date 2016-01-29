@@ -33,12 +33,16 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
+import java.util.ArrayList;
+
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
 
 /**
  * This is the business class for the object Demand
  */
+@JsonPropertyOrder({"utilisateur","demand_id","demand_id_type","demand_max_step","demand_user_current_step","demand_state","notification_type","date_demande","crm_status_id","reference","suggest"})
 public class Demand
 {
     // Variables declarations 
@@ -52,11 +56,13 @@ public class Demand
     private String _strDateDemand;
     private int _nCRMStatus;
     private String _strReference;
+    private Suggest _oSuggest;
 
     /**
      * Returns the UserGuid
      * @return The UserGuid
      */
+    @JsonProperty( "utilisateur" )
     public int getUserCid(  )
     {
         return _nUserCid;
@@ -241,4 +247,32 @@ public class Demand
     {
         _strReference = strReference;
     }
+    /**
+     * Return the Suggest
+     * @return The suggest
+     */
+    @JsonProperty( "suggest" )
+	public Suggest getSuggest() {
+		return _oSuggest;
+	}
+	/**
+	 * Sets the suggest
+	 */
+	public void setSuggest(Customer user) 
+	{
+		Suggest s = new Suggest( );
+		String[ ] input = { _strReference };
+		s.setInput(input);
+		s.setOutput(user.getName()+" "+user.getFirstName());
+		
+    	ArrayList<String> retour = new ArrayList<String>();
+    	retour.add(String.valueOf(user.getCustomerId()));
+    	retour.add(user.getBirthday());
+    	retour.add(user.getTelephoneNumber());
+    	retour.add(user.getEmail());
+    	retour.add(_strReference);
+    	s.setPayload(retour);
+    	this._oSuggest = s;
+	}
+    
 }

@@ -33,15 +33,19 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonPropertyOrder;
 
 /**
  * This is the business class for the object Notification
  */
+@JsonPropertyOrder({"demande","user_backoffice","date_sollicitation","user_email","user_dashboard","user_sms"})
 public class Notification
 {
     // Variables declarations 
     private int _nDemandeId;
     private int _nDemandIdType;
+    private String _strDateSollicitation;
     private EmailNotification _emailNotification;
     private DashboardNotification _dashBoardNotification;
     private SMSNotification _smsNotification;
@@ -52,6 +56,7 @@ public class Notification
      * Returns the DemandeId
      * @return The DemandeId
      */
+    @JsonProperty( "demande" )
     public int getDemandId(  )
     {
         return _nDemandeId;
@@ -83,11 +88,28 @@ public class Notification
     {
         _nDemandIdType = nDemandIdType;
     }
-
+    
     /**
+     * Returns the Date of Sollicitation
+     * @return
+     */
+    @JsonProperty( "date_sollicitation" )
+    public String getDateSollicitation() {
+		return _strDateSollicitation;
+	}
+    /**
+     * Sets the date of sollicitation 
+     * @param _strDateSollicitation
+     */
+	public void setDateSollicitation(String strDateSollicitation) {
+		this._strDateSollicitation = strDateSollicitation;
+	}
+
+	/**
      * Returns the EmailNotification
      * @return The EmailNotification
      */
+    @JsonProperty( "user_email" )
     public EmailNotification getUserEmail(  )
     {
         return _emailNotification;
@@ -106,6 +128,7 @@ public class Notification
      * Returns the UserDashBoard
      * @return The UserDashBoard
      */
+    @JsonProperty( "user_dashboard" )
     public DashboardNotification getUserDashBoard(  )
     {
         return _dashBoardNotification;
@@ -124,6 +147,7 @@ public class Notification
      * Returns the UserSms
      * @return The UserSms
      */
+    @JsonProperty( "user_sms" )
     public SMSNotification getUserSms(  )
     {
         return _smsNotification;
@@ -142,6 +166,7 @@ public class Notification
      * Returns the UserBackOffice
      * @return The UserBackOffice
      */
+    @JsonProperty( "user_backoffice" )
     public BackofficeNotification getUserBackOffice(  )
     {
         return _backOfficeNotification;

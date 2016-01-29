@@ -123,10 +123,11 @@ public class GRUSupplyRestService
             }
 
             // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
-            StorageService.instance(  ).store( buildCustomer( gruCustomer ) );
+            Customer user = buildCustomer( gruCustomer );
+            StorageService.instance(  ).store( user );
 
             // Parse to Demand
-            StorageService.instance(  ).store( buildDemand( notif, gruCustomer.getId(  ) ) );
+            StorageService.instance(  ).store( buildDemand( notif, user ) );
 
             // Parse to Notification
             StorageService.instance(  ).store( buildNotif( notif, strJson ) );
@@ -146,7 +147,12 @@ public class GRUSupplyRestService
 
         return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build(  );
     }
-
+    /**
+     * Methode which create a gru Customer
+     * @param user User from SSO database
+     * @param strUserId ID from Flux
+     * @return the Customer
+     */
     private static fr.paris.lutece.plugins.gru.business.customer.Customer buildCustomer( UserDTO user , String strUserId )
     {
 		fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = new fr.paris.lutece.plugins.gru.business.customer.Customer(  );
@@ -182,21 +188,21 @@ public class GRUSupplyRestService
          grusupplyCustomer.setTelephoneNumber( gruCustomer.getTelephoneNumber(  ) );*/
         grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
         grusupplyCustomer.setStayConnected( true );
+        grusupplyCustomer.set_oSuggest();
 
         return grusupplyCustomer;
     }
 
     /**
      * Method which create a demand from an flux
-     *
      * @param notifDTO
      * @param nCustomerId
      * @return
      */
-    private static Demand buildDemand( NotificationDTO notifDTO, int nCustomerId )
+    private static Demand buildDemand( NotificationDTO notifDTO, Customer user )
     {
         Demand demand = new Demand(  );
-        demand.setUserCid( nCustomerId );
+        demand.setUserCid( user.getCustomerId( ) );
         demand.setDemandId( notifDTO.getDemandeId(  ) );
         demand.setDemandIdType( notifDTO.getDemandIdType(  ) );
         demand.setDemandMaxStep( -1 );
@@ -206,13 +212,13 @@ public class GRUSupplyRestService
         demand.setDateDemand( "NON RENSEIGNE" );
         demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
         demand.setReference( "NON RENSEIGNE" );
+        demand.setSuggest(user);
 
         return demand;
     }
 
     /**
      * Method which create a notification from a flux
-     *
      * @param notifDTO
      * @return
      */
