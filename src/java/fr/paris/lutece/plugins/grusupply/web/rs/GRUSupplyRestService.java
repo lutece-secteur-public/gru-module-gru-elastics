@@ -122,10 +122,11 @@ public class GRUSupplyRestService
                 }
             }
 
-            // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
             Customer user = buildCustomer( gruCustomer );
             Demand demand = buildDemand( notif, user );
             Notification notification = buildNotif( notif, demand, strJson );
+
+            // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
             StorageService.instance(  ).store( user );
 
             // Parse to Demand
