@@ -99,7 +99,7 @@ public class GRUSupplyRestService
                 // CASE 1.1 : no cid and no guid:  break the flux and wait for a new flux with one of them
                 if ( StringUtils.isNullOrEmpty( strTempGuid ) )
                 {
-                    return error( "grusupply - Error : JSON doesnit contains any GUID nor Customer ID" );
+                    return error( "grusupply - Error : JSON doesnot contains any GUID nor Customer ID" );
                 } // CASE 1.2  : no cid and guid:  look for a mapping beween an existing guid
                 else
                 {
@@ -159,17 +159,24 @@ public class GRUSupplyRestService
     private static fr.paris.lutece.plugins.gru.business.customer.Customer buildCustomer( UserDTO user , String strUserId )
     {
 		fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = new fr.paris.lutece.plugins.gru.business.customer.Customer(  );
-		gruCustomer.setFirstname( user.getFirstname(  ) );
-		gruCustomer.setLastname( user.getLastname(  ) );
-		gruCustomer.setEmail( user.getEmail(  ) );
+		gruCustomer.setFirstname( setEmptyValueWhenNullValue(user.getFirstname(  ) ));
+		gruCustomer.setLastname( setEmptyValueWhenNullValue(user.getLastname(  ) ));
+		gruCustomer.setEmail( setEmptyValueWhenNullValue(user.getEmail(  )) );
 		//gruCustomer.setAccountGuid( user.getUid( ) );
-		gruCustomer.setAccountGuid( strUserId );
-		gruCustomer.setAccountLogin( user.getFirstname( ) +"-"+ user.getLastname( ) );
-		gruCustomer.setMobilePhone( user.getTelephoneNumber( ) );
-		gruCustomer.setExtrasAttributes( "NON RENSEIGNE" );
+		gruCustomer.setAccountGuid( setEmptyValueWhenNullValue(strUserId) );
+		gruCustomer.setAccountLogin( "NON RENSEIGNE" );
+		gruCustomer.setMobilePhone( setEmptyValueWhenNullValue(user.getTelephoneNumber() ));
+		gruCustomer.setExtrasAttributes( "NON RENSEIGNE");
 		return gruCustomer;
 		
     }
+    
+    
+    private static String setEmptyValueWhenNullValue(String value) 
+    {
+    	return (value == null) ? "":value;
+    }
+    
     /**
      * Method which create a demand from Data base, a flux and GRU database
      *
@@ -182,16 +189,22 @@ public class GRUSupplyRestService
         grusupplyCustomer.setCustomerId( gruCustomer.getId(  ) );
         grusupplyCustomer.setName( gruCustomer.getLastname(  ) );
         grusupplyCustomer.setFirstName( gruCustomer.getFirstname(  ) );
+        grusupplyCustomer.setEmail(gruCustomer.getEmail());
+        grusupplyCustomer.setTelephoneNumber( gruCustomer.getMobilePhone() );
+        
+        
         /*        grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
          grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
          grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
          grusupplyCustomer.setCityOfBirth( gruCustomer.getCityOfBirth(  ) );
          grusupplyCustomer.setCity( gruCustomer.getCity(  ) );
          grusupplyCustomer.setPostalCode( gruCustomer.getPostalCode(  ) );
-         grusupplyCustomer.setTelephoneNumber( gruCustomer.getTelephoneNumber(  ) );*/
+         */
         grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
         grusupplyCustomer.setStayConnected( true );
 
+        // TODO PROBLEME DE CHAMPS
+        
         return grusupplyCustomer;
     }
 
