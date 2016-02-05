@@ -114,7 +114,6 @@ public class GRUSupplyRestService
             } // CASE 2 : cid and (guid or no guid):  find customer info in GRU database
             else
             {
-
                 gruCustomer = CustomerService.instance(  ).getCustomerByCid( strTempCid );
                 if ( gruCustomer == null )
                 {
@@ -174,7 +173,7 @@ public class GRUSupplyRestService
     
     private static String setEmptyValueWhenNullValue(String value) 
     {
-    	return (value == null) ? "":value;
+    	return (StringUtils.isNullOrEmpty(value)) ? "":value;
     }
     
     /**

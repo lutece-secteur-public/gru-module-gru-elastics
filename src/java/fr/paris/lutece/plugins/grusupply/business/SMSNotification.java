@@ -44,7 +44,17 @@ public class SMSNotification
     private int _nPhoneNumber;
     private String _strMessage;
 
-    /**
+    public SMSNotification() {
+		super();
+	}
+
+	public SMSNotification(int _nPhoneNumber, String _strMessage) {
+		super();
+		this._nPhoneNumber = _nPhoneNumber;
+		this._strMessage = _strMessage;
+	}
+
+	/**
      * Returns the PhoneNumber
      * @return The PhoneNumber
      */

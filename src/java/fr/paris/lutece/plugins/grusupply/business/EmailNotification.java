@@ -47,7 +47,21 @@ public class EmailNotification
     private String _strSubject;
     private String _strMessage;
 
-    /**
+    public EmailNotification() {
+		super();
+	}
+
+	public EmailNotification(String _strSenderName, String _strSenderEmail, String _strRecipient, String _strSubject,
+			String _strMessage) {
+		super();
+		this._strSenderName = _strSenderName;
+		this._strSenderEmail = _strSenderEmail;
+		this._strRecipient = _strRecipient;
+		this._strSubject = _strSubject;
+		this._strMessage = _strMessage;
+	}
+
+	/**
      * Returns the SenderName
      * @return The SenderName
      */

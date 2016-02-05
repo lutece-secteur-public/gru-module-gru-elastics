@@ -9,11 +9,11 @@
        
     
     <!-- STORAGE SERVICE -->
-    <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustoragedb.service.DatabaseNotificationStorageService"/> 
-  <!--  <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustorage.elastic.service.ElasticNotificationStorageService"/>  -->
+    <!-- <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustoragedb.service.DatabaseNotificationStorageService"/> -->
+   <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustorage.elastic.service.ElasticNotificationStorageService"/>  
     
     <!-- USER INFO SERVICE -->
-    <bean id="grusupply.userinfoService" class="fr.paris.lutece.plugins.grusupply.service.MokeUserInfoProvider" />
+    <bean id="grusupply.userinfoService" class="fr.paris.lutece.plugins.supply.modules.openam.services.OpenAmService" />
     <!-- <bean id="grusupply.userinfoService" class="fr.paris.lutece.plugins.grustorage"/> -->
     
     <!-- CUSTOMER INFO SERVICE -->
