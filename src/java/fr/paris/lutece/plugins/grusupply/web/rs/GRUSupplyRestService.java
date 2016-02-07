@@ -33,8 +33,6 @@
  */
 package fr.paris.lutece.plugins.grusupply.web.rs;
 
-import com.mysql.jdbc.StringUtils;
-
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.business.Notification;
@@ -60,6 +58,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.apache.commons.lang.StringUtils;
 
 
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME )
@@ -94,10 +93,10 @@ public class GRUSupplyRestService
             String strTempGuid = notif.getUserGuid(  );
 
             // CASE 1 NOT CID
-            if ( StringUtils.isNullOrEmpty( strTempCid ) )
+            if ( StringUtils.isEmpty( strTempCid ) )
             {
                 // CASE 1.1 : no cid and no guid:  break the flux and wait for a new flux with one of them
-                if ( StringUtils.isNullOrEmpty( strTempGuid ) )
+                if ( StringUtils.isEmpty( strTempGuid ) )
                 {
                     return error( "grusupply - Error : JSON doesnot contains any GUID nor Customer ID" );
                 } // CASE 1.2  : no cid and guid:  look for a mapping beween an existing guid
@@ -173,7 +172,7 @@ public class GRUSupplyRestService
     
     private static String setEmptyValueWhenNullValue(String value) 
     {
-    	return (StringUtils.isNullOrEmpty(value)) ? "":value;
+    	return (StringUtils.isEmpty(value)) ? "":value;
     }
     
     /**
