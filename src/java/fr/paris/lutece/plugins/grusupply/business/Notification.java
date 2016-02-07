@@ -33,13 +33,14 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
+
 /**
  * This is the business class for the object Notification
  */
 public class Notification
 {
     // Variables declarations 
-	private Demand _oDemand;
+    private Demand _oDemand;
     private String _strDateSollicitation;
     private EmailNotification _emailNotification;
     private DashboardNotification _dashBoardNotification;
@@ -51,38 +52,42 @@ public class Notification
      * Returns the Demand
      * @return
      */
-    public Demand getDemand() {
-		return _oDemand;
-	}
-    
+    public Demand getDemand(  )
+    {
+        return _oDemand;
+    }
+
     /**
      * Gets the Demand
      * @param _oDemand
      */
-	public void setDemand(Demand _oDemand) {
-		this._oDemand = _oDemand;
-	}
+    public void setDemand( Demand _oDemand )
+    {
+        this._oDemand = _oDemand;
+    }
 
-	
     /**
      * Returns the Date of Sollicitation
      * @return
      */
-    public String getDateSollicitation() {
-		return _strDateSollicitation;
-	}
+    public String getDateSollicitation(  )
+    {
+        return _strDateSollicitation;
+    }
+
     /**
-     * Sets the date of sollicitation 
+     * Sets the date of sollicitation
      * @param _strDateSollicitation
      */
-	public void setDateSollicitation(String strDateSollicitation) {
-		this._strDateSollicitation = strDateSollicitation;
-	}
+    public void setDateSollicitation( String strDateSollicitation )
+    {
+        this._strDateSollicitation = strDateSollicitation;
+    }
 
-	/**
-     * Returns the EmailNotification
-     * @return The EmailNotification
-     */
+    /**
+    * Returns the EmailNotification
+    * @return The EmailNotification
+    */
     public EmailNotification getUserEmail(  )
     {
         return _emailNotification;

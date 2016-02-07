@@ -45,6 +45,8 @@ import fr.paris.lutece.plugins.grusupply.service.UserInfoService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -58,7 +60,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.apache.commons.lang.StringUtils;
 
 
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME )
@@ -88,7 +89,7 @@ public class GRUSupplyRestService
 
             // Find CID in GRU Database
             fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer;
-            
+
             String strTempCid = notif.getCustomerid(  );
             String strTempGuid = notif.getUserGuid(  );
 
@@ -102,18 +103,22 @@ public class GRUSupplyRestService
                 } // CASE 1.2  : no cid and guid:  look for a mapping beween an existing guid
                 else
                 {
-                	gruCustomer = CustomerService.instance( ).getCustomerByGuid( notif.getUserGuid(  ) );
+                    gruCustomer = CustomerService.instance(  ).getCustomerByGuid( notif.getUserGuid(  ) );
 
                     if ( gruCustomer == null )
                     {
-                        gruCustomer = CustomerService.instance().createCustomer( buildCustomer( UserInfoService.instance(  ).getUserInfo( strTempGuid ), strTempGuid ) );
-                        AppLogService.info( "New user created into the GRU for the guid : " + strTempGuid + " its customer id is : " + gruCustomer.getId(  ) );
+                        gruCustomer = CustomerService.instance(  )
+                                                     .createCustomer( buildCustomer( 
+                                    UserInfoService.instance(  ).getUserInfo( strTempGuid ), strTempGuid ) );
+                        AppLogService.info( "New user created into the GRU for the guid : " + strTempGuid +
+                            " its customer id is : " + gruCustomer.getId(  ) );
                     }
                 }
             } // CASE 2 : cid and (guid or no guid):  find customer info in GRU database
             else
             {
                 gruCustomer = CustomerService.instance(  ).getCustomerByCid( strTempCid );
+
                 if ( gruCustomer == null )
                 {
                     return error( "grusupply - Error : No user found with the customer ID : " + strTempCid );
@@ -148,33 +153,33 @@ public class GRUSupplyRestService
 
         return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build(  );
     }
+
     /**
      * Methode which create a gru Customer
      * @param user User from SSO database
      * @param strUserId ID from Flux
      * @return the Customer
      */
-    private static fr.paris.lutece.plugins.gru.business.customer.Customer buildCustomer( UserDTO user , String strUserId )
+    private static fr.paris.lutece.plugins.gru.business.customer.Customer buildCustomer( UserDTO user, String strUserId )
     {
-		fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = new fr.paris.lutece.plugins.gru.business.customer.Customer(  );
-		gruCustomer.setFirstname( setEmptyValueWhenNullValue(user.getFirstname(  ) ));
-		gruCustomer.setLastname( setEmptyValueWhenNullValue(user.getLastname(  ) ));
-		gruCustomer.setEmail( setEmptyValueWhenNullValue(user.getEmail(  )) );
-		//gruCustomer.setAccountGuid( user.getUid( ) );
-		gruCustomer.setAccountGuid( setEmptyValueWhenNullValue(strUserId) );
-		gruCustomer.setAccountLogin( "NON RENSEIGNE" );
-		gruCustomer.setMobilePhone( setEmptyValueWhenNullValue(user.getTelephoneNumber() ));
-		gruCustomer.setExtrasAttributes( "NON RENSEIGNE");
-		return gruCustomer;
-		
+        fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = new fr.paris.lutece.plugins.gru.business.customer.Customer(  );
+        gruCustomer.setFirstname( setEmptyValueWhenNullValue( user.getFirstname(  ) ) );
+        gruCustomer.setLastname( setEmptyValueWhenNullValue( user.getLastname(  ) ) );
+        gruCustomer.setEmail( setEmptyValueWhenNullValue( user.getEmail(  ) ) );
+        //gruCustomer.setAccountGuid( user.getUid( ) );
+        gruCustomer.setAccountGuid( setEmptyValueWhenNullValue( strUserId ) );
+        gruCustomer.setAccountLogin( "NON RENSEIGNE" );
+        gruCustomer.setMobilePhone( setEmptyValueWhenNullValue( user.getTelephoneNumber(  ) ) );
+        gruCustomer.setExtrasAttributes( "NON RENSEIGNE" );
+
+        return gruCustomer;
     }
-    
-    
-    private static String setEmptyValueWhenNullValue(String value) 
+
+    private static String setEmptyValueWhenNullValue( String value )
     {
-    	return (StringUtils.isEmpty(value)) ? "":value;
+        return ( StringUtils.isEmpty( value ) ) ? "" : value;
     }
-    
+
     /**
      * Method which create a demand from Data base, a flux and GRU database
      *
@@ -187,10 +192,9 @@ public class GRUSupplyRestService
         grusupplyCustomer.setCustomerId( gruCustomer.getId(  ) );
         grusupplyCustomer.setName( gruCustomer.getLastname(  ) );
         grusupplyCustomer.setFirstName( gruCustomer.getFirstname(  ) );
-        grusupplyCustomer.setEmail(gruCustomer.getEmail());
-        grusupplyCustomer.setTelephoneNumber( gruCustomer.getMobilePhone() );
-        
-        
+        grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
+        grusupplyCustomer.setTelephoneNumber( gruCustomer.getMobilePhone(  ) );
+
         /*        grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
          grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
          grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
@@ -202,7 +206,6 @@ public class GRUSupplyRestService
         grusupplyCustomer.setStayConnected( true );
 
         // TODO PROBLEME DE CHAMPS
-        
         return grusupplyCustomer;
     }
 
@@ -215,7 +218,7 @@ public class GRUSupplyRestService
     private static Demand buildDemand( NotificationDTO notifDTO, Customer user )
     {
         Demand demand = new Demand(  );
-        demand.setCustomer(user);
+        demand.setCustomer( user );
         demand.setDemandId( notifDTO.getDemandeId(  ) );
         demand.setDemandIdType( notifDTO.getDemandIdType(  ) );
         demand.setDemandMaxStep( -1 );
@@ -225,6 +228,7 @@ public class GRUSupplyRestService
         demand.setDateDemand( "NON RENSEIGNE" );
         demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
         demand.setReference( "NON RENSEIGNE" );
+
         return demand;
     }
 
@@ -236,7 +240,7 @@ public class GRUSupplyRestService
     private static Notification buildNotif( NotificationDTO notifDTO, Demand demand, String strJson )
     {
         Notification notification = new Notification(  );
-        notification.setDemand(demand);
+        notification.setDemand( demand );
         notification.setUserEmail( notifDTO.getUserEmail(  ) );
         notification.setUserDashBoard( notifDTO.getUserDashBoard(  ) );
         notification.setUserSms( notifDTO.getUserSms(  ) );
