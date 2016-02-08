@@ -78,6 +78,8 @@ public class GRUSupplyRestService
     @Produces( MediaType.APPLICATION_JSON )
     public Response notification( String strJson )
     {
+
+        AppLogService.info( "RECEIPE JSON : " + strJson );
         try
         {
             // Format from JSON
@@ -109,6 +111,7 @@ public class GRUSupplyRestService
                     {
                         gruCustomer = CustomerService.instance().createCustomer( buildCustomer( UserInfoService.instance(  ).getUserInfo( strTempGuid ), strTempGuid ) );
                         AppLogService.info( "New user created into the GRU for the guid : " + strTempGuid + " its customer id is : " + gruCustomer.getId(  ) );
+                        
                     }
                 }
             } // CASE 2 : cid and (guid or no guid):  find customer info in GRU database
@@ -124,7 +127,7 @@ public class GRUSupplyRestService
             Customer user = buildCustomer( gruCustomer );
             Demand demand = buildDemand( notif, user );
             Notification notification = buildNotif( notif, demand, strJson );
-
+            
             // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
             StorageService.instance(  ).store( user );
 
