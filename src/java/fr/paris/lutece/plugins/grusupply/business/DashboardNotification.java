@@ -35,6 +35,7 @@ package fr.paris.lutece.plugins.grusupply.business;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+
 /**
  * This is the business class for the object DashboardNotification
  */
@@ -47,24 +48,26 @@ public class DashboardNotification
     private String _strSenderName;
     private String _strData;
 
-    public DashboardNotification() {
-		super();
-	}
+    public DashboardNotification(  )
+    {
+        super(  );
+    }
 
-	public DashboardNotification(String _strStatusText, String _strMessage, String _strSubject, String _strSenderName,
-			String _strData) {
-		super();
-		this._strStatusText = _strStatusText;
-		this._strMessage = _strMessage;
-		this._strSubject = _strSubject;
-		this._strSenderName = _strSenderName;
-		this._strData = _strData;
-	}
+    public DashboardNotification( String _strStatusText, String _strMessage, String _strSubject, String _strSenderName,
+        String _strData )
+    {
+        super(  );
+        this._strStatusText = _strStatusText;
+        this._strMessage = _strMessage;
+        this._strSubject = _strSubject;
+        this._strSenderName = _strSenderName;
+        this._strData = _strData;
+    }
 
-	/**
-     * Returns the StatusText
-     * @return The StatusText
-     */
+    /**
+    * Returns the StatusText
+    * @return The StatusText
+    */
     public String getStatusText(  )
     {
         return _strStatusText;

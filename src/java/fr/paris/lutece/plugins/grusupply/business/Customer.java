@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
+
 /**
  * This is the business class for the object Customer
  */
@@ -267,5 +268,4 @@ public class Customer
     {
         _strTelephoneNumber = strTelephoneNumber;
     }
-
 }

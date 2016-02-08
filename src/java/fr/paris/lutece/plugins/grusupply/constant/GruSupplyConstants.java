@@ -41,5 +41,4 @@ public class GruSupplyConstants
     // EXIT STATUS
     public static final String STATUS_201 = "{" + "\"status\":" + "\"201\"" + "}";
     public static final String STATUS_404 = "{" + "\"status\":" + "\"404\"" + "}";
-
 }

@@ -42,7 +42,7 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
  */
 public class CustomerService
 {
-	private static final String BEAN_CUSTOMER_INFO_SERVICE = "grusupply.customerinfoService";
+    private static final String BEAN_CUSTOMER_INFO_SERVICE = "grusupply.customerinfoService";
     private static ICustomerInfoService _customerInfoService;
     private static CustomerService _singleton;
 
@@ -55,13 +55,14 @@ public class CustomerService
      * Return the unique instance
      * @return The instance
      */
-    public static CustomerService instance( )
+    public static CustomerService instance(  )
     {
         if ( _singleton == null )
         {
             _singleton = new CustomerService(  );
             _customerInfoService = SpringContextService.getBean( BEAN_CUSTOMER_INFO_SERVICE );
         }
+
         return _singleton;
     }
 

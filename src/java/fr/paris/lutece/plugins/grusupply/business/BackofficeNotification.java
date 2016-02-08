@@ -35,6 +35,7 @@ package fr.paris.lutece.plugins.grusupply.business;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+
 /**
  * This is the business class for the object UserDashboard
  */
@@ -53,31 +54,33 @@ public class BackofficeNotification
     private int _nDisplaySms;
     private String _strViewSms;
 
-    public BackofficeNotification() {
-		super();
-	}
+    public BackofficeNotification(  )
+    {
+        super(  );
+    }
 
-	public BackofficeNotification(String _strMessage, String _strStatusText, String _strNotifiedDashboard,
-			String _strDisplayDashboard, String _strViewDashboard, String _strNotifiedEmail, String _strDisplayEmail,
-			String _strViewEmail, int _nNotifiedSms, int _nDisplaySms, String _strViewSms) {
-		super();
-		this._strMessage = _strMessage;
-		this._strStatusText = _strStatusText;
-		this._strNotifiedDashboard = _strNotifiedDashboard;
-		this._strDisplayDashboard = _strDisplayDashboard;
-		this._strViewDashboard = _strViewDashboard;
-		this._strNotifiedEmail = _strNotifiedEmail;
-		this._strDisplayEmail = _strDisplayEmail;
-		this._strViewEmail = _strViewEmail;
-		this._nNotifiedSms = _nNotifiedSms;
-		this._nDisplaySms = _nDisplaySms;
-		this._strViewSms = _strViewSms;
-	}
+    public BackofficeNotification( String _strMessage, String _strStatusText, String _strNotifiedDashboard,
+        String _strDisplayDashboard, String _strViewDashboard, String _strNotifiedEmail, String _strDisplayEmail,
+        String _strViewEmail, int _nNotifiedSms, int _nDisplaySms, String _strViewSms )
+    {
+        super(  );
+        this._strMessage = _strMessage;
+        this._strStatusText = _strStatusText;
+        this._strNotifiedDashboard = _strNotifiedDashboard;
+        this._strDisplayDashboard = _strDisplayDashboard;
+        this._strViewDashboard = _strViewDashboard;
+        this._strNotifiedEmail = _strNotifiedEmail;
+        this._strDisplayEmail = _strDisplayEmail;
+        this._strViewEmail = _strViewEmail;
+        this._nNotifiedSms = _nNotifiedSms;
+        this._nDisplaySms = _nDisplaySms;
+        this._strViewSms = _strViewSms;
+    }
 
-	/**
-     * Returns the Message
-     * @return The Message
-     */
+    /**
+    * Returns the Message
+    * @return The Message
+    */
     public String getMessage(  )
     {
         return _strMessage;
