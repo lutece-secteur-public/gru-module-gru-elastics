@@ -85,6 +85,7 @@ public class GRUSupplyRestService
             // Format from JSON
             ObjectMapper mapper = new ObjectMapper(  );
             mapper.configure( Feature.UNWRAP_ROOT_VALUE, true );
+    		mapper.configure(Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
             NotificationDTO notif = mapper.readValue( strJson, NotificationDTO.class );
             AppLogService.info( "grusupply - Received strJson : " + strJson );
