@@ -275,7 +275,7 @@ public class NotificationDTO
      * Sets the Date of the Demand
      * @param nDemandState The DemandState
      */
-    @JsonProperty( "demand_state" )
+    @JsonProperty( "demand_date" )
     public void setDemandDate( String strDemandDate )
     {
         this._strDemandDate = strDemandDate;
