@@ -41,7 +41,7 @@ public class Notification
 {
     // Variables declarations 
     private Demand _oDemand;
-    private String _strDateSollicitation;
+    private long _lDateSollicitation;
     private EmailNotification _emailNotification;
     private DashboardNotification _dashBoardNotification;
     private SMSNotification _smsNotification;
@@ -70,18 +70,18 @@ public class Notification
      * Returns the Date of Sollicitation
      * @return
      */
-    public String getDateSollicitation(  )
+    public long getDateSollicitation(  )
     {
-        return _strDateSollicitation;
+        return _lDateSollicitation;
     }
 
     /**
      * Sets the date of sollicitation
      * @param _strDateSollicitation
      */
-    public void setDateSollicitation( String strDateSollicitation )
+    public void setDateSollicitation( long strDateSollicitation )
     {
-        this._strDateSollicitation = strDateSollicitation;
+        this._lDateSollicitation = strDateSollicitation;
     }
 
     /**

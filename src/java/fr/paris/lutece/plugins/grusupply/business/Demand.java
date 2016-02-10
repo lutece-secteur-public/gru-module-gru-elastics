@@ -47,7 +47,7 @@ public class Demand
     private int _nDemandUserCurrentStep;
     private int _nDemandState;
     private String _strNotifType;
-    private int _strDateDemand;
+    private long _lDateDemand;
     private int _nCRMStatus;
     private String _strReference;
 
@@ -181,18 +181,18 @@ public class Demand
      * Returns the DateDemand
      * @return The DateDemand
      */
-    public int getDateDemand(  )
+    public long getDateDemand(  )
     {
-        return _strDateDemand;
+        return _lDateDemand;
     }
 
     /**
      * Sets the DateDemand
      * @param strDateDemand The DateDemand
      */
-    public void setDateDemand( int strDateDemand )
+    public void setDateDemand( long lDateDemand )
     {
-        _strDateDemand = strDateDemand;
+        _lDateDemand = lDateDemand;
     }
 
     /**
