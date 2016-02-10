@@ -61,7 +61,7 @@ public class NotificationDTO
     private int _nMaxStep;
     private int _nUserCurrentStep;
     private int _nDemandState;
-    private String _strDemandDate;
+    private int _strDemandDate;
     private String _strReference;
     private EmailNotification _userEmail;
     private DashboardNotification _userDashBoard;
@@ -266,7 +266,7 @@ public class NotificationDTO
      * Return the date of the demand
      * @return
      */
-    public String getDemandDate(  )
+    public int getDemandDate(  )
     {
         return _strDemandDate;
     }
@@ -276,7 +276,7 @@ public class NotificationDTO
      * @param nDemandState The DemandState
      */
     @JsonProperty( "demand_date" )
-    public void setDemandDate( String strDemandDate )
+    public void setDemandDate( int strDemandDate )
     {
         this._strDemandDate = strDemandDate;
     }
