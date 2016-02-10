@@ -61,6 +61,8 @@ public class NotificationDTO
     private int _nMaxStep;
     private int _nUserCurrentStep;
     private int _nDemandState;
+    private String _strDemandDate;
+    private String _strReference;
     private EmailNotification _userEmail;
     private DashboardNotification _userDashBoard;
     private SMSNotification _userSms;
@@ -261,9 +263,47 @@ public class NotificationDTO
     }
 
     /**
-     * Returns the EmailNotification
-     * @return The EmailNotification
+     * Return the date of the demand
+     * @return
      */
+    public String getDemandDate(  )
+    {
+        return _strDemandDate;
+    }
+
+    /**
+     * Sets the Date of the Demand
+     * @param nDemandState The DemandState
+     */
+    @JsonProperty( "demand_state" )
+    public void setDemandDate( String strDemandDate )
+    {
+        this._strDemandDate = strDemandDate;
+    }
+
+    /**
+     * Returns the Reference of a Demand
+     * @return
+     */
+    public String getReference(  )
+    {
+        return _strReference;
+    }
+
+    /**
+     * Gets the Reference of a demand
+     * @param _strReference
+     */
+    @JsonProperty( "reference" )
+    public void setReference( String _strReference )
+    {
+        this._strReference = _strReference;
+    }
+
+    /**
+    * Returns the EmailNotification
+    * @return The EmailNotification
+    */
     public EmailNotification getUserEmail(  )
     {
         return _userEmail;

@@ -78,14 +78,14 @@ public class GRUSupplyRestService
     @Produces( MediaType.APPLICATION_JSON )
     public Response notification( String strJson )
     {
-
         AppLogService.info( "RECEIPE JSON : " + strJson );
+
         try
         {
             // Format from JSON
             ObjectMapper mapper = new ObjectMapper(  );
             mapper.configure( Feature.UNWRAP_ROOT_VALUE, true );
-    		mapper.configure(Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.configure( Feature.FAIL_ON_UNKNOWN_PROPERTIES, false );
 
             NotificationDTO notif = mapper.readValue( strJson, NotificationDTO.class );
             AppLogService.info( "grusupply - Received strJson : " + strJson );
@@ -110,7 +110,6 @@ public class GRUSupplyRestService
 
                     if ( gruCustomer == null )
                     {
-
                         gruCustomer = CustomerService.instance(  )
                                                      .createCustomer( buildCustomer( 
                                     UserInfoService.instance(  ).getUserInfo( strTempGuid ), strTempGuid ) );
@@ -132,7 +131,7 @@ public class GRUSupplyRestService
             Customer user = buildCustomer( gruCustomer );
             Demand demand = buildDemand( notif, user );
             Notification notification = buildNotif( notif, demand, strJson );
-            
+
             // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
             StorageService.instance(  ).store( user );
 
@@ -170,7 +169,6 @@ public class GRUSupplyRestService
         gruCustomer.setFirstname( setEmptyValueWhenNullValue( user.getFirstname(  ) ) );
         gruCustomer.setLastname( setEmptyValueWhenNullValue( user.getLastname(  ) ) );
         gruCustomer.setEmail( setEmptyValueWhenNullValue( user.getEmail(  ) ) );
-        //gruCustomer.setAccountGuid( user.getUid( ) );
         gruCustomer.setAccountGuid( setEmptyValueWhenNullValue( strUserId ) );
         gruCustomer.setAccountLogin( "NON RENSEIGNE" );
         gruCustomer.setMobilePhone( setEmptyValueWhenNullValue( user.getTelephoneNumber(  ) ) );
@@ -192,6 +190,11 @@ public class GRUSupplyRestService
      */
     private static Customer buildCustomer( fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer )
     {
+        if ( gruCustomer == null )
+        {
+            throw new NullPointerException(  );
+        }
+
         Customer grusupplyCustomer = new Customer(  );
         grusupplyCustomer.setCustomerId( gruCustomer.getId(  ) );
         grusupplyCustomer.setName( gruCustomer.getLastname(  ) );
@@ -221,6 +224,11 @@ public class GRUSupplyRestService
      */
     private static Demand buildDemand( NotificationDTO notifDTO, Customer user )
     {
+        if ( ( notifDTO == null ) || ( user == null ) )
+        {
+            throw new NullPointerException(  );
+        }
+
         Demand demand = new Demand(  );
         demand.setCustomer( user );
         demand.setDemandId( notifDTO.getDemandeId(  ) );
@@ -229,9 +237,9 @@ public class GRUSupplyRestService
         demand.setDemandUserCurrentStep( -1 );
         demand.setDemandState( notifDTO.getDemandState(  ) );
         demand.setNotifType( notifDTO.getNotificationType(  ) );
-        demand.setDateDemand( "NON RENSEIGNE" );
+        demand.setDateDemand( notifDTO.getDemandDate(  ) );
         demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
-        demand.setReference( "NON RENSEIGNE" );
+        demand.setReference( notifDTO.getReference(  ) );
 
         return demand;
     }
@@ -243,6 +251,11 @@ public class GRUSupplyRestService
      */
     private static Notification buildNotif( NotificationDTO notifDTO, Demand demand, String strJson )
     {
+        if ( notifDTO == null )
+        {
+            throw new NullPointerException(  );
+        }
+
         Notification notification = new Notification(  );
         notification.setDemand( demand );
         notification.setUserEmail( notifDTO.getUserEmail(  ) );
