@@ -170,7 +170,7 @@ public class GRUSupplyRestService
         gruCustomer.setLastname( setEmptyValueWhenNullValue( user.getLastname(  ) ) );
         gruCustomer.setEmail( setEmptyValueWhenNullValue( user.getEmail(  ) ) );
         gruCustomer.setAccountGuid( setEmptyValueWhenNullValue( strUserId ) );
-        gruCustomer.setAccountLogin( "NON RENSEIGNE" );
+        gruCustomer.setAccountLogin( setEmptyValueWhenNullValue( user.getEmail( ) ) );
         gruCustomer.setMobilePhone( setEmptyValueWhenNullValue( user.getTelephoneNumber(  ) ) );
         gruCustomer.setExtrasAttributes( "NON RENSEIGNE" );
 
@@ -233,8 +233,8 @@ public class GRUSupplyRestService
         demand.setCustomer( user );
         demand.setDemandId( notifDTO.getDemandeId(  ) );
         demand.setDemandIdType( notifDTO.getDemandIdType(  ) );
-        demand.setDemandMaxStep( -1 );
-        demand.setDemandUserCurrentStep( -1 );
+        demand.setDemandMaxStep( notifDTO.getMaxStep(  ) );
+        demand.setDemandUserCurrentStep( notifDTO.getUserCurrentStep(  ) );
         demand.setDemandState( notifDTO.getDemandState(  ) );
         demand.setNotifType( notifDTO.getNotificationType(  ) );
         demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
