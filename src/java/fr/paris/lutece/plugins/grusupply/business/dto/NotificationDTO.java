@@ -294,7 +294,7 @@ public class NotificationDTO
      * Gets the Reference of a demand
      * @param _strReference
      */
-    @JsonProperty( "reference" )
+    @JsonProperty( "demand_reference" )
     public void setReference( String _strReference )
     {
         this._strReference = _strReference;
