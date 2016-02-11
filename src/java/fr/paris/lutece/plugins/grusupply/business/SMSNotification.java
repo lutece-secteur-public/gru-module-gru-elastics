@@ -42,7 +42,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class SMSNotification
 {
     // Variables declarations 
-    private int _nPhoneNumber;
+    private String _strPhoneNumber;
     private String _strMessage;
 
     public SMSNotification(  )
@@ -50,20 +50,20 @@ public class SMSNotification
         super(  );
     }
 
-    public SMSNotification( int _nPhoneNumber, String _strMessage )
+    public SMSNotification( String strPhoneNumber, String strMessage )
     {
         super(  );
-        this._nPhoneNumber = _nPhoneNumber;
-        this._strMessage = _strMessage;
+        this._strPhoneNumber = strPhoneNumber;
+        this._strMessage = strMessage;
     }
 
     /**
     * Returns the PhoneNumber
     * @return The PhoneNumber
     */
-    public int getPhoneNumber(  )
+    public String getPhoneNumber(  )
     {
-        return _nPhoneNumber;
+        return _strPhoneNumber;
     }
 
     /**
@@ -71,9 +71,9 @@ public class SMSNotification
      * @param nPhoneNumber The PhoneNumber
      */
     @JsonProperty( "phone_number" )
-    public void setPhoneNumber( int nPhoneNumber )
+    public void setPhoneNumber( String strPhoneNumber )
     {
-        _nPhoneNumber = nPhoneNumber;
+        _strPhoneNumber = strPhoneNumber;
     }
 
     /**

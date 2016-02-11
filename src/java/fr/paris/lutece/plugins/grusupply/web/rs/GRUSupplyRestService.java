@@ -132,7 +132,7 @@ public class GRUSupplyRestService
             Demand demand = buildDemand( notif, user );
             Notification notification = buildNotif( notif, demand, strJson );
 
-            // Parse to Customer (TODO HAVE TO ADD WITH OPENAM)
+            // Parse to Customer
             StorageService.instance(  ).store( user );
 
             // Parse to Demand
@@ -237,7 +237,6 @@ public class GRUSupplyRestService
         demand.setDemandUserCurrentStep( -1 );
         demand.setDemandState( notifDTO.getDemandState(  ) );
         demand.setNotifType( notifDTO.getNotificationType(  ) );
-        demand.setDateDemand( notifDTO.getDemandDate(  ) );
         demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
         demand.setReference( notifDTO.getReference(  ) );
 
@@ -258,6 +257,7 @@ public class GRUSupplyRestService
 
         Notification notification = new Notification(  );
         notification.setDemand( demand );
+        notification.setDateNotification( notifDTO.getNotificationDate(  ) );
         notification.setUserEmail( notifDTO.getUserEmail(  ) );
         notification.setUserDashBoard( notifDTO.getUserDashBoard(  ) );
         notification.setUserSms( notifDTO.getUserSms(  ) );
