@@ -46,6 +46,7 @@ public class Demand
     private int _nDemandMaxStep;
     private int _nDemandUserCurrentStep;
     private int _nDemandState;
+    private int _nDemandStatus;
     private String _strNotifType;
     private int _nCRMStatus;
     private String _strReference;
@@ -194,7 +195,15 @@ public class Demand
         _nCRMStatus = nCRMStatus;
     }
 
-    /**
+    public int getDemandStatus() {
+		return _nDemandStatus;
+	}
+
+	public void setDemandStatus(int nDemandStatus) {
+		this._nDemandStatus = nDemandStatus;
+	}
+
+	/**
      * Returns the Reference
      * @return The Reference
      */

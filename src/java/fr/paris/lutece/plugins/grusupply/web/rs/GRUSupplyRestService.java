@@ -78,8 +78,7 @@ public class GRUSupplyRestService
     @Produces( MediaType.APPLICATION_JSON )
     public Response notification( String strJson )
     {
-        AppLogService.info( "RECEIPE JSON : " + strJson );
-
+    	AppLogService.info( "RECEIPE JSON FROM WS NOTIFICATION"+strJson);
         try
         {
             // Format from JSON
@@ -239,6 +238,7 @@ public class GRUSupplyRestService
         demand.setNotifType( notifDTO.getNotificationType(  ) );
         demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
         demand.setReference( notifDTO.getReference(  ) );
+        demand.setDemandStatus(notifDTO.getDemandStatus());
 
         return demand;
     }

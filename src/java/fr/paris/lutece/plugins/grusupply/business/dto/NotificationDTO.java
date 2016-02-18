@@ -55,6 +55,7 @@ public class NotificationDTO
     private String _strCustomerid;
     private String _strEmail;
     private int _nCrmStatusId;
+    private int _nDemandStatus;
     private String _strNotificationType;
     private int _nDemandeId;
     private int _nDemandIdType;
@@ -147,8 +148,23 @@ public class NotificationDTO
     {
         _nCrmStatusId = nCrmStatusId;
     }
-
     /**
+     * 
+     * @return
+     */
+    @JsonProperty( "demand_status" )
+    public int getDemandStatus() {
+		return _nDemandStatus;
+	}
+    /**
+     * 
+     * @param _nDemand_status
+     */
+	public void setDemandStatus(int nDemandStatus) {
+		this._nDemandStatus = nDemandStatus;
+	}
+
+	/**
      * Returns the NotificationType
      * @return The NotificationType
      */
@@ -199,7 +215,7 @@ public class NotificationDTO
      * Sets the DemandIdType
      * @param nDemandIdType The DemandIdType
      */
-    @JsonProperty( "demand_id_type" )
+    @JsonProperty( "demand_type_id" )
     public void setDemandIdType( int nDemandIdType )
     {
         _nDemandIdType = nDemandIdType;
