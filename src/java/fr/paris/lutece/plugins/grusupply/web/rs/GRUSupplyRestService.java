@@ -78,7 +78,8 @@ public class GRUSupplyRestService
     @Produces( MediaType.APPLICATION_JSON )
     public Response notification( String strJson )
     {
-    	AppLogService.info( "RECEIPE JSON FROM WS NOTIFICATION"+strJson);
+        AppLogService.info( "RECEIPE JSON FROM WS NOTIFICATION" + strJson );
+
         try
         {
             // Format from JSON
@@ -152,6 +153,10 @@ public class GRUSupplyRestService
         {
             return error( ex + " :" + ex.getMessage(  ), ex );
         }
+        catch ( NullPointerException ex )
+        {
+            return error( ex + " :" + ex.getMessage(  ), ex );
+        }
 
         return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build(  );
     }
@@ -169,7 +174,7 @@ public class GRUSupplyRestService
         gruCustomer.setLastname( setEmptyValueWhenNullValue( user.getLastname(  ) ) );
         gruCustomer.setEmail( setEmptyValueWhenNullValue( user.getEmail(  ) ) );
         gruCustomer.setAccountGuid( setEmptyValueWhenNullValue( strUserId ) );
-        gruCustomer.setAccountLogin( setEmptyValueWhenNullValue( user.getEmail( ) ) );
+        gruCustomer.setAccountLogin( setEmptyValueWhenNullValue( user.getEmail(  ) ) );
         gruCustomer.setMobilePhone( setEmptyValueWhenNullValue( user.getTelephoneNumber(  ) ) );
         gruCustomer.setExtrasAttributes( "NON RENSEIGNE" );
 
@@ -238,7 +243,7 @@ public class GRUSupplyRestService
         demand.setNotifType( notifDTO.getNotificationType(  ) );
         demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
         demand.setReference( notifDTO.getReference(  ) );
-        demand.setDemandStatus(notifDTO.getDemandStatus());
+        demand.setDemandStatus( notifDTO.getDemandStatus(  ) );
 
         return demand;
     }

@@ -148,26 +148,30 @@ public class NotificationDTO
     {
         _nCrmStatusId = nCrmStatusId;
     }
+
     /**
-     * 
+     * Returns the demand status
      * @return
      */
     @JsonProperty( "demand_status" )
-    public int getDemandStatus() {
-		return _nDemandStatus;
-	}
+    public int getDemandStatus(  )
+    {
+        return _nDemandStatus;
+    }
+
     /**
-     * 
+     * Gets the Demand Status
      * @param _nDemand_status
      */
-	public void setDemandStatus(int nDemandStatus) {
-		this._nDemandStatus = nDemandStatus;
-	}
+    public void setDemandStatus( int nDemandStatus )
+    {
+        this._nDemandStatus = nDemandStatus;
+    }
 
-	/**
-     * Returns the NotificationType
-     * @return The NotificationType
-     */
+    /**
+    * Returns the NotificationType
+    * @return The NotificationType
+    */
     public String getNotificationType(  )
     {
         return _strNotificationType;

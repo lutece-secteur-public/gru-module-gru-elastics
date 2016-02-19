@@ -31,28 +31,25 @@
  *
  * License 1.0
  */
-
-
 package fr.paris.lutece.plugins.grusupply.service;
 
 import fr.paris.lutece.plugins.grusupply.business.dto.UserDTO;
+
 
 /**
  * MokeUserInfoProvider
  */
 public class MokeUserInfoProvider implements IUserInfoProvider
 {
-
     @Override
     public UserDTO getUserInfo( String strId )
     {
-        UserDTO user = new UserDTO();
+        UserDTO user = new UserDTO(  );
         user.setFirstname( "Martin" );
         user.setLastname( "Dupont" );
         user.setEmail( "mdupont@domain.com" );
         user.setUid( strId );
-        
+
         return user;
     }
-
 }

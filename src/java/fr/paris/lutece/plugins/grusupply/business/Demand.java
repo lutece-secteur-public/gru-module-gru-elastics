@@ -195,18 +195,28 @@ public class Demand
         _nCRMStatus = nCRMStatus;
     }
 
-    public int getDemandStatus() {
-		return _nDemandStatus;
-	}
-
-	public void setDemandStatus(int nDemandStatus) {
-		this._nDemandStatus = nDemandStatus;
-	}
-
-	/**
-     * Returns the Reference
-     * @return The Reference
+    /**
+     * Returns the Demand Status
+     * @return
      */
+    public int getDemandStatus(  )
+    {
+        return _nDemandStatus;
+    }
+
+    /**
+     * Sets the Demand Status
+     * @param nDemandStatus
+     */
+    public void setDemandStatus( int nDemandStatus )
+    {
+        this._nDemandStatus = nDemandStatus;
+    }
+
+    /**
+    * Returns the Reference
+    * @return The Reference
+    */
     public String getReference(  )
     {
         return _strReference;
