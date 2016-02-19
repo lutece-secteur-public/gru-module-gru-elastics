@@ -207,19 +207,26 @@ public class NotificationDTO
     }
 
     /**
-     * Returns the DemandIdType
-     * @return The DemandIdType
+     * Returns the Demand Type ID
+     * @return The Demand Type ID
      */
-    public int getDemandIdType(  )
+    public int getDemandTypeId(  )
     {
         return _nDemandIdType;
     }
 
     /**
      * Sets the DemandIdType
-     * @param nDemandIdType The DemandIdType
+     * @param nDemandIdType The Demand Type ID
      */
     @JsonProperty( "demand_type_id" )
+    public void setDemandTypeId( int nDemandIdType )
+    {
+        _nDemandIdType = nDemandIdType;
+    }
+
+    // FIXME : temporary compatibility issue - to be removed
+    @JsonProperty( "demand_id_type" )
     public void setDemandIdType( int nDemandIdType )
     {
         _nDemandIdType = nDemandIdType;

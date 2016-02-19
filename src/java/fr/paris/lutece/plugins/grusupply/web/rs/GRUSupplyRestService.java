@@ -236,7 +236,7 @@ public class GRUSupplyRestService
         Demand demand = new Demand(  );
         demand.setCustomer( user );
         demand.setDemandId( notifDTO.getDemandeId(  ) );
-        demand.setDemandIdType( notifDTO.getDemandIdType(  ) );
+        demand.setDemandIdType( notifDTO.getDemandTypeId(  ) );
         demand.setDemandMaxStep( notifDTO.getMaxStep(  ) );
         demand.setDemandUserCurrentStep( notifDTO.getUserCurrentStep(  ) );
         demand.setDemandState( notifDTO.getDemandState(  ) );
