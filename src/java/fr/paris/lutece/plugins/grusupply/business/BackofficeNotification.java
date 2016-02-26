@@ -44,37 +44,17 @@ public class BackofficeNotification
     // Variables declarations 
     private String _strMessage;
     private String _strStatusText;
-    private String _strNotifiedDashboard;
-    private String _strDisplayDashboard;
-    private String _strViewDashboard;
-    private String _strNotifiedEmail;
-    private String _strDisplayEmail;
-    private String _strViewEmail;
-    private int _nNotifiedSms;
-    private int _nDisplaySms;
-    private String _strViewSms;
 
     public BackofficeNotification(  )
     {
         super(  );
     }
 
-    public BackofficeNotification( String _strMessage, String _strStatusText, String _strNotifiedDashboard,
-        String _strDisplayDashboard, String _strViewDashboard, String _strNotifiedEmail, String _strDisplayEmail,
-        String _strViewEmail, int _nNotifiedSms, int _nDisplaySms, String _strViewSms )
+    public BackofficeNotification( String _strMessage, String _strStatusText )
     {
         super(  );
         this._strMessage = _strMessage;
         this._strStatusText = _strStatusText;
-        this._strNotifiedDashboard = _strNotifiedDashboard;
-        this._strDisplayDashboard = _strDisplayDashboard;
-        this._strViewDashboard = _strViewDashboard;
-        this._strNotifiedEmail = _strNotifiedEmail;
-        this._strDisplayEmail = _strDisplayEmail;
-        this._strViewEmail = _strViewEmail;
-        this._nNotifiedSms = _nNotifiedSms;
-        this._nDisplaySms = _nDisplaySms;
-        this._strViewSms = _strViewSms;
     }
 
     /**
@@ -113,176 +93,5 @@ public class BackofficeNotification
     public void setStatusText( String strStatusText )
     {
         _strStatusText = strStatusText;
-    }
-
-    /**
-     * Returns the NotifiedDashboard
-     * @return The NotifiedDashboard
-     */
-    public String getNotifiedDashboard(  )
-    {
-        return _strNotifiedDashboard;
-    }
-
-    /**
-     * Sets the NotifiedDashboard
-     * @param strNotifiedDashboard The NotifiedDashboard
-     */
-    @JsonProperty( "notified_on_dashboard" )
-    public void setNotifiedDashboard( String strNotifiedDashboard )
-    {
-        _strNotifiedDashboard = strNotifiedDashboard;
-    }
-
-    /**
-     * Returns the DisplayDashboard
-     * @return The DisplayDashboard
-     */
-    public String getDisplayDashboard(  )
-    {
-        return _strDisplayDashboard;
-    }
-
-    /**
-     * Sets the DisplayDashboard
-     * @param strDisplayDashboard The DisplayDashboard
-     */
-    @JsonProperty( "display_level_dashboard_notification" )
-    public void setDisplayDashboard( String strDisplayDashboard )
-    {
-        _strDisplayDashboard = strDisplayDashboard;
-    }
-
-    /**
-     * Returns the ViewDashboard
-     * @return The ViewDashboard
-     */
-    public String getViewDashboard(  )
-    {
-        return _strViewDashboard;
-    }
-
-    /**
-     * Sets the ViewDashboard
-     * @param strViewDashboard The ViewDashboard
-     */
-    @JsonProperty( "view_dashboard_notification" )
-    public void setViewDashboard( String strViewDashboard )
-    {
-        _strViewDashboard = strViewDashboard;
-    }
-
-    /**
-     * Returns the NotifiedEmail
-     * @return The NotifiedEmail
-     */
-    public String getNotifiedEmail(  )
-    {
-        return _strNotifiedEmail;
-    }
-
-    /**
-     * Sets the NotifiedEmail
-     * @param strNotifiedEmail The NotifiedEmail
-     */
-    @JsonProperty( "notified_by_email" )
-    public void setNotifiedEmail( String strNotifiedEmail )
-    {
-        _strNotifiedEmail = strNotifiedEmail;
-    }
-
-    /**
-     * Returns the DisplayEmail
-     * @return The DisplayEmail
-     */
-    public String getDisplayEmail(  )
-    {
-        return _strDisplayEmail;
-    }
-
-    /**
-     * Sets the DisplayEmail
-     * @param strDisplayEmail The DisplayEmail
-     */
-    @JsonProperty( "display_level_email_notification" )
-    public void setDisplayEmail( String strDisplayEmail )
-    {
-        _strDisplayEmail = strDisplayEmail;
-    }
-
-    /**
-     * Returns the ViewEmail
-     * @return The ViewEmail
-     */
-    public String getViewEmail(  )
-    {
-        return _strViewEmail;
-    }
-
-    /**
-     * Sets the ViewEmail
-     * @param strViewEmail The ViewEmail
-     */
-    @JsonProperty( "view_email_notification" )
-    public void setViewEmail( String strViewEmail )
-    {
-        _strViewEmail = strViewEmail;
-    }
-
-    /**
-     * Returns the NNotifiedSms
-     * @return The NNotifiedSms
-     */
-    public int getNotifiedSms(  )
-    {
-        return _nNotifiedSms;
-    }
-
-    /**
-     * Sets the NotifiedSms
-     * @param nNotifiedSms The NotifiedSms
-     */
-    @JsonProperty( "notified_by_sms" )
-    public void setNotifiedSms( int nNotifiedSms )
-    {
-        _nNotifiedSms = nNotifiedSms;
-    }
-
-    /**
-     * Returns the DisplaySms
-     * @return The DisplaySms
-     */
-    public int getDisplaySms(  )
-    {
-        return _nDisplaySms;
-    }
-
-    /**
-     * Sets the DisplaySms
-     * @param nDisplaySms The DisplaySms
-     */
-    @JsonProperty( "display_level_sms_notification" )
-    public void setDisplaySms( int nDisplaySms )
-    {
-        _nDisplaySms = nDisplaySms;
-    }
-
-    /**
-     * Returns the ViewSms
-     * @return The ViewSms
-     */
-    public String getViewSms(  )
-    {
-        return _strViewSms;
-    }
-
-    /**
-     * Sets the ViewSms
-     * @param strViewSms The ViewSms
-     */
-    @JsonProperty( "view_sms_notification" )
-    public void setViewSms( String strViewSms )
-    {
-        _strViewSms = strViewSms;
     }
 }
