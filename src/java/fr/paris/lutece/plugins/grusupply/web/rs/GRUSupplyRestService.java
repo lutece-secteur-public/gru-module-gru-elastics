@@ -170,7 +170,7 @@ public class GRUSupplyRestService
     private Demand buildDemand( NotificationDTO notifDTO, Customer user )
     {
         Demand demand = new Demand(  );
-;
+
         try{
             demand.setCustomer( user );
             demand.setDemandId( notifDTO.getDemandeId(  ) );
