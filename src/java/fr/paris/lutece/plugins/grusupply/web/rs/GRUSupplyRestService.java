@@ -120,10 +120,6 @@ public class GRUSupplyRestService
         {
             return error( ex + " :" + ex.getMessage(  ), ex );
         }
-        catch ( NullPointerException ex )
-        {
-            return error( ex + " :" + ex.getMessage(  ), ex );
-        }
 
         return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build(  );
     }
@@ -136,30 +132,31 @@ public class GRUSupplyRestService
      * @param gruCustomer
      * @return
      */
-    private static Customer buildCustomer( fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer )
+    private Customer buildCustomer( fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer )
     {
-        if ( gruCustomer == null )
-        {
-            throw new NullPointerException(  );
-        }
 
         Customer grusupplyCustomer = new Customer(  );
-        grusupplyCustomer.setCustomerId( gruCustomer.getId(  ) );
-        grusupplyCustomer.setName( gruCustomer.getLastname(  ) );
-        grusupplyCustomer.setFirstName( gruCustomer.getFirstname(  ) );
-        grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
-        grusupplyCustomer.setTelephoneNumber( gruCustomer.getMobilePhone(  ) );
+        try{
+            grusupplyCustomer.setCustomerId( gruCustomer.getId(  ) );
+            grusupplyCustomer.setName( gruCustomer.getLastname(  ) );
+            grusupplyCustomer.setFirstName( gruCustomer.getFirstname(  ) );
+            grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
+            grusupplyCustomer.setTelephoneNumber( gruCustomer.getMobilePhone(  ) );
 
-        /*        grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
-         grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
-         grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
-         grusupplyCustomer.setCityOfBirth( gruCustomer.getCityOfBirth(  ) );
-         grusupplyCustomer.setCity( gruCustomer.getCity(  ) );
-         grusupplyCustomer.setPostalCode( gruCustomer.getPostalCode(  ) );
-         */
-        grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
-        grusupplyCustomer.setStayConnected( true );
-
+            /*        grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
+             grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
+             grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
+             grusupplyCustomer.setCityOfBirth( gruCustomer.getCityOfBirth(  ) );
+             grusupplyCustomer.setCity( gruCustomer.getCity(  ) );
+             grusupplyCustomer.setPostalCode( gruCustomer.getPostalCode(  ) );
+             */
+            grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
+            grusupplyCustomer.setStayConnected( true );	
+        }
+        catch(NullPointerException ex)
+        {
+        	error("GRU CUSTOMER Parsing failure");
+        }
         // TODO PROBLEME DE CHAMPS
         return grusupplyCustomer;
     }
@@ -170,25 +167,26 @@ public class GRUSupplyRestService
      * @param nCustomerId
      * @return
      */
-    private static Demand buildDemand( NotificationDTO notifDTO, Customer user )
+    private Demand buildDemand( NotificationDTO notifDTO, Customer user )
     {
-        if ( ( notifDTO == null ) || ( user == null ) )
-        {
-            throw new NullPointerException(  );
-        }
-
         Demand demand = new Demand(  );
-        demand.setCustomer( user );
-        demand.setDemandId( notifDTO.getDemandeId(  ) );
-        demand.setDemandIdType( notifDTO.getDemandTypeId(  ) );
-        demand.setDemandMaxStep( notifDTO.getMaxStep(  ) );
-        demand.setDemandUserCurrentStep( notifDTO.getUserCurrentStep(  ) );
-        demand.setDemandState( notifDTO.getDemandState(  ) );
-        demand.setNotifType( notifDTO.getNotificationType(  ) );
-        demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
-        demand.setReference( notifDTO.getReference(  ) );
-        demand.setDemandStatus( notifDTO.getDemandStatus(  ) );
-
+;
+        try{
+            demand.setCustomer( user );
+            demand.setDemandId( notifDTO.getDemandeId(  ) );
+            demand.setDemandIdType( notifDTO.getDemandTypeId(  ) );
+            demand.setDemandMaxStep( notifDTO.getMaxStep(  ) );
+            demand.setDemandUserCurrentStep( notifDTO.getUserCurrentStep(  ) );
+            demand.setDemandState( notifDTO.getDemandState(  ) );
+            demand.setNotifType( notifDTO.getNotificationType(  ) );
+            demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
+            demand.setReference( notifDTO.getReference(  ) );
+            demand.setDemandStatus( notifDTO.getDemandStatus(  ) );  	
+        }
+        catch(NullPointerException ex)
+        {
+        	error("Notification OR Customer Parsing failure");
+        }
         return demand;
     }
 
@@ -197,21 +195,24 @@ public class GRUSupplyRestService
      * @param notifDTO
      * @return
      */
-    private static Notification buildNotif( NotificationDTO notifDTO, Demand demand, String strJson )
+    private Notification buildNotif( NotificationDTO notifDTO, Demand demand, String strJson )
     {
-        if ( notifDTO == null )
-        {
-            throw new NullPointerException(  );
-        }
 
         Notification notification = new Notification(  );
-        notification.setDemand( demand );
-        notification.setDateNotification( notifDTO.getNotificationDate(  ) );
-        notification.setUserEmail( notifDTO.getUserEmail(  ) );
-        notification.setUserDashBoard( notifDTO.getUserDashBoard(  ) );
-        notification.setUserSms( notifDTO.getUserSms(  ) );
-        notification.setUserBackOffice( notifDTO.getUserBackOffice(  ) );
-        notification.setJson( strJson );
+        try{
+            notification.setDemand( demand );
+            notification.setDateNotification( notifDTO.getNotificationDate(  ) );
+            notification.setUserEmail( notifDTO.getUserEmail(  ) );
+            notification.setUserDashBoard( notifDTO.getUserDashBoard(  ) );
+            notification.setUserSms( notifDTO.getUserSms(  ) );
+            notification.setUserBackOffice( notifDTO.getUserBackOffice(  ) );
+            notification.setJson( strJson );      	
+        }
+        catch(NullPointerException ex)
+        {
+        	error("Notification parsing fail", ex);
+        }
+
 
         return notification;
     }

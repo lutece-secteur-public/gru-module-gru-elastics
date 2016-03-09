@@ -226,7 +226,7 @@ public class NotificationDTO
     }
 
     // FIXME : temporary compatibility issue - to be removed
-    @JsonProperty( "demand_id_type" )
+    @JsonProperty( "demand_type_id" )
     public void setDemandIdType( int nDemandIdType )
     {
         _nDemandIdType = nDemandIdType;
