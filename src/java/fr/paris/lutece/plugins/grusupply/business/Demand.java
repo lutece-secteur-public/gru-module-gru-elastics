@@ -42,7 +42,7 @@ public class Demand
     // Variables declarations 
     private Customer _oCustomer;
     private int _nDemandId;
-    private int _nDemandIdType;
+    private int _nDemandTypeId;
     private int _nDemandMaxStep;
     private int _nDemandUserCurrentStep;
     private int _nDemandState;
@@ -93,16 +93,16 @@ public class Demand
      */
     public int getDemandIdType(  )
     {
-        return _nDemandIdType;
+        return _nDemandTypeId;
     }
 
     /**
      * Sets the DemandIdType
      * @param nDemandIdType The DemandIdType
      */
-    public void setDemandIdType( int nDemandIdType )
+    public void setDemandIdType( int nDemandTypeId )
     {
-        _nDemandIdType = nDemandIdType;
+        _nDemandTypeId = nDemandTypeId;
     }
 
     /**
