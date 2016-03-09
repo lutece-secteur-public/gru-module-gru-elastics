@@ -34,6 +34,8 @@
 package fr.paris.lutece.plugins.grusupply.business;
 
 
+
+
 /**
  * This is the business class for the object Notification
  */

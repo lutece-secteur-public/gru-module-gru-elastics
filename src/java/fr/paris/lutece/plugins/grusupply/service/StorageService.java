@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.business.Notification;

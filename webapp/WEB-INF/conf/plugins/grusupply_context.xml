@@ -4,19 +4,20 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd" >
     
-    <!-- REST -->
+    <!-- REST 
+    
+    -->
     <bean id="grusupply.grurestdatabase" class="fr.paris.lutece.plugins.grusupply.web.rs.GRUSupplyRestService"/>
        
     
-    <!-- STORAGE SERVICE -->
-    <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustoragedb.service.DatabaseNotificationStorageService"/> 
+      <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustoragedb.service.DatabaseNotificationStorageService"/> 
+    <!-- STORAGE SERVICE 
+    
+    
+    -->
+  
     <!-- <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustorage.elastic.service.ElasticNotificationStorageService"/> --> 
     
-    <!-- USER INFO SERVICE -->
-    <bean id="grusupply.userinfoService" class="fr.paris.lutece.plugins.grusupply.service.MokeUserInfoProvider" /> 
-    <!-- <bean id="grusupply.userinfoService" class="fr.paris.lutece.plugins.supply.modules.openam.services.OpenAmService" /> -->
-    
-    <!-- CUSTOMER INFO SERVICE -->
-    <bean id="grusupply.customerinfoService" class="fr.paris.lutece.plugins.grusupply.service.LocalCustomerService"/>  
+
     
 </beans>
