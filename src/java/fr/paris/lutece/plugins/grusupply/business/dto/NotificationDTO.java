@@ -58,7 +58,7 @@ public class NotificationDTO
     private int _nDemandStatus;
     private String _strNotificationType;
     private int _nDemandeId;
-    private int _nDemandIdType;
+    private int _nDemandTypeId;
     private int _nMaxStep;
     private int _nUserCurrentStep;
     private int _nDemandState;
@@ -207,22 +207,22 @@ public class NotificationDTO
     }
 
     /**
-     * Returns the DemandIdType
-     * @return The DemandIdType
+     * Returns the DemandTypeId
+     * @return The DemandTypeId
      */
     public int getDemandIdType(  )
     {
-        return _nDemandIdType;
+        return _nDemandTypeId;
     }
 
     /**
-     * Sets the DemandIdType
-     * @param nDemandIdType The DemandIdType
+     * Sets the DemandTypeId
+     * @param nDemandTypeId The DemandTypeId
      */
     @JsonProperty( "demand_type_id" )
-    public void setDemandIdType( int nDemandIdType )
+    public void setDemandTypeId( int nDemandTypeId )
     {
-        _nDemandIdType = nDemandIdType;
+        _nDemandTypeId = nDemandTypeId;
     }
 
     /**
