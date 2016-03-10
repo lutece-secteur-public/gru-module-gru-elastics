@@ -210,7 +210,7 @@ public class NotificationDTO
      * Returns the DemandTypeId
      * @return The DemandTypeId
      */
-    public int getDemandIdType(  )
+    public int getDemandTypeId(  )
     {
         return _nDemandTypeId;
     }
