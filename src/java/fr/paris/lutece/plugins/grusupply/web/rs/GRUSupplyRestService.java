@@ -45,6 +45,7 @@ import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 import org.apache.commons.lang.StringUtils;
+
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -65,7 +66,7 @@ public class GRUSupplyRestService
 {
     private static final String STATUS_RECEIVED = "{ \"status\": \"received\" }";
 
-    /** 
+    /**
      * Web Service methode which permit to store the notification flow into a data store
      * @param strJson The JSON flow
      * @return The response
@@ -80,7 +81,7 @@ public class GRUSupplyRestService
 
         try
         {
-        	   // Format from JSON
+            // Format from JSON
             ObjectMapper mapper = new ObjectMapper(  );
             mapper.configure( Feature.UNWRAP_ROOT_VALUE, true );
             mapper.configure( Feature.FAIL_ON_UNKNOWN_PROPERTIES, false );
@@ -89,13 +90,13 @@ public class GRUSupplyRestService
             AppLogService.info( "grusupply - Received strJson : " + strJson );
 
             // Find CID in GRU Database
-            
-
             String strTempCid = notif.getCustomerid(  );
             String strTempGuid = notif.getUserGuid(  );
 
-            fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = ProvisionningService.processGuidCuid(strTempGuid, strTempCid);
-            
+            fr.paris.lutece.plugins.costumerprovisionning.business.UserDTO userDto = null;
+            fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = ProvisionningService.processGuidCuid( strTempGuid,
+                    strTempCid, userDto );
+
             Customer user = buildCustomer( gruCustomer );
             Demand demand = buildDemand( notif, user );
             Notification notification = buildNotif( notif, demand, strJson );
