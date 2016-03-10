@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2002-2013, Mairie de Paris
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
+ * Copyright (c) 2002-2015, Mairie de Paris
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  *
@@ -31,67 +31,41 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business;
+package fr.paris.lutece.plugins.grusupply.service;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import fr.paris.lutece.plugins.gru.business.customer.Customer;
+import fr.paris.lutece.plugins.gru.business.customer.CustomerHome;
 
 
 /**
- * This is the business class for the object SMSNotification
+ * LocalCustomerService
  */
-public class SMSNotification
+public class LocalCustomerService implements ICustomerInfoService
 {
-    // Variables declarations 
-    private String _strPhoneNumber;
-    private String _strMessage;
-
-    public SMSNotification(  )
-    {
-        super(  );
-    }
-
-    public SMSNotification( String strPhoneNumber, String strMessage )
-    {
-        super(  );
-        this._strPhoneNumber = strPhoneNumber;
-        this._strMessage = strMessage;
-    }
-
     /**
-    * Returns the PhoneNumber
-    * @return The PhoneNumber
-    */
-    public String getPhoneNumber(  )
-    {
-        return _strPhoneNumber;
-    }
-
-    /**
-     * Sets the PhoneNumber
-     * @param nPhoneNumber The PhoneNumber
+     * {@inheritDoc }
      */
-    @JsonProperty( "phone_number" )
-    public void setPhoneNumber( String strPhoneNumber )
+    @Override
+    public Customer getCustomerByGuid( String strGid )
     {
-        _strPhoneNumber = strPhoneNumber;
+        return CustomerHome.findByGuid( strGid );
     }
 
     /**
-     * Returns the Message
-     * @return The Message
+     * {@inheritDoc }
      */
-    public String getMessage(  )
+    @Override
+    public Customer getCustomerByCid( String strCid )
     {
-        return _strMessage;
+        return CustomerHome.findByPrimaryKey( Integer.parseInt( strCid ) );
     }
 
     /**
-     * Sets the Message
-     * @param strMessage The Message
+     * {@inheritDoc }
      */
-    @JsonProperty( "message" )
-    public void setMessage( String strMessage )
+    @Override
+    public Customer createCustomer( Customer c )
     {
-        _strMessage = strMessage;
+        return CustomerHome.create( c );
     }
 }
