@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2002-2013, Mairie de Paris
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
+ * Copyright (c) 2002-2015, Mairie de Paris
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  *
@@ -31,67 +31,25 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business;
+package fr.paris.lutece.plugins.grusupply.service;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import fr.paris.lutece.plugins.grusupply.business.dto.UserDTO;
 
 
 /**
- * This is the business class for the object SMSNotification
+ * MokeUserInfoProvider
  */
-public class SMSNotification
+public class MokeUserInfoProvider implements IUserInfoProvider
 {
-    // Variables declarations 
-    private String _strPhoneNumber;
-    private String _strMessage;
-
-    public SMSNotification(  )
+    @Override
+    public UserDTO getUserInfo( String strId )
     {
-        super(  );
-    }
+        UserDTO user = new UserDTO(  );
+        user.setFirstname( "Martin" );
+        user.setLastname( "Dupont" );
+        user.setEmail( "mdupont@domain.com" );
+        user.setUid( strId );
 
-    public SMSNotification( String strPhoneNumber, String strMessage )
-    {
-        super(  );
-        this._strPhoneNumber = strPhoneNumber;
-        this._strMessage = strMessage;
-    }
-
-    /**
-    * Returns the PhoneNumber
-    * @return The PhoneNumber
-    */
-    public String getPhoneNumber(  )
-    {
-        return _strPhoneNumber;
-    }
-
-    /**
-     * Sets the PhoneNumber
-     * @param nPhoneNumber The PhoneNumber
-     */
-    @JsonProperty( "phone_number" )
-    public void setPhoneNumber( String strPhoneNumber )
-    {
-        _strPhoneNumber = strPhoneNumber;
-    }
-
-    /**
-     * Returns the Message
-     * @return The Message
-     */
-    public String getMessage(  )
-    {
-        return _strMessage;
-    }
-
-    /**
-     * Sets the Message
-     * @param strMessage The Message
-     */
-    @JsonProperty( "message" )
-    public void setMessage( String strMessage )
-    {
-        _strMessage = strMessage;
+        return user;
     }
 }

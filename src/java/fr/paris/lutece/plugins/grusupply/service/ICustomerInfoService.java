@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2002-2013, Mairie de Paris
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
+ * Copyright (c) 2002-2015, Mairie de Paris
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  *
@@ -31,67 +31,34 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business;
+package fr.paris.lutece.plugins.grusupply.service;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import fr.paris.lutece.plugins.gru.business.customer.Customer;
 
 
-/**
- * This is the business class for the object SMSNotification
- */
-public class SMSNotification
+public interface ICustomerInfoService
 {
-    // Variables declarations 
-    private String _strPhoneNumber;
-    private String _strMessage;
-
-    public SMSNotification(  )
-    {
-        super(  );
-    }
-
-    public SMSNotification( String strPhoneNumber, String strMessage )
-    {
-        super(  );
-        this._strPhoneNumber = strPhoneNumber;
-        this._strMessage = strMessage;
-    }
-
     /**
-    * Returns the PhoneNumber
-    * @return The PhoneNumber
-    */
-    public String getPhoneNumber(  )
-    {
-        return _strPhoneNumber;
-    }
-
-    /**
-     * Sets the PhoneNumber
-     * @param nPhoneNumber The PhoneNumber
+     * Retrieve a Customer by its GUID
+     *
+     * @param strGuid The GUID
+     * @return The customer
      */
-    @JsonProperty( "phone_number" )
-    public void setPhoneNumber( String strPhoneNumber )
-    {
-        _strPhoneNumber = strPhoneNumber;
-    }
+    public Customer getCustomerByGuid( String strGuid );
 
     /**
-     * Returns the Message
-     * @return The Message
+     * Retrieve a Customer by its ID
+     *
+     * @param strCustomerId The customer ID
+     * @return The customer
      */
-    public String getMessage(  )
-    {
-        return _strMessage;
-    }
+    public Customer getCustomerByCid( String strCustomerId );
 
     /**
-     * Sets the Message
-     * @param strMessage The Message
+     * Create a new customer in the customer base
+     *
+     * @param customer The customer to create
+     * @return The created customer
      */
-    @JsonProperty( "message" )
-    public void setMessage( String strMessage )
-    {
-        _strMessage = strMessage;
-    }
+    public Customer createCustomer( Customer customer );
 }

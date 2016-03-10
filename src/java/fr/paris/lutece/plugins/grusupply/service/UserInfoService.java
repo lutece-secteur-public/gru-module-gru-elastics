@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2002-2013, Mairie de Paris
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
+ * Copyright (c) 2002-2015, Mairie de Paris
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  *
@@ -31,67 +31,46 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business;
+package fr.paris.lutece.plugins.grusupply.service;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import fr.paris.lutece.plugins.grusupply.business.dto.UserDTO;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 
-/**
- * This is the business class for the object SMSNotification
- */
-public class SMSNotification
+public class UserInfoService
 {
-    // Variables declarations 
-    private String _strPhoneNumber;
-    private String _strMessage;
+    private static final String BEAN_USER_INFO_SERVICE = "grusupply.userinfoService";
+    private static IUserInfoProvider _userInfoProvider;
+    private static UserInfoService _singleton;
 
-    public SMSNotification(  )
+    /** private constructor */
+    private UserInfoService(  )
     {
-        super(  );
-    }
-
-    public SMSNotification( String strPhoneNumber, String strMessage )
-    {
-        super(  );
-        this._strPhoneNumber = strPhoneNumber;
-        this._strMessage = strMessage;
     }
 
     /**
-    * Returns the PhoneNumber
-    * @return The PhoneNumber
-    */
-    public String getPhoneNumber(  )
-    {
-        return _strPhoneNumber;
-    }
-
-    /**
-     * Sets the PhoneNumber
-     * @param nPhoneNumber The PhoneNumber
+     * Return the unique instance
+     * @return The instance
      */
-    @JsonProperty( "phone_number" )
-    public void setPhoneNumber( String strPhoneNumber )
+    public static UserInfoService instance(  )
     {
-        _strPhoneNumber = strPhoneNumber;
+        if ( _singleton == null )
+        {
+            _singleton = new UserInfoService(  );
+            _userInfoProvider = SpringContextService.getBean( BEAN_USER_INFO_SERVICE );
+        }
+
+        return _singleton;
     }
 
     /**
-     * Returns the Message
-     * @return The Message
+     * Gets User info
+     *
+     * @param strGuid The GUID
+     * @return user infos
      */
-    public String getMessage(  )
+    public UserDTO getUserInfo( String strGuid )
     {
-        return _strMessage;
-    }
-
-    /**
-     * Sets the Message
-     * @param strMessage The Message
-     */
-    @JsonProperty( "message" )
-    public void setMessage( String strMessage )
-    {
-        _strMessage = strMessage;
+        return (UserDTO) _userInfoProvider.getUserInfo( strGuid );
     }
 }

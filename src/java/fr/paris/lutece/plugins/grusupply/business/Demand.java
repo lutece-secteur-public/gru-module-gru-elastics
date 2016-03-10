@@ -34,7 +34,6 @@
 package fr.paris.lutece.plugins.grusupply.business;
 
 
-
 /**
  * This is the business class for the object Demand
  */
@@ -43,7 +42,7 @@ public class Demand
     // Variables declarations 
     private Customer _oCustomer;
     private int _nDemandId;
-    private int _nDemandTypeId;
+    private int _nDemandIdType;
     private int _nDemandMaxStep;
     private int _nDemandUserCurrentStep;
     private int _nDemandState;
@@ -94,16 +93,16 @@ public class Demand
      */
     public int getDemandIdType(  )
     {
-        return _nDemandTypeId;
+        return _nDemandIdType;
     }
 
     /**
      * Sets the DemandIdType
      * @param nDemandIdType The DemandIdType
      */
-    public void setDemandIdType( int nDemandTypeId )
+    public void setDemandIdType( int nDemandIdType )
     {
-        _nDemandTypeId = nDemandTypeId;
+        _nDemandIdType = nDemandIdType;
     }
 
     /**

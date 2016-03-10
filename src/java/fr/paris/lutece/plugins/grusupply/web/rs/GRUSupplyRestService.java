@@ -33,16 +33,19 @@
  */
 package fr.paris.lutece.plugins.grusupply.web.rs;
 
-
-import fr.paris.lutece.plugins.costumerprovisionning.services.ProvisionningService;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.business.Notification;
 import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
+import fr.paris.lutece.plugins.grusupply.business.dto.UserDTO;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
+import fr.paris.lutece.plugins.grusupply.service.CustomerService;
 import fr.paris.lutece.plugins.grusupply.service.StorageService;
+import fr.paris.lutece.plugins.grusupply.service.UserInfoService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
@@ -88,13 +91,43 @@ public class GRUSupplyRestService
             AppLogService.info( "grusupply - Received strJson : " + strJson );
 
             // Find CID in GRU Database
-            
+            fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer;
 
             String strTempCid = notif.getCustomerid(  );
             String strTempGuid = notif.getUserGuid(  );
 
-            fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = ProvisionningService.processGuidCuid(strTempGuid, strTempCid);
-            
+            // CASE 1 NOT CID
+            if ( StringUtils.isEmpty( strTempCid ) )
+            {
+                // CASE 1.1 : no cid and no guid:  break the flux and wait for a new flux with one of them
+                if ( StringUtils.isEmpty( strTempGuid ) )
+                {
+                    return error( "grusupply - Error : JSON doesnot contains any GUID nor Customer ID" );
+                } // CASE 1.2  : no cid and guid:  look for a mapping beween an existing guid
+                else
+                {
+                    gruCustomer = CustomerService.instance(  ).getCustomerByGuid( notif.getUserGuid(  ) );
+
+                    if ( gruCustomer == null )
+                    {
+                        gruCustomer = CustomerService.instance(  )
+                                                     .createCustomer( buildCustomer( 
+                                    UserInfoService.instance(  ).getUserInfo( strTempGuid ), strTempGuid ) );
+                        AppLogService.info( "New user created into the GRU for the guid : " + strTempGuid +
+                            " its customer id is : " + gruCustomer.getId(  ) );
+                    }
+                }
+            } // CASE 2 : cid and (guid or no guid):  find customer info in GRU database
+            else
+            {
+                gruCustomer = CustomerService.instance(  ).getCustomerByCid( strTempCid );
+
+                if ( gruCustomer == null )
+                {
+                    return error( "grusupply - Error : No user found with the customer ID : " + strTempCid );
+                }
+            }
+
             Customer user = buildCustomer( gruCustomer );
             Demand demand = buildDemand( notif, user );
             Notification notification = buildNotif( notif, demand, strJson );
@@ -120,11 +153,38 @@ public class GRUSupplyRestService
         {
             return error( ex + " :" + ex.getMessage(  ), ex );
         }
+        catch ( NullPointerException ex )
+        {
+            return error( ex + " :" + ex.getMessage(  ), ex );
+        }
 
         return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build(  );
     }
 
- 
+    /**
+     * Methode which create a gru Customer
+     * @param user User from SSO database
+     * @param strUserId ID from Flux
+     * @return the Customer
+     */
+    private static fr.paris.lutece.plugins.gru.business.customer.Customer buildCustomer( UserDTO user, String strUserId )
+    {
+        fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = new fr.paris.lutece.plugins.gru.business.customer.Customer(  );
+        gruCustomer.setFirstname( setEmptyValueWhenNullValue( user.getFirstname(  ) ) );
+        gruCustomer.setLastname( setEmptyValueWhenNullValue( user.getLastname(  ) ) );
+        gruCustomer.setEmail( setEmptyValueWhenNullValue( user.getEmail(  ) ) );
+        gruCustomer.setAccountGuid( setEmptyValueWhenNullValue( strUserId ) );
+        gruCustomer.setAccountLogin( setEmptyValueWhenNullValue( user.getEmail(  ) ) );
+        gruCustomer.setMobilePhone( setEmptyValueWhenNullValue( user.getTelephoneNumber(  ) ) );
+        gruCustomer.setExtrasAttributes( "NON RENSEIGNE" );
+
+        return gruCustomer;
+    }
+
+    private static String setEmptyValueWhenNullValue( String value )
+    {
+        return ( StringUtils.isEmpty( value ) ) ? "" : value;
+    }
 
     /**
      * Method which create a demand from Data base, a flux and GRU database
@@ -132,31 +192,30 @@ public class GRUSupplyRestService
      * @param gruCustomer
      * @return
      */
-    private Customer buildCustomer( fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer )
+    private static Customer buildCustomer( fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer )
     {
+        if ( gruCustomer == null )
+        {
+            throw new NullPointerException(  );
+        }
 
         Customer grusupplyCustomer = new Customer(  );
-        try{
-            grusupplyCustomer.setCustomerId( gruCustomer.getId(  ) );
-            grusupplyCustomer.setName( gruCustomer.getLastname(  ) );
-            grusupplyCustomer.setFirstName( gruCustomer.getFirstname(  ) );
-            grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
-            grusupplyCustomer.setTelephoneNumber( gruCustomer.getMobilePhone(  ) );
+        grusupplyCustomer.setCustomerId( gruCustomer.getId(  ) );
+        grusupplyCustomer.setName( gruCustomer.getLastname(  ) );
+        grusupplyCustomer.setFirstName( gruCustomer.getFirstname(  ) );
+        grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
+        grusupplyCustomer.setTelephoneNumber( gruCustomer.getMobilePhone(  ) );
 
-            /*        grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
-             grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
-             grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
-             grusupplyCustomer.setCityOfBirth( gruCustomer.getCityOfBirth(  ) );
-             grusupplyCustomer.setCity( gruCustomer.getCity(  ) );
-             grusupplyCustomer.setPostalCode( gruCustomer.getPostalCode(  ) );
-             */
-            grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
-            grusupplyCustomer.setStayConnected( true );	
-        }
-        catch(NullPointerException ex)
-        {
-        	error("GRU CUSTOMER Parsing failure");
-        }
+        /*        grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
+         grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
+         grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
+         grusupplyCustomer.setCityOfBirth( gruCustomer.getCityOfBirth(  ) );
+         grusupplyCustomer.setCity( gruCustomer.getCity(  ) );
+         grusupplyCustomer.setPostalCode( gruCustomer.getPostalCode(  ) );
+         */
+        grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
+        grusupplyCustomer.setStayConnected( true );
+
         // TODO PROBLEME DE CHAMPS
         return grusupplyCustomer;
     }
@@ -167,26 +226,25 @@ public class GRUSupplyRestService
      * @param nCustomerId
      * @return
      */
-    private Demand buildDemand( NotificationDTO notifDTO, Customer user )
+    private static Demand buildDemand( NotificationDTO notifDTO, Customer user )
     {
-        Demand demand = new Demand(  );
-
-        try{
-            demand.setCustomer( user );
-            demand.setDemandId( notifDTO.getDemandeId(  ) );
-            demand.setDemandIdType( notifDTO.getDemandTypeId(  ) );
-            demand.setDemandMaxStep( notifDTO.getMaxStep(  ) );
-            demand.setDemandUserCurrentStep( notifDTO.getUserCurrentStep(  ) );
-            demand.setDemandState( notifDTO.getDemandState(  ) );
-            demand.setNotifType( notifDTO.getNotificationType(  ) );
-            demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
-            demand.setReference( notifDTO.getReference(  ) );
-            demand.setDemandStatus( notifDTO.getDemandStatus(  ) );  	
-        }
-        catch(NullPointerException ex)
+        if ( ( notifDTO == null ) || ( user == null ) )
         {
-        	error("Notification OR Customer Parsing failure");
+            throw new NullPointerException(  );
         }
+
+        Demand demand = new Demand(  );
+        demand.setCustomer( user );
+        demand.setDemandId( notifDTO.getDemandeId(  ) );
+        demand.setDemandIdType( notifDTO.getDemandIdType(  ) );
+        demand.setDemandMaxStep( notifDTO.getMaxStep(  ) );
+        demand.setDemandUserCurrentStep( notifDTO.getUserCurrentStep(  ) );
+        demand.setDemandState( notifDTO.getDemandState(  ) );
+        demand.setNotifType( notifDTO.getNotificationType(  ) );
+        demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
+        demand.setReference( notifDTO.getReference(  ) );
+        demand.setDemandStatus( notifDTO.getDemandStatus(  ) );
+
         return demand;
     }
 
@@ -195,24 +253,21 @@ public class GRUSupplyRestService
      * @param notifDTO
      * @return
      */
-    private Notification buildNotif( NotificationDTO notifDTO, Demand demand, String strJson )
+    private static Notification buildNotif( NotificationDTO notifDTO, Demand demand, String strJson )
     {
+        if ( notifDTO == null )
+        {
+            throw new NullPointerException(  );
+        }
 
         Notification notification = new Notification(  );
-        try{
-            notification.setDemand( demand );
-            notification.setDateNotification( notifDTO.getNotificationDate(  ) );
-            notification.setUserEmail( notifDTO.getUserEmail(  ) );
-            notification.setUserDashBoard( notifDTO.getUserDashBoard(  ) );
-            notification.setUserSms( notifDTO.getUserSms(  ) );
-            notification.setUserBackOffice( notifDTO.getUserBackOffice(  ) );
-            notification.setJson( strJson );      	
-        }
-        catch(NullPointerException ex)
-        {
-        	error("Notification parsing fail", ex);
-        }
-
+        notification.setDemand( demand );
+        notification.setDateNotification( notifDTO.getNotificationDate(  ) );
+        notification.setUserEmail( notifDTO.getUserEmail(  ) );
+        notification.setUserDashBoard( notifDTO.getUserDashBoard(  ) );
+        notification.setUserSms( notifDTO.getUserSms(  ) );
+        notification.setUserBackOffice( notifDTO.getUserBackOffice(  ) );
+        notification.setJson( strJson );
 
         return notification;
     }

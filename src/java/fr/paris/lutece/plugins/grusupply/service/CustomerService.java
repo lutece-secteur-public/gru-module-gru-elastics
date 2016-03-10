@@ -33,68 +33,66 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.grusupply.business.Customer;
-import fr.paris.lutece.plugins.grusupply.business.Demand;
-import fr.paris.lutece.plugins.grusupply.business.Notification;
+import fr.paris.lutece.plugins.gru.business.customer.Customer;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 
 /**
- * StorageService
+ * CustomerService
  */
-public class StorageService
+public class CustomerService
 {
-    private static final String BEAN_STORAGE_SERVICE = "grusupply.storageService";
-    private static StorageService _singleton;
-    private static INotificationStorageService _notificationStorageService;
+    private static final String BEAN_CUSTOMER_INFO_SERVICE = "grusupply.customerinfoService";
+    private static ICustomerInfoService _customerInfoService;
+    private static CustomerService _singleton;
 
     /** private constructor */
-    private StorageService(  )
+    private CustomerService(  )
     {
     }
 
     /**
-     * Returns the unique instance
-     * @return The unique instance
+     * Return the unique instance
+     * @return The instance
      */
-    public static StorageService instance(  )
+    public static CustomerService instance(  )
     {
         if ( _singleton == null )
         {
-            _singleton = new StorageService(  );
-            _notificationStorageService = SpringContextService.getBean( BEAN_STORAGE_SERVICE );
+            _singleton = new CustomerService(  );
+            _customerInfoService = SpringContextService.getBean( BEAN_CUSTOMER_INFO_SERVICE );
         }
 
         return _singleton;
     }
 
     /**
-     * Store notification
-     *
-     * @param notification The notification
+     * Retrieve a customer by its guid
+     * @param strGuid The GUID
+     * @return The customer
      */
-    public void store( Notification notification )
+    public Customer getCustomerByGuid( String strGuid )
     {
-        _notificationStorageService.store( notification );
+        return _customerInfoService.getCustomerByGuid( strGuid );
     }
 
     /**
-     * Store the customer
-     *
+     * Retrieve the customer by its ID
+     * @param strCid The customer ID
+     * @return The customer
+     */
+    public Customer getCustomerByCid( String strCid )
+    {
+        return _customerInfoService.getCustomerByCid( strCid );
+    }
+
+    /**
+     * Create a new customer
      * @param customer The customer
+     * @return  The created customer
      */
-    public void store( Customer customer )
+    public Customer createCustomer( Customer customer )
     {
-        _notificationStorageService.store( customer );
-    }
-
-    /**
-     * Store the demand
-     *
-     * @param demand The demand
-     */
-    public void store( Demand demand )
-    {
-        _notificationStorageService.store( demand );
+        return _customerInfoService.createCustomer( customer );
     }
 }
