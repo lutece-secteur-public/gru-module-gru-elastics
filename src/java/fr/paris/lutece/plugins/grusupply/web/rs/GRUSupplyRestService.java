@@ -33,8 +33,9 @@
  */
 package fr.paris.lutece.plugins.grusupply.web.rs;
 
-import fr.paris.lutece.plugins.costumerprovisionning.business.UserDTO;
-import fr.paris.lutece.plugins.costumerprovisionning.services.ProvisionningService;
+
+import fr.paris.lutece.plugins.customerprovisionning.business.UserDTO;
+import fr.paris.lutece.plugins.customerprovisionning.services.ProvisionningService;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.business.Notification;
@@ -93,9 +94,8 @@ public class GRUSupplyRestService
             String strTempCid = notif.getCustomerid(  );
             String strTempGuid = notif.getUserGuid(  );
 
-            fr.paris.lutece.plugins.costumerprovisionning.business.UserDTO userDto = null;
-            fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = ProvisionningService.processGuidCuid( strTempGuid,
-                    strTempCid, userDto );
+             UserDTO userDto = null;
+            fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = ProvisionningService.processGuidCuid( strTempGuid, strTempCid, userDto );
 
             Customer user = buildCustomer( gruCustomer );
             Demand demand = buildDemand( notif, user );
