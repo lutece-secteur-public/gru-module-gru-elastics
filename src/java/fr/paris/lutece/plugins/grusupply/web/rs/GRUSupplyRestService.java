@@ -208,7 +208,6 @@ public class GRUSupplyRestService
         demand.setDemandTypeId( notifDTO.getDemandTypeId(  ) );
         demand.setDemandMaxStep( notifDTO.getMaxStep(  ) );
         demand.setDemandUserCurrentStep( notifDTO.getUserCurrentStep(  ) );
-        demand.setDemandState( notifDTO.getDemandState(  ) );
         demand.setNotifType( notifDTO.getNotificationType(  ) );
         demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
         demand.setReference( notifDTO.getReference(  ) );

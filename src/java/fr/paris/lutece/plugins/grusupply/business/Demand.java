@@ -142,24 +142,6 @@ public class Demand
     }
 
     /**
-     * Returns the DemandState
-     * @return The DemandState
-     */
-    public int getDemandState(  )
-    {
-        return _nDemandState;
-    }
-
-    /**
-     * Sets the DemandState
-     * @param nDemandState The DemandState
-     */
-    public void setDemandState( int nDemandState )
-    {
-        _nDemandState = nDemandState;
-    }
-
-    /**
      * Returns the NotifType
      * @return The NotifType
      */
