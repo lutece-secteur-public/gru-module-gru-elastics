@@ -61,9 +61,9 @@ public class Notification
      * Gets the Demand
      * @param _oDemand
      */
-    public void setDemand( Demand _oDemand )
+    public void setDemand( Demand oDemand )
     {
-        this._oDemand = _oDemand;
+        this._oDemand = oDemand;
     }
 
     /**

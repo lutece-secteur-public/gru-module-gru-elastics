@@ -107,9 +107,9 @@ public class NotificationDTO
      * @param _strCustomerid
      */
     @JsonProperty( "customer_id" )
-    public void setCustomerid( String _strCustomerid )
+    public void setCustomerid( String strCustomerid )
     {
-        this._strCustomerid = _strCustomerid;
+        this._strCustomerid = strCustomerid;
     }
 
     /**
@@ -316,9 +316,9 @@ public class NotificationDTO
      * @param _strReference
      */
     @JsonProperty( "demand_reference" )
-    public void setReference( String _strReference )
+    public void setReference( String strReference )
     {
-        this._strReference = _strReference;
+        this._strReference = strReference;
     }
 
     /**

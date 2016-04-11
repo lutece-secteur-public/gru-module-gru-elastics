@@ -64,9 +64,9 @@ public class Demand
      * Gets the Customer
      * @param _oCustomer
      */
-    public void setCustomer( Customer _oCustomer )
+    public void setCustomer( Customer oCustomer )
     {
-        this._oCustomer = _oCustomer;
+        this._oCustomer = oCustomer;
     }
 
     /**
