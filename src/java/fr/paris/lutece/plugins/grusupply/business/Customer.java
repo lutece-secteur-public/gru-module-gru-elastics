@@ -52,6 +52,30 @@ public class Customer
     private String _strCity;
     private String _strPostalCode;
     private String _strTelephoneNumber;
+    private String _strFixeTelephoneNumber;
+
+    
+    
+    
+    /**
+     * Gets the fixe telephone number.
+     *
+     * @return the fixe telephone number
+     */
+    public String getFixeTelephoneNumber(  )
+    {
+        return _strFixeTelephoneNumber;
+    }
+    
+    /**
+     * Sets the fixe telephone number.
+     *
+     * @param strTelephoneNumber the new fixe telephone number
+     */
+    public void setFixeTelephoneNumber( String strTelephoneNumber )
+    {
+    	_strFixeTelephoneNumber = strTelephoneNumber;
+    }
 
     /**
      * Returns the CustomerId

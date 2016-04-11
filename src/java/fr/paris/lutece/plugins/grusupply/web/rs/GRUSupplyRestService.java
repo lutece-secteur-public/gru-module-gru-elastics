@@ -107,7 +107,7 @@ public class GRUSupplyRestService
             // Parse to Demand
             StorageService.instance(  ).store( demand );
 
-            // Parse to Notification
+            // Parse to Notifications
             StorageService.instance(  ).store( notification );
         }
         catch ( JsonParseException ex )
@@ -145,6 +145,7 @@ public class GRUSupplyRestService
         gruCustomer.setAccountGuid( setEmptyValueWhenNullValue( strUserId ) );
         gruCustomer.setAccountLogin( setEmptyValueWhenNullValue( user.getEmail(  ) ) );
         gruCustomer.setMobilePhone( setEmptyValueWhenNullValue( user.getTelephoneNumber(  ) ) );
+        gruCustomer.setFixedPhoneNumber( setEmptyValueWhenNullValue( user.getFixedTelephoneNumber(  ) ) );
         gruCustomer.setExtrasAttributes( "NON RENSEIGNE" );
 
         return gruCustomer;
@@ -174,7 +175,8 @@ public class GRUSupplyRestService
         grusupplyCustomer.setFirstName( gruCustomer.getFirstname(  ) );
         grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
         grusupplyCustomer.setTelephoneNumber( gruCustomer.getMobilePhone(  ) );
-
+        grusupplyCustomer.setFixeTelephoneNumber( gruCustomer.getFixedPhoneNumber(  ) );
+        
         /*        grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
          grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
          grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
