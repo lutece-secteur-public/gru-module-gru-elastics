@@ -58,6 +58,7 @@ public class NotificationDTO
     private int _nDemandStatus;
     private String _strNotificationType;
     private int _nDemandeId;
+    private int _nRemoteDemandeId;
     private int _nDemandTypeId;
     private int _nMaxStep;
     private int _nUserCurrentStep;
@@ -204,6 +205,25 @@ public class NotificationDTO
     public void setDemandeId( int nDemandeId )
     {
         _nDemandeId = nDemandeId;
+    }
+
+    /**
+     * Returns the remoteDemandeId
+     * @return The remoteDemandeId
+     */
+    public int getRemoteDemandeId(  )
+    {
+        return _nRemoteDemandeId;
+    }
+
+    /**
+     * Sets the RemoteDemandeId
+     * @param nRemoteDemandeId The RemoteDemandeId
+     */
+    @JsonProperty( "remote_demand_id" )
+    public void setRemoteDemandeId( int nRemoteDemandeId )
+    {
+        _nDemandeId = nRemoteDemandeId;
     }
 
     /**

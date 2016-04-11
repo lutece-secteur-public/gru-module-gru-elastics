@@ -33,7 +33,7 @@
  */
 package fr.paris.lutece.plugins.grusupply.web.rs;
 
-
+import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.customerprovisioning.business.UserDTO;
 import fr.paris.lutece.plugins.customerprovisioning.services.ProvisioningService;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
@@ -41,6 +41,7 @@ import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.business.Notification;
 import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
+import fr.paris.lutece.plugins.grusupply.service.NotificationService;
 import fr.paris.lutece.plugins.grusupply.service.StorageService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
@@ -94,8 +95,9 @@ public class GRUSupplyRestService
             String strTempCid = notif.getCustomerid(  );
             String strTempGuid = notif.getUserGuid(  );
 
-             UserDTO userDto = null;
-            fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = ProvisioningService.processGuidCuid( strTempGuid, strTempCid, userDto );
+            UserDTO userDto = null;
+            fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = ProvisioningService.processGuidCuid( strTempGuid,
+                    strTempCid, userDto );
 
             Customer user = buildCustomer( gruCustomer );
             Demand demand = buildDemand( notif, user );
@@ -109,6 +111,24 @@ public class GRUSupplyRestService
 
             // Parse to Notification
             StorageService.instance(  ).store( notification );
+
+            // Notify user and crm if a bean NotificationService is instantiated
+            NotificationService notificationService = NotificationService.instance(  );
+
+            if ( notificationService != null )
+            {
+                notificationService.sendEmail( notif, user );
+                notificationService.sendSms( notif, user );
+
+                try
+                {
+                    notificationService.notifyCrm( notif );
+                }
+                catch ( CRMException ex )
+                {
+                    return error( ex + " :" + ex.getMessage(  ), ex );
+                }
+            }
         }
         catch ( JsonParseException ex )
         {
