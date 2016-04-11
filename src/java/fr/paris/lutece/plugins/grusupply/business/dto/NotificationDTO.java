@@ -394,6 +394,6 @@ public class NotificationDTO
     @JsonProperty( "backoffice_logging" )
     public void setUserBackOffice( BackofficeNotification userBackOffice )
     {
-        _userBackOffice = UserBackOffice;
+        _userBackOffice = userBackOffice;
     }
 }
