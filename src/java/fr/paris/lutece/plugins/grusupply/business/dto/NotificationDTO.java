@@ -392,7 +392,7 @@ public class NotificationDTO
      * @param UserBackOffice The UserBackOffice
      */
     @JsonProperty( "backoffice_logging" )
-    public void setUserBackOffice( BackofficeNotification UserBackOffice )
+    public void setUserBackOffice( BackofficeNotification userBackOffice )
     {
         _userBackOffice = UserBackOffice;
     }

@@ -210,9 +210,9 @@ public class Customer
      * Sets the StayConnected
      * @param StayConnected The StayConnected
      */
-    public void setStayConnected( boolean StayConnected )
+    public void setStayConnected( boolean stayConnected )
     {
-        _bStayConnected = StayConnected;
+        _bStayConnected = stayConnected;
     }
 
     /**
