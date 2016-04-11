@@ -264,25 +264,6 @@ public class NotificationDTO
     }
 
     /**
-     * Returns the DemandState
-     * @return The DemandState
-     */
-    public int getDemandState(  )
-    {
-        return _nDemandState;
-    }
-
-    /**
-     * Sets the DemandState
-     * @param nDemandState The DemandState
-     */
-    @JsonProperty( "demand_state" )
-    public void setDemandState( int nDemandState )
-    {
-        _nDemandState = nDemandState;
-    }
-
-    /**
      * Return the date of the demand
      * @return
      */
