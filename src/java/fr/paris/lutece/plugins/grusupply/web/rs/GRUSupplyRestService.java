@@ -262,15 +262,6 @@ public class GRUSupplyRestService
         return notification;
     }
 
-    /**
-     * Build an error response
-     * @param strMessage The error message
-     * @return The response
-     */
-    private Response error( String strMessage )
-    {
-        return error( strMessage, null );
-    }
 
     /**
      * Build an error response

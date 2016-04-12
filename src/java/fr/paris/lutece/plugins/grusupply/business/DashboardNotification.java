@@ -53,15 +53,15 @@ public class DashboardNotification
         super(  );
     }
 
-    public DashboardNotification( String _strStatusText, String _strMessage, String _strSubject, String _strSenderName,
-        String _strData )
+    public DashboardNotification( String strStatusText, String strMessage, String strSubject, String strSenderName,
+        String strData )
     {
         super(  );
-        this._strStatusText = _strStatusText;
-        this._strMessage = _strMessage;
-        this._strSubject = _strSubject;
-        this._strSenderName = _strSenderName;
-        this._strData = _strData;
+        this._strStatusText = strStatusText;
+        this._strMessage = strMessage;
+        this._strSubject = strSubject;
+        this._strSenderName = strSenderName;
+        this._strData = strData;
     }
 
     /**

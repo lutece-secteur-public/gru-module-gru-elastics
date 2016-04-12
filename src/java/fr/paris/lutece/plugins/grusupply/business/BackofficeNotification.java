@@ -50,11 +50,11 @@ public class BackofficeNotification
         super(  );
     }
 
-    public BackofficeNotification( String _strMessage, String _strStatusText )
+    public BackofficeNotification( String strMessage, String strStatusText )
     {
         super(  );
-        this._strMessage = _strMessage;
-        this._strStatusText = _strStatusText;
+        this._strMessage = strMessage;
+        this._strStatusText = strStatusText;
     }
 
     /**

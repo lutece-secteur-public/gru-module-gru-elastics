@@ -61,9 +61,9 @@ public class Notification
      * Gets the Demand
      * @param _oDemand
      */
-    public void setDemand( Demand _oDemand )
+    public void setDemand( Demand oDemand )
     {
-        this._oDemand = _oDemand;
+        this._oDemand = oDemand;
     }
 
     /**
@@ -97,9 +97,9 @@ public class Notification
      * Sets the EmailNotification
      * @param UserEmail The EmailNotification
      */
-    public void setUserEmail( EmailNotification UserEmail )
+    public void setUserEmail( EmailNotification userEmail )
     {
-        _emailNotification = UserEmail;
+        _emailNotification = userEmail;
     }
 
     /**
@@ -115,9 +115,9 @@ public class Notification
      * Sets the UserDashBoard
      * @param UserDashBoard The UserDashBoard
      */
-    public void setUserDashBoard( DashboardNotification UserDashBoard )
+    public void setUserDashBoard( DashboardNotification userDashBoard )
     {
-        _dashBoardNotification = UserDashBoard;
+        _dashBoardNotification = userDashBoard;
     }
 
     /**
@@ -133,9 +133,9 @@ public class Notification
      * Sets the UserSms
      * @param UserSms The UserSms
      */
-    public void setUserSms( SMSNotification UserSms )
+    public void setUserSms( SMSNotification userSms )
     {
-        _smsNotification = UserSms;
+        _smsNotification = userSms;
     }
 
     /**
@@ -151,9 +151,9 @@ public class Notification
      * Sets the UserBackOffice
      * @param UserBackOffice The UserBackOffice
      */
-    public void setUserBackOffice( BackofficeNotification UserBackOffice )
+    public void setUserBackOffice( BackofficeNotification userBackOffice )
     {
-        _backOfficeNotification = UserBackOffice;
+        _backOfficeNotification = userBackOffice;
     }
 
     /**

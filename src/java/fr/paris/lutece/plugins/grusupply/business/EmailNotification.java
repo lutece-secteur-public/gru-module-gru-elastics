@@ -53,15 +53,15 @@ public class EmailNotification
         super(  );
     }
 
-    public EmailNotification( String _strSenderName, String _strSenderEmail, String _strRecipient, String _strSubject,
-        String _strMessage )
+    public EmailNotification( String strSenderName, String strSenderEmail, String strRecipient, String strSubject,
+        String strMessage )
     {
         super(  );
-        this._strSenderName = _strSenderName;
-        this._strSenderEmail = _strSenderEmail;
-        this._strRecipient = _strRecipient;
-        this._strSubject = _strSubject;
-        this._strMessage = _strMessage;
+        this._strSenderName = strSenderName;
+        this._strSenderEmail = strSenderEmail;
+        this._strRecipient = strRecipient;
+        this._strSubject = strSubject;
+        this._strMessage = strMessage;
     }
 
     /**
