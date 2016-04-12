@@ -62,7 +62,7 @@ public class Customer
      *
      * @return the fixe telephone number
      */
-    public String getFixeTelephoneNumber(  )
+    public String getFixedTelephoneNumber(  )
     {
         return _strFixeTelephoneNumber;
     }
@@ -72,7 +72,7 @@ public class Customer
      *
      * @param strTelephoneNumber the new fixe telephone number
      */
-    public void setFixeTelephoneNumber( String strTelephoneNumber )
+    public void setFixedTelephoneNumber( String strTelephoneNumber )
     {
     	_strFixeTelephoneNumber = strTelephoneNumber;
     }
