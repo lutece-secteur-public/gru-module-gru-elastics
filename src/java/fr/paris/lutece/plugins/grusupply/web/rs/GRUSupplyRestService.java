@@ -165,7 +165,7 @@ public class GRUSupplyRestService
         gruCustomer.setAccountGuid( setEmptyValueWhenNullValue( strUserId ) );
         gruCustomer.setAccountLogin( setEmptyValueWhenNullValue( user.getEmail(  ) ) );
         gruCustomer.setMobilePhone( setEmptyValueWhenNullValue( user.getTelephoneNumber(  ) ) );
-        gruCustomer.setFixedPhoneNumber( setEmptyValueWhenNullValue( user.getFixedTelephoneNumber(  ) ) );
+        gruCustomer.setFixedPhoneNumber( setEmptyValueWhenNullValue( user.getFixedPhoneNumber(  ) ) );
         gruCustomer.setExtrasAttributes( "NON RENSEIGNE" );
 
         return gruCustomer;
