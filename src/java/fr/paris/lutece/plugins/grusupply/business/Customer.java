@@ -52,7 +52,7 @@ public class Customer
     private String _strCity;
     private String _strPostalCode;
     private String _strTelephoneNumber;
-    private String _strFixeTelephoneNumber;
+    private String _strFixedTelephoneNumber;
 
     
     
@@ -64,17 +64,17 @@ public class Customer
      */
     public String getFixedTelephoneNumber(  )
     {
-        return _strFixeTelephoneNumber;
+        return _strFixedTelephoneNumber;
     }
     
     /**
      * Sets the fixe telephone number.
      *
-     * @param strTelephoneNumber the new fixe telephone number
+     * @param strFixedTelephoneNumber the new fixe telephone number
      */
-    public void setFixedTelephoneNumber( String strTelephoneNumber )
+    public void setFixedTelephoneNumber( String strFixedTelephoneNumber )
     {
-    	_strFixeTelephoneNumber = strTelephoneNumber;
+    	_strFixedTelephoneNumber = strFixedTelephoneNumber;
     }
 
     /**
