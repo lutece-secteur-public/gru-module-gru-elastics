@@ -87,6 +87,16 @@ public class StorageService
     {
         _notificationStorageService.store( customer );
     }
+    
+    /**
+     * Update the customer
+     *
+     * @param customer The customer
+     */
+    public void update( Customer customer )
+    {
+        _notificationStorageService.update( customer );
+    }
 
     /**
      * Store the demand
