@@ -48,11 +48,7 @@ public interface INotificationStorageService
     * @param user the reference of the Customer
     */
     public void store( Customer user );
-    /**
-     * Update the user
-     * @param user the reference of the Customer
-     */
-    public void update( Customer user );
+
     /**
      * Store the notification
      * @param notification the reference of the Notification
