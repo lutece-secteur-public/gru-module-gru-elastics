@@ -117,12 +117,25 @@ public class GRUSupplyRestService
 
             if ( notificationService != null )
             {
-                notificationService.sendEmail( notif, user );
-                notificationService.sendSms( notif, user );
+            	if( notif.getUserEmail( ) != null )
+            	{
+            		   notificationService.sendEmail( notif, user );
+            	}
+            	
+            	if( notif.getUserSms( ) != null )
+            	{
+            		  notificationService.sendSms( notif, user );
+            	}
+             
+              
 
                 try
                 {
-                    notificationService.notifyCrm( notif );
+                	if( notif.getUserDashBoard( ) != null )
+                	{
+                		 notificationService.notifyCrm( notif );
+                	}
+                   
                 }
                 catch ( CRMException ex )
                 {
