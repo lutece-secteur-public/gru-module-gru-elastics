@@ -50,8 +50,8 @@ import org.apache.commons.lang.StringUtils;
 public class NotifyCrmService
 {
     private static String CRM_REMOTE_ID = "remote_id";
-    public static final String URL_WS_CREATE_DEMAND = "grusupply.url.ws.createDamandByUserGuid";
-    public static final String URL_WS_NOTIFY_DEMAND = "grusupply.url.ws.notifyDemande";
+    public static final String URL_WS_CREATE_DEMAND = "grusupply.url.ws.createDemandByUserGuid";
+    public static final String URL_WS_NOTIFY_DEMAND = "grusupply.url.ws.notifyDemand";
 
     /**  constructor */
     public NotifyCrmService(  )
@@ -120,11 +120,12 @@ public class NotifyCrmService
 
     /**
      * call web service rest
-     * @param crmItem
-     * @return
+     * @param crmItem the parameters
+     * @param strWsUrl the web service URL
+     * @return the response
      * @throws CRMException
      */
-    public String doProcess( ICRMItem crmItem, String urlForWS )
+    public String doProcess( ICRMItem crmItem, String strWsUrl )
         throws CRMException
     {
         String strResponse = StringUtils.EMPTY;
@@ -132,11 +133,11 @@ public class NotifyCrmService
         try
         {
             HttpAccess httpAccess = new HttpAccess(  );
-            strResponse = httpAccess.doPost( AppPathService.getProdUrl(  ) + urlForWS, crmItem.getParameters(  ) );
+            strResponse = httpAccess.doPost( strWsUrl, crmItem.getParameters(  ) );
         }
         catch ( HttpAccessException e )
         {
-            String strError = "Error connecting to '" + AppPathService.getProdUrl(  ) + urlForWS + "' : ";
+            String strError = "Error connecting to '" + strWsUrl + "' : ";
             AppLogService.error( strError + e.getMessage(  ), e );
             throw new CRMException( strError, e );
         }
