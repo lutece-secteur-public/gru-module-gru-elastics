@@ -223,7 +223,7 @@ public class NotificationDTO
     @JsonProperty( "remote_demand_id" )
     public void setRemoteDemandeId( int nRemoteDemandeId )
     {
-        _nDemandeId = nRemoteDemandeId;
+        _nRemoteDemandeId = nRemoteDemandeId;
     }
 
     /**
