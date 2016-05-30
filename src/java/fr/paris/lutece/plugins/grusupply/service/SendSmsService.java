@@ -38,6 +38,7 @@ import fr.paris.lutece.plugins.grusupply.business.EmailNotification;
 import fr.paris.lutece.plugins.grusupply.business.SMSNotification;
 import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
 import fr.paris.lutece.portal.service.mail.MailService;
+import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
 import org.apache.commons.lang.StringUtils;
@@ -65,8 +66,21 @@ public class SendSmsService
 
         if ( StringUtils.isNotBlank( strPhoneNumber ) )
         {
-            MailService.sendMailText( strPhoneNumber, emailNotification.getSenderName(  ),
-                emailNotification.getSenderEmail(  ), emailNotification.getSubject(  ), strMessage );
+            if ( emailNotification != null )
+            {
+                MailService.sendMailText( strPhoneNumber, emailNotification.getSenderName(  ),
+                    emailNotification.getSenderEmail(  ), emailNotification.getSubject(  ), strMessage );
+            }
+            else if ( customer != null )
+            {
+                MailService.sendMailText( strPhoneNumber, customer.getName(  ), customer.getEmail(  ), strMessage,
+                    strMessage );
+            }
+            else
+            {
+                AppLogService.info( "SMS STUB : phone number=" + notification.getUserSms(  ).getPhoneNumber(  ) +
+                    " message=" + notification.getUserSms(  ).getMessage(  ) );
+            }
         }
     }
 
