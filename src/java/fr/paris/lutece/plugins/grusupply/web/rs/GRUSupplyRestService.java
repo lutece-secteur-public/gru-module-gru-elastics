@@ -79,7 +79,7 @@ public class GRUSupplyRestService
     @Produces( MediaType.APPLICATION_JSON )
     public Response notification( String strJson )
     {
-        AppLogService.info( "RECEIPE JSON FROM WS NOTIFICATION" + strJson );
+       
 
         try
         {
@@ -117,6 +117,9 @@ public class GRUSupplyRestService
 
             if ( notificationService != null )
             {
+            	
+            	 AppLogService.info( " \n \n GRUSUPPLY - Bean Notifcation not null \n \n"  );
+            	 
             	if( notif.getUserEmail( ) != null )
             	{
             		   notificationService.sendEmail( notif, user );

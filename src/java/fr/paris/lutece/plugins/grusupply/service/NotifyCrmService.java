@@ -66,6 +66,8 @@ public class NotifyCrmService
     public void sendCreateDemand( NotificationDTO notif )
         throws CRMException
     {
+    	 AppLogService.info( " \n \n GRUSUPPLY - sendCreateDemand( NotificationDTO notif ) \n \n"  );
+    	 
         ICRMItem crmItem = SpringContextService.getBean( CRMItemTypeEnum.DEMAND_CREATE_BY_USER_GUID.toString(  ) );
 
         crmItem.putParameter( ICRMItem.ID_DEMAND_TYPE,
@@ -96,6 +98,9 @@ public class NotifyCrmService
      */
     public void notify( NotificationDTO notif ) throws CRMException
     {
+    	
+    	 AppLogService.info( " \n \n GRUSUPPLY - notify( NotificationDTO notif ) \n \n"  );
+    	 
         ICRMItem crmItem = SpringContextService.getBean( CRMItemTypeEnum.NOTIFICATION.toString(  ) );
 
         crmItem.putParameter( CRM_REMOTE_ID, new Integer( notif.getRemoteDemandeId(  ) ).toString(  ) );
