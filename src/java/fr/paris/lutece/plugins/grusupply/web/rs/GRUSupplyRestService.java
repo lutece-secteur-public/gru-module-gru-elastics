@@ -66,7 +66,7 @@ import javax.ws.rs.core.Response;
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME )
 public class GRUSupplyRestService
 {
-    private static final String STATUS_RECEIVED = "{ \"status\": \"received\" }";
+	 private static final String STATUS_RECEIVED = "{ \"acknowledge\" : { \"status\": \"received\" } }";
 
     /**
      * Web Service methode which permit to store the notification flow into a data store
