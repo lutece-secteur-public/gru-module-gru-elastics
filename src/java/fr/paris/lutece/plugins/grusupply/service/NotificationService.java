@@ -106,7 +106,15 @@ public class NotificationService
     {
         if ( notification != null )
         {
-            _notifyCrmService.sendCreateDemand( notification );
+            if ( !_notifyCrmService.isExistDemand( notification ) )
+            {
+                _notifyCrmService.sendCreateDemand( notification );
+            }
+            else
+            {
+                _notifyCrmService.updateDemand( notification );
+            }
+            
             _notifyCrmService.notify( notification );
         }
     }

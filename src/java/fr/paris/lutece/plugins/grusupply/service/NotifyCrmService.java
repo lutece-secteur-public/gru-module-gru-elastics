@@ -39,10 +39,18 @@ import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
-import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.httpaccess.HttpAccess;
 import fr.paris.lutece.util.httpaccess.HttpAccessException;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+import net.sf.json.util.JSONUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -50,7 +58,11 @@ import org.apache.commons.lang.StringUtils;
 public class NotifyCrmService
 {
     private static String CRM_REMOTE_ID = "remote_id";
+    private static final String KEY_DEMAND = "demand";
+    private static final String SLASH = "/";
+    public static final String URL_WS_GET_DEMAND = "grusupply.url.ws.getDemand";
     public static final String URL_WS_CREATE_DEMAND = "grusupply.url.ws.createDemandByUserGuid";
+    public static final String URL_WS_UPDATE_DEMAND = "grusupply.url.ws.updateDemand";
     public static final String URL_WS_NOTIFY_DEMAND = "grusupply.url.ws.notifyDemand";
 
     /**  constructor */
@@ -58,6 +70,36 @@ public class NotifyCrmService
     {
     }
 
+    /**
+     * Tests whether the demand already exists or not
+     * @param notif the notification
+     * @return {@code true} if the demand already exists, {@code false} otherwise
+     * @throws CRMException if there is an exception during the treatment
+     */
+    public boolean isExistDemand( NotificationDTO notif ) throws CRMException
+    {
+        boolean bIsExistDemand = false;
+        
+        AppLogService.info( " \n \n GRUSUPPLY - isExistDemand( NotificationDTO notif ) \n \n"  );
+        
+        String strIdDemandType =  String.valueOf( notif.getDemandTypeId(  ) );
+        String strIdRemoteDemand = String.valueOf( notif.getRemoteDemandeId(  ) );
+
+        String strResponse = doProcess( AppPropertiesService.getProperty( URL_WS_GET_DEMAND ) + SLASH + strIdDemandType + SLASH + strIdRemoteDemand );
+        
+        if ( JSONUtils.mayBeJSON( strResponse ) )
+        {
+            JSONObject jsonResponse = (JSONObject) JSONSerializer.toJSON( strResponse );
+            
+            if ( jsonResponse.has( KEY_DEMAND ) )
+            {
+                bIsExistDemand = true;
+            }
+        }
+        
+        return bIsExistDemand;
+    }
+    
     /**
      * Create CRM Demand
      * @param notif
@@ -89,6 +131,21 @@ public class NotifyCrmService
         crmItem.putParameter( CRM_REMOTE_ID, new Integer( notif.getRemoteDemandeId(  ) ).toString(  ) );
 
         doProcess( crmItem, AppPropertiesService.getProperty( URL_WS_CREATE_DEMAND ) );
+    }
+    
+    /**
+     * Updates a CRM Demand
+     * @param notif the notification
+     * @throws CRMException if there is an exception during the treatment
+     */
+    public void updateDemand( NotificationDTO notif )
+        throws CRMException
+    {
+        AppLogService.info( " \n \n GRUSUPPLY - updateDemand( NotificationDTO notif ) \n \n"  );
+        
+        ICRMItem crmItem = buildCrmItemForDemand( notif, CRMItemTypeEnum.DEMAND_UPDATE );
+
+        doProcess( crmItem, AppPropertiesService.getProperty( URL_WS_UPDATE_DEMAND ) );
     }
 
     /**
@@ -124,7 +181,7 @@ public class NotifyCrmService
     }
 
     /**
-     * call web service rest
+     * Call web service rest using POST method
      * @param crmItem the parameters
      * @param strWsUrl the web service URL
      * @return the response
@@ -148,5 +205,66 @@ public class NotifyCrmService
         }
 
         return strResponse;
+    }
+    
+    /**
+     * Call web service rest using GET method
+     * @param crmItem the parameters
+     * @param strWsUrl the web service URL
+     * @return the response
+     * @throws CRMException
+     */
+    public String doProcess( String strWsUrl )
+        throws CRMException
+    {
+        String strResponse = StringUtils.EMPTY;
+
+        try
+        {
+            HttpAccess httpAccess = new HttpAccess(  );
+            Map<String, String> mapHeaders = new HashMap<String, String>(  );
+            mapHeaders.put( HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON );
+            
+            strResponse = httpAccess.doGet( strWsUrl, null, null, mapHeaders );
+        }
+        catch ( HttpAccessException e )
+        {
+            String strError = "Error connecting to '" + strWsUrl + "' : ";
+            AppLogService.error( strError + e.getMessage(  ), e );
+            throw new CRMException( strError, e );
+        }
+
+        return strResponse;
+    }
+    
+    /**
+     * Builds a CrmItem object for a demand
+     * @param notif the notification
+     * @param crmItemType the CrmItemType
+     * @return the CrmItem
+     */
+    private static ICRMItem buildCrmItemForDemand( NotificationDTO notif, CRMItemTypeEnum crmItemType )
+    {
+        ICRMItem crmItem = SpringContextService.getBean( crmItemType.toString(  ) );
+
+        crmItem.putParameter( ICRMItem.ID_DEMAND_TYPE,
+            ( notif.getDemandTypeId(  ) != 0 ) ? String.valueOf( notif.getDemandTypeId(  ) ) : StringUtils.EMPTY );
+
+        crmItem.putParameter( ICRMItem.USER_GUID,
+            StringUtils.isNotBlank( notif.getUserGuid(  ) ) ? notif.getUserGuid(  ) : StringUtils.EMPTY );
+
+        crmItem.putParameter( ICRMItem.ID_STATUS_CRM, String.valueOf( notif.getCrmStatusId(  ) ) );
+
+        crmItem.putParameter( ICRMItem.STATUS_TEXT,
+            StringUtils.isNotBlank( notif.getUserDashBoard(  ).getStatusText(  ) )
+            ? notif.getUserDashBoard(  ).getStatusText(  ) : StringUtils.EMPTY );
+
+        crmItem.putParameter( ICRMItem.DEMAND_DATA,
+            StringUtils.isNotBlank( notif.getUserDashBoard(  ).getData(  ) ) ? notif.getUserDashBoard(  ).getData(  )
+                                                                             : StringUtils.EMPTY );
+
+        crmItem.putParameter( CRM_REMOTE_ID, String.valueOf( notif.getRemoteDemandeId(  ) ) );
+
+        return crmItem;
     }
 }
