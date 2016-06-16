@@ -54,9 +54,6 @@ public class Customer
     private String _strTelephoneNumber;
     private String _strFixedTelephoneNumber;
 
-    
-    
-    
     /**
      * Gets the fixe telephone number.
      *
@@ -66,7 +63,7 @@ public class Customer
     {
         return _strFixedTelephoneNumber;
     }
-    
+
     /**
      * Sets the fixe telephone number.
      *
@@ -74,7 +71,7 @@ public class Customer
      */
     public void setFixedTelephoneNumber( String strFixedTelephoneNumber )
     {
-    	_strFixedTelephoneNumber = strFixedTelephoneNumber;
+        _strFixedTelephoneNumber = strFixedTelephoneNumber;
     }
 
     /**

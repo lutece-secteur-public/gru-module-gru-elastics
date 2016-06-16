@@ -66,7 +66,7 @@ import javax.ws.rs.core.Response;
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME )
 public class GRUSupplyRestService
 {
-	 private static final String STATUS_RECEIVED = "{ \"acknowledge\" : { \"status\": \"received\" } }";
+    private static final String STATUS_RECEIVED = "{ \"acknowledge\" : { \"status\": \"received\" } }";
 
     /**
      * Web Service methode which permit to store the notification flow into a data store
@@ -79,8 +79,6 @@ public class GRUSupplyRestService
     @Produces( MediaType.APPLICATION_JSON )
     public Response notification( String strJson )
     {
-       
-
         try
         {
             // Format from JSON
@@ -117,28 +115,24 @@ public class GRUSupplyRestService
 
             if ( notificationService != null )
             {
-            	
-            	 AppLogService.info( " \n \n GRUSUPPLY - Bean Notifcation not null \n \n"  );
-            	 
-            	if( notif.getUserEmail( ) != null )
-            	{
-            		   notificationService.sendEmail( notif, user );
-            	}
-            	
-            	if( notif.getUserSms( ) != null )
-            	{
-            		  notificationService.sendSms( notif, user );
-            	}
-             
-              
+                AppLogService.info( " \n \n GRUSUPPLY - Bean Notifcation not null \n \n" );
+
+                if ( notif.getUserEmail(  ) != null )
+                {
+                    notificationService.sendEmail( notif, user );
+                }
+
+                if ( notif.getUserSms(  ) != null )
+                {
+                    notificationService.sendSms( notif, user );
+                }
 
                 try
                 {
-                	if( notif.getUserDashBoard( ) != null )
-                	{
-                		 notificationService.notifyCrm( notif );
-                	}
-                   
+                    if ( notif.getUserDashBoard(  ) != null )
+                    {
+                        notificationService.notifyCrm( notif );
+                    }
                 }
                 catch ( CRMException ex )
                 {
@@ -212,7 +206,7 @@ public class GRUSupplyRestService
         grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
         grusupplyCustomer.setTelephoneNumber( gruCustomer.getMobilePhone(  ) );
         grusupplyCustomer.setFixedTelephoneNumber( gruCustomer.getFixedPhoneNumber(  ) );
-        
+
         /*        grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
          grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
          grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
@@ -277,7 +271,6 @@ public class GRUSupplyRestService
 
         return notification;
     }
-
 
     /**
      * Build an error response

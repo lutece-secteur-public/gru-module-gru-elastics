@@ -42,17 +42,18 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.httpaccess.HttpAccess;
 import fr.paris.lutece.util.httpaccess.HttpAccessException;
+
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import net.sf.json.util.JSONUtils;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-
-import org.apache.commons.lang.StringUtils;
 
 
 public class NotifyCrmService
@@ -76,55 +77,55 @@ public class NotifyCrmService
      * @return {@code true} if the demand already exists, {@code false} otherwise
      * @throws CRMException if there is an exception during the treatment
      */
-    public boolean isExistDemand( NotificationDTO notif ) throws CRMException
+    public boolean isExistDemand( NotificationDTO notif )
+        throws CRMException
     {
         boolean bIsExistDemand = false;
-        
-        AppLogService.info( " \n \n GRUSUPPLY - isExistDemand( NotificationDTO notif ) \n \n"  );
-        
-        String strIdDemandType =  String.valueOf( notif.getDemandTypeId(  ) );
+
+        AppLogService.info( " \n \n GRUSUPPLY - isExistDemand( NotificationDTO notif ) \n \n" );
+
+        String strIdDemandType = String.valueOf( notif.getDemandTypeId(  ) );
         String strIdRemoteDemand = String.valueOf( notif.getRemoteDemandeId(  ) );
 
-        String strResponse = doProcess( AppPropertiesService.getProperty( URL_WS_GET_DEMAND ) + SLASH + strIdDemandType + SLASH + strIdRemoteDemand );
-        
+        String strResponse = doProcess( AppPropertiesService.getProperty( URL_WS_GET_DEMAND ) + SLASH +
+                strIdDemandType + SLASH + strIdRemoteDemand );
+
         if ( JSONUtils.mayBeJSON( strResponse ) )
         {
             JSONObject jsonResponse = (JSONObject) JSONSerializer.toJSON( strResponse );
-            
+
             if ( jsonResponse.has( KEY_DEMAND ) )
             {
                 bIsExistDemand = true;
             }
         }
-        
+
         return bIsExistDemand;
     }
-    
+
     /**
      * Create CRM Demand
      * @param notif
      * @throws CRMException
      */
-    public void createDemand( NotificationDTO notif )
-        throws CRMException
+    public void createDemand( NotificationDTO notif ) throws CRMException
     {
-    	AppLogService.info( " \n \n GRUSUPPLY - sendCreateDemand( NotificationDTO notif ) \n \n"  );
+        AppLogService.info( " \n \n GRUSUPPLY - sendCreateDemand( NotificationDTO notif ) \n \n" );
 
         ICRMItem crmItem = buildCrmItemForDemand( notif, CRMItemTypeEnum.DEMAND_CREATE_BY_USER_GUID );
 
         doProcess( crmItem, AppPropertiesService.getProperty( URL_WS_CREATE_DEMAND ) );
     }
-    
+
     /**
      * Updates a CRM Demand
      * @param notif the notification
      * @throws CRMException if there is an exception during the treatment
      */
-    public void updateDemand( NotificationDTO notif )
-        throws CRMException
+    public void updateDemand( NotificationDTO notif ) throws CRMException
     {
-        AppLogService.info( " \n \n GRUSUPPLY - updateDemand( NotificationDTO notif ) \n \n"  );
-        
+        AppLogService.info( " \n \n GRUSUPPLY - updateDemand( NotificationDTO notif ) \n \n" );
+
         ICRMItem crmItem = buildCrmItemForDemand( notif, CRMItemTypeEnum.DEMAND_UPDATE );
 
         doProcess( crmItem, AppPropertiesService.getProperty( URL_WS_UPDATE_DEMAND ) );
@@ -137,8 +138,7 @@ public class NotifyCrmService
      */
     public void notify( NotificationDTO notif ) throws CRMException
     {
-    	
-    	 AppLogService.info( " \n \n GRUSUPPLY - notify( NotificationDTO notif ) \n \n"  );
+        AppLogService.info( " \n \n GRUSUPPLY - notify( NotificationDTO notif ) \n \n" );
 
         ICRMItem crmItem = buildCrmItemForNotification( notif, CRMItemTypeEnum.NOTIFICATION );
 
@@ -171,7 +171,7 @@ public class NotifyCrmService
 
         return strResponse;
     }
-    
+
     /**
      * Call web service rest using GET method
      * @param crmItem the parameters
@@ -179,8 +179,7 @@ public class NotifyCrmService
      * @return the response
      * @throws CRMException
      */
-    private String doProcess( String strWsUrl )
-        throws CRMException
+    private String doProcess( String strWsUrl ) throws CRMException
     {
         String strResponse = StringUtils.EMPTY;
 
@@ -189,7 +188,7 @@ public class NotifyCrmService
             HttpAccess httpAccess = new HttpAccess(  );
             Map<String, String> mapHeaders = new HashMap<String, String>(  );
             mapHeaders.put( HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON );
-            
+
             strResponse = httpAccess.doGet( strWsUrl, null, null, mapHeaders );
         }
         catch ( HttpAccessException e )
@@ -201,7 +200,7 @@ public class NotifyCrmService
 
         return strResponse;
     }
-    
+
     /**
      * Builds a CrmItem object for a demand
      * @param notif the notification
@@ -232,7 +231,7 @@ public class NotifyCrmService
 
         return crmItem;
     }
-    
+
     /**
      * Builds a CrmItem object for a notification
      * @param notif the notification
@@ -259,7 +258,7 @@ public class NotifyCrmService
         crmItem.putParameter( ICRMItem.NOTIFICATION_SENDER,
             StringUtils.isNotBlank( notif.getUserDashBoard(  ).getSenderName(  ) )
             ? notif.getUserDashBoard(  ).getSenderName(  ) : StringUtils.EMPTY );
-        
+
         return crmItem;
     }
 }

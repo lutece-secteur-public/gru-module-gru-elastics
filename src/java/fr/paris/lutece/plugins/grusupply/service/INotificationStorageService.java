@@ -60,5 +60,4 @@ public interface INotificationStorageService
      * @param demand the demand
      */
     public void store( Demand demand );
-    
 }

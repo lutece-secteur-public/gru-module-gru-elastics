@@ -87,7 +87,7 @@ public class StorageService
     {
         _notificationStorageService.store( customer );
     }
- 
+
     /**
      * Store the demand
      *

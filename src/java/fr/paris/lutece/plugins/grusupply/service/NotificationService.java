@@ -114,7 +114,7 @@ public class NotificationService
             {
                 _notifyCrmService.updateDemand( notification );
             }
-            
+
             _notifyCrmService.notify( notification );
         }
     }
