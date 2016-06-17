@@ -90,7 +90,7 @@ public class GRUSupplyRestService
             AppLogService.info( "grusupply - Received strJson : " + strJson );
 
             // Find CID in GRU Database
-            String strTempCid = notif.getCustomerid(  );
+            String strTempCid = notif.getCustomerid(  ) == null || notif.getCustomerid(  ).equals( "0" ) ? null : notif.getCustomerid(  ) ;
             String strTempGuid = notif.getUserGuid(  );
 
             UserDTO userDto = null;
