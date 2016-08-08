@@ -33,6 +33,8 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
@@ -47,6 +49,7 @@ public class NotificationService
     private static SendEmailService _sendEmailService;
     private static SendSmsService _sendSmsService;
     private static NotifyCrmService _notifyCrmService;
+    private static boolean bIsInitialized = false;
 
     /**
      * Returns the unique instance
@@ -54,7 +57,7 @@ public class NotificationService
      */
     public static NotificationService instance(  )
     {
-        if ( _singleton == null )
+        if ( !bIsInitialized )
         {
             try
             {
@@ -63,9 +66,14 @@ public class NotificationService
                 _sendSmsService = new SendSmsService(  );
                 _notifyCrmService = new NotifyCrmService(  );
             }
-            catch ( Exception e )
+            catch ( NoSuchBeanDefinitionException e )
             {
-                AppLogService.error( "Error when instantiating the NotificationService instance" + e.getMessage(  ), e );
+                // The notification bean has not been found, the application must use the ESB
+                AppLogService.info( "No notification bean found, the application must use the ESB" );
+            }
+            finally
+            {
+                bIsInitialized = true;
             }
         }
 
