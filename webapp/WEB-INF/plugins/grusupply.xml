@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?><plug-in>
     <!-- Plugin Informations -->
     <name>grusupply</name>
-    <class>fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation</class>
+    <class>fr.paris.lutece.plugins.grusupply.service.GruSupplyPlugin</class>
     <version>1.0.1-SNAPSHOT</version>
     <documentation/>
     <installation/>
@@ -11,7 +11,7 @@
     <provider>grusupply.plugin.provider</provider>
     <provider-url>http://lutece.paris.fr</provider-url>
     <icon-url>images/admin/skin/plugins/grusupply/grusupply.png</icon-url>
-    <copyright>Copyright 2001-2015 Mairie de Paris</copyright>
+    <copyright>Copyright 2001-2016 Mairie de Paris</copyright>
     <core-version-dependency>
         <min-core-version>5.0.0</min-core-version>
         <max-core-version/>
@@ -41,4 +41,14 @@
            </init-param>
        </filter> -->
    </filters>
+   
+    <!-- Daemons -->
+    <daemons>
+        <daemon>
+            <daemon-id>grusupplyCustomerIndexerDaemon</daemon-id>
+            <daemon-name>grusupply.daemon.customerindexerDaemon.name</daemon-name>
+            <daemon-description>grusupply.daemon.customerindexerDaemon.description</daemon-description>
+            <daemon-class>fr.paris.lutece.plugins.grusupply.service.daemon.CustomerIndexerDaemon</daemon-class>
+        </daemon>
+    </daemons>
 </plug-in>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2015, Mairie de Paris
+ * Copyright (c) 2002-2016, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,19 +34,16 @@
 package fr.paris.lutece.plugins.grusupply.web.rs;
 
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
-import fr.paris.lutece.plugins.customerprovisioning.business.UserDTO;
-import fr.paris.lutece.plugins.customerprovisioning.services.ProvisioningService;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.business.Notification;
 import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
+import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.NotificationService;
 import fr.paris.lutece.plugins.grusupply.service.StorageService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
-
-import org.apache.commons.lang.StringUtils;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
@@ -89,20 +86,12 @@ public class GRUSupplyRestService
             NotificationDTO notif = mapper.readValue( strJson, NotificationDTO.class );
             AppLogService.info( "grusupply - Received strJson : " + strJson );
 
-            // Find CID in GRU Database
             String strTempCid = notif.getCustomerid(  ) == null || notif.getCustomerid(  ).equals( "0" ) ? null : notif.getCustomerid(  ) ;
             String strTempGuid = notif.getUserGuid(  );
 
-            UserDTO userDto = null;
-            fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = ProvisioningService.processGuidCuid( strTempGuid,
-                    strTempCid, userDto );
-
-            Customer user = buildCustomer( gruCustomer );
+            Customer user = CustomerProvider.provide( strTempGuid, strTempCid );
             Demand demand = buildDemand( notif, user );
             Notification notification = buildNotif( notif, demand, strJson );
-
-            // Parse to Customer
-            StorageService.instance(  ).store( user );
 
             // Parse to Demand
             StorageService.instance(  ).store( demand );
@@ -158,67 +147,6 @@ public class GRUSupplyRestService
         }
 
         return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build(  );
-    }
-
-    /**
-     * Methode which create a gru Customer
-     * @param user User from SSO database
-     * @param strUserId ID from Flux
-     * @return the Customer
-     */
-    private static fr.paris.lutece.plugins.gru.business.customer.Customer buildCustomer( UserDTO user, String strUserId )
-    {
-        fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = new fr.paris.lutece.plugins.gru.business.customer.Customer(  );
-        gruCustomer.setFirstname( setEmptyValueWhenNullValue( user.getFirstname(  ) ) );
-        gruCustomer.setLastname( setEmptyValueWhenNullValue( user.getLastname(  ) ) );
-        gruCustomer.setEmail( setEmptyValueWhenNullValue( user.getEmail(  ) ) );
-        gruCustomer.setAccountGuid( setEmptyValueWhenNullValue( strUserId ) );
-        gruCustomer.setAccountLogin( setEmptyValueWhenNullValue( user.getEmail(  ) ) );
-        gruCustomer.setMobilePhone( setEmptyValueWhenNullValue( user.getTelephoneNumber(  ) ) );
-        gruCustomer.setFixedPhoneNumber( setEmptyValueWhenNullValue( user.getFixedPhoneNumber(  ) ) );
-        gruCustomer.setExtrasAttributes( "NON RENSEIGNE" );
-
-        return gruCustomer;
-    }
-
-    private static String setEmptyValueWhenNullValue( String value )
-    {
-        return ( StringUtils.isEmpty( value ) ) ? "" : value;
-    }
-
-    /**
-     * Method which create a demand from Data base, a flux and GRU database
-     *
-     * @param gruCustomer
-     * @return
-     */
-    private static Customer buildCustomer( fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer )
-    {
-        if ( gruCustomer == null )
-        {
-            throw new NullPointerException(  );
-        }
-
-        Customer grusupplyCustomer = new Customer(  );
-        grusupplyCustomer.setCustomerId( gruCustomer.getId(  ) );
-        grusupplyCustomer.setName( gruCustomer.getLastname(  ) );
-        grusupplyCustomer.setFirstName( gruCustomer.getFirstname(  ) );
-        grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
-        grusupplyCustomer.setTelephoneNumber( gruCustomer.getMobilePhone(  ) );
-        grusupplyCustomer.setFixedTelephoneNumber( gruCustomer.getFixedPhoneNumber(  ) );
-
-        /*        grusupplyCustomer.setBirthday( gruCustomer.getBirthday(  ) );
-         grusupplyCustomer.setCivility( gruCustomer.getCivility(  ) );
-         grusupplyCustomer.setStreet( gruCustomer.getStreet(  ) );
-         grusupplyCustomer.setCityOfBirth( gruCustomer.getCityOfBirth(  ) );
-         grusupplyCustomer.setCity( gruCustomer.getCity(  ) );
-         grusupplyCustomer.setPostalCode( gruCustomer.getPostalCode(  ) );
-         */
-        grusupplyCustomer.setEmail( gruCustomer.getEmail(  ) );
-        grusupplyCustomer.setStayConnected( true );
-
-        // TODO PROBLEME DE CHAMPS
-        return grusupplyCustomer;
     }
 
     /**
