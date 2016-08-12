@@ -11,7 +11,7 @@ PRIMARY KEY (id_mapping)
 );
 
 --
--- Structure for table elastic_mapping
+-- Structure for table grusupply_customer_indexer_action
 --
 
 DROP TABLE IF EXISTS grusupply_customer_indexer_action;
