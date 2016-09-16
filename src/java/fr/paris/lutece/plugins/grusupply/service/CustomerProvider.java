@@ -33,21 +33,73 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.customerprovisioning.services.ProvisioningService;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+
 import fr.paris.lutece.plugins.grusupply.business.Customer;
+import fr.paris.lutece.plugins.identitystore.web.rs.dto.AttributeDto;
+import fr.paris.lutece.plugins.identitystore.web.rs.dto.IdentityDto;
+import fr.paris.lutece.plugins.identitystore.web.service.IdentityService;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
+import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
 /**
  * This class provides customers
  *
  */
-public final class CustomerProvider
+public class CustomerProvider
 {
+	//FIXME ? full recopie de IdentityStoreCustomerInfoService
+    private static final String ATTRIBUTE_USER_NAME_GIVEN = "customerprovisioning.identity.attribute.user.name.given";
+    private static final String ATTRIBUTE_USER_NAME_FAMILLY = "customerprovisioning.identity.attribute.user.name.family";
+    private static final String ATTRIBUTE_USER_HOMEINFO_ONLINE_EMAIL = "customerprovisioning.identity.attribute.user.home-info.online.email";
+    private static final String ATTRIBUTE_USER_HOMEINFO_TELECOM_TELEPHONE_NUMBER = "customerprovisioning.identity.attribute.user.home-info.telecom.telephone.number";
+    private static final String ATTRIBUTE_USER_HOMEINFO_TELECOM_MOBILE_NUMBER = "customerprovisioning.identity.attribute.user.home-info.telecom.mobile.number";
+    private static final String ATTRIBUTE_IDENTITY_NAME_GIVEN = AppPropertiesService.getProperty( ATTRIBUTE_USER_NAME_GIVEN );
+    private static final String ATTRIBUTE_IDENTITY_NAME_FAMILLY = AppPropertiesService.getProperty( ATTRIBUTE_USER_NAME_FAMILLY );
+    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL = AppPropertiesService.getProperty( ATTRIBUTE_USER_HOMEINFO_ONLINE_EMAIL );
+    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER = AppPropertiesService.getProperty( ATTRIBUTE_USER_HOMEINFO_TELECOM_TELEPHONE_NUMBER );
+    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER = AppPropertiesService.getProperty( ATTRIBUTE_USER_HOMEINFO_TELECOM_MOBILE_NUMBER );
+    private static final String DEFAULT_CUSTOMER_ID = "0";
+
+    //Service identityStore
+    private static final String BEAN_IDENTITYSTORE_SERVICE="grusupply.identitystore.service";
+    private IdentityService _identityService;
+    
+    private static CustomerProvider _singleton;
+    private static boolean bIsInitialized = false;
+    private static final String APPLICATION_CODE = "GruSupply";
+    
     /**
-     * Default constructor
+     * retrieve singleton
      */
-    private CustomerProvider(  )
+    public static CustomerProvider instance(  )
     {
-        
+        if ( !bIsInitialized )
+        {
+            try
+            {
+            	_singleton = new CustomerProvider(  );
+            	_singleton.setIdentityService( ( IdentityService )SpringContextService.getBean( BEAN_IDENTITYSTORE_SERVICE ) );
+            }
+            catch ( NoSuchBeanDefinitionException e )
+            {
+                // The notification bean has not been found, the application must use the ESB
+                AppLogService.info( "No notification bean found, the application must use the ESB" );
+            }
+            finally
+            {
+                bIsInitialized = true;
+            }
+        }
+
+        return _singleton;
+    }
+    
+    private void setIdentityService( IdentityService identityService )
+    {
+    	this._identityService = identityService;
     }
     
     /**
@@ -56,12 +108,17 @@ public final class CustomerProvider
      * @param strCid the customer id
      * @return the customer
      */
-    public static Customer provide( String strGuid, String strCid )
+    public Customer get( String strGuid, String strCid )
     {
-        fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = ProvisioningService.processGuidCuid( strGuid,
-                strCid, null );
+    	if ( StringUtils.isBlank( strGuid ) ) {
+    		strGuid = StringUtils.EMPTY;
+    	}
+    	if ( StringUtils.isBlank( strCid ) || ! StringUtils.isNumeric( strCid ) ) {
+    		strCid = DEFAULT_CUSTOMER_ID;
+    	}
+        IdentityDto identityDto = _identityService.getIdentity( strGuid, Integer.parseInt( strCid ), APPLICATION_CODE, StringUtils.EMPTY );
 
-        return convert( gruCustomer );
+        return convert( identityDto );
     }
     
     /**
@@ -70,17 +127,31 @@ public final class CustomerProvider
      * @param customerGru the GRU customer
      * @return the GRU supply customer
      */
-    private static Customer convert( fr.paris.lutece.plugins.gru.business.customer.Customer customerGru )
+    private static Customer convert( IdentityDto identityDto )
     {
-        Customer customerGruSupply = new Customer(  );
-        customerGruSupply.setCustomerId( customerGru.getId(  ) );
-        customerGruSupply.setName( customerGru.getLastname(  ) );
-        customerGruSupply.setFirstName( customerGru.getFirstname(  ) );
-        customerGruSupply.setEmail( customerGru.getEmail(  ) );
-        customerGruSupply.setTelephoneNumber( customerGru.getMobilePhone(  ) );
-        customerGruSupply.setFixedTelephoneNumber( customerGru.getFixedPhoneNumber(  ) );
+    	Customer customerGruSupply = new Customer(  );
+    	
+        customerGruSupply.setCustomerId( identityDto.getCustomerId(  ) );
+        customerGruSupply.setName( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_FAMILLY ) );
+        customerGruSupply.setFirstName( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_GIVEN ) );
+        customerGruSupply.setEmail( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL ) );
+        customerGruSupply.setTelephoneNumber( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER ) );
+        customerGruSupply.setFixedTelephoneNumber( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER ) );
         customerGruSupply.setStayConnected( true );
 
         return customerGruSupply;
+    }
+
+    /**
+     * Gets the attribute value from the specified identity
+     * @param identityDto the identity
+     * @param strCode the attribute code
+     * @return {@code null} if the attribute does not exist, the attribute value otherwise
+     */
+    private static String getAttribute( IdentityDto identityDto, String strCode )
+    {
+        AttributeDto attribute = identityDto.getAttributes(  ).get( strCode );
+
+        return ( attribute == null ) ? null : attribute.getValue(  );
     }
 }
