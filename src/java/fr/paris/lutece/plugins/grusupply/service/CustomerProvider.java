@@ -33,9 +33,6 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.identitystore.web.rs.dto.AttributeDto;
 import fr.paris.lutece.plugins.identitystore.web.rs.dto.IdentityDto;
@@ -44,13 +41,18 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
+import org.apache.commons.lang.StringUtils;
+
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+
+
 /**
  * This class provides customers
  *
  */
 public class CustomerProvider
 {
-	//FIXME ? full recopie de IdentityStoreCustomerInfoService
+    //FIXME ? full recopie de IdentityStoreCustomerInfoService
     private static final String ATTRIBUTE_USER_NAME_GIVEN = "customerprovisioning.identity.attribute.user.name.given";
     private static final String ATTRIBUTE_USER_NAME_FAMILLY = "customerprovisioning.identity.attribute.user.name.family";
     private static final String ATTRIBUTE_USER_HOMEINFO_ONLINE_EMAIL = "customerprovisioning.identity.attribute.user.home-info.online.email";
@@ -64,13 +66,12 @@ public class CustomerProvider
     private static final String DEFAULT_CUSTOMER_ID = "0";
 
     //Service identityStore
-    private static final String BEAN_IDENTITYSTORE_SERVICE="grusupply.identitystore.service";
-    private IdentityService _identityService;
-    
+    private static final String BEAN_IDENTITYSTORE_SERVICE = "grusupply.identitystore.service";
     private static CustomerProvider _singleton;
     private static boolean bIsInitialized = false;
     private static final String APPLICATION_CODE = "GruSupply";
-    
+    private IdentityService _identityService;
+
     /**
      * retrieve singleton
      */
@@ -80,8 +81,9 @@ public class CustomerProvider
         {
             try
             {
-            	_singleton = new CustomerProvider(  );
-            	_singleton.setIdentityService( ( IdentityService )SpringContextService.getBean( BEAN_IDENTITYSTORE_SERVICE ) );
+                _singleton = new CustomerProvider(  );
+                _singleton.setIdentityService( (IdentityService) SpringContextService.getBean( 
+                        BEAN_IDENTITYSTORE_SERVICE ) );
             }
             catch ( NoSuchBeanDefinitionException e )
             {
@@ -96,12 +98,12 @@ public class CustomerProvider
 
         return _singleton;
     }
-    
+
     private void setIdentityService( IdentityService identityService )
     {
-    	this._identityService = identityService;
+        this._identityService = identityService;
     }
-    
+
     /**
      * Provides a customer with the specified GUID / CID
      * @param strGuid the GUID
@@ -110,17 +112,22 @@ public class CustomerProvider
      */
     public Customer get( String strGuid, String strCid )
     {
-    	if ( StringUtils.isBlank( strGuid ) ) {
-    		strGuid = StringUtils.EMPTY;
-    	}
-    	if ( StringUtils.isBlank( strCid ) || ! StringUtils.isNumeric( strCid ) ) {
-    		strCid = DEFAULT_CUSTOMER_ID;
-    	}
-        IdentityDto identityDto = _identityService.getIdentity( strGuid, Integer.parseInt( strCid ), APPLICATION_CODE, StringUtils.EMPTY );
+        if ( StringUtils.isBlank( strGuid ) )
+        {
+            strGuid = StringUtils.EMPTY;
+        }
+
+        if ( StringUtils.isBlank( strCid ) || !StringUtils.isNumeric( strCid ) )
+        {
+            strCid = DEFAULT_CUSTOMER_ID;
+        }
+
+        IdentityDto identityDto = _identityService.getIdentity( strGuid, Integer.parseInt( strCid ), APPLICATION_CODE,
+                StringUtils.EMPTY );
 
         return convert( identityDto );
     }
-    
+
     /**
      * Converts a GRU customer to a GRU supply customer
      *
@@ -129,14 +136,16 @@ public class CustomerProvider
      */
     private static Customer convert( IdentityDto identityDto )
     {
-    	Customer customerGruSupply = new Customer(  );
-    	
+        Customer customerGruSupply = new Customer(  );
+
         customerGruSupply.setCustomerId( identityDto.getCustomerId(  ) );
         customerGruSupply.setName( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_FAMILLY ) );
         customerGruSupply.setFirstName( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_GIVEN ) );
         customerGruSupply.setEmail( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL ) );
-        customerGruSupply.setTelephoneNumber( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER ) );
-        customerGruSupply.setFixedTelephoneNumber( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER ) );
+        customerGruSupply.setTelephoneNumber( getAttribute( identityDto,
+                ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER ) );
+        customerGruSupply.setFixedTelephoneNumber( getAttribute( identityDto,
+                ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER ) );
         customerGruSupply.setStayConnected( true );
 
         return customerGruSupply;

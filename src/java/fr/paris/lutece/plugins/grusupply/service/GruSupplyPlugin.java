@@ -61,7 +61,7 @@ public class GruSupplyPlugin extends Plugin
     public void init(  )
     {
         BeanUtilsBean.getInstance(  ).getConvertUtils(  )
-                     .register( new DateConverter( DateFormat.getDateInstance( DateFormat.SHORT,
-                    Locale.FRANCE ) ), java.sql.Date.class );
+                     .register( new DateConverter( DateFormat.getDateInstance( DateFormat.SHORT, Locale.FRANCE ) ),
+            java.sql.Date.class );
     }
 }

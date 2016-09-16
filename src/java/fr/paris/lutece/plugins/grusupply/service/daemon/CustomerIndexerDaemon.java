@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.grusupply.service.daemon;
 
-import java.util.List;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerAction;
 import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerActionFilter;
@@ -43,6 +42,8 @@ import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.StorageService;
 import fr.paris.lutece.portal.service.daemon.Daemon;
 import fr.paris.lutece.portal.service.util.AppLogService;
+
+import java.util.List;
 
 
 /**
@@ -71,26 +72,26 @@ public class CustomerIndexerDaemon extends Daemon
     public void run(  )
     {
         StringBuilder sbLogs = new StringBuilder(  );
-        
+
         indexCreatedCustomers( sbLogs );
         indexUpdatedCustomers( sbLogs );
         indexDeletedCustomers( sbLogs );
-        
+
         setLastRunLogs( sbLogs.toString(  ) );
     }
-    
+
     /**
      * Indexes created customers.
      * Logs the action in the specified StringBuilder
      * @param sbLogs the StringBuilder used to log the action
      */
     private void indexCreatedCustomers( StringBuilder sbLogs )
-    {        
+    {
         sbLogs.append( LOG_INDEX_CREATED );
         sbLogs.append( indexUpdatedCustomers( IndexerTask.CREATE ) );
         sbLogs.append( LOG_END_OF_SENTENCE );
     }
-    
+
     /**
      * Indexes updated customers.
      * Logs the action in the specified StringBuilder
@@ -102,7 +103,7 @@ public class CustomerIndexerDaemon extends Daemon
         sbLogs.append( indexUpdatedCustomers( IndexerTask.UPDATE ) );
         sbLogs.append( LOG_END_OF_SENTENCE );
     }
-    
+
     /**
      * Indexes deleted customers.
      * Logs the action in the specified StringBuilder
@@ -114,7 +115,7 @@ public class CustomerIndexerDaemon extends Daemon
         sbLogs.append( 0 );
         sbLogs.append( LOG_END_OF_SENTENCE );
     }
-    
+
     /**
      * Indexes updated customers
      * @param indexerTask the indexer task
@@ -123,32 +124,35 @@ public class CustomerIndexerDaemon extends Daemon
     private int indexUpdatedCustomers( IndexerTask indexerTask )
     {
         int nNbIndexedCustomers = 0;
-        
+
         IndexerActionFilter indexerActionFilter = new IndexerActionFilter(  );
         indexerActionFilter.setTask( indexerTask );
+
         List<IndexerAction> listIndexerActions = IndexerActionHome.getList( indexerActionFilter );
-        
+
         for ( IndexerAction indexerAction : listIndexerActions )
-        {      
+        {
             try
             {
-            	Customer customer = CustomerProvider.instance(  ).get( null, String.valueOf( indexerAction.getIdCustomer(  ) ) );
-                
+                Customer customer = CustomerProvider.instance(  )
+                                                    .get( null, String.valueOf( indexerAction.getIdCustomer(  ) ) );
+
                 if ( customer != null )
                 {
                     StorageService.instance(  ).store( customer );
-                    
+
                     nNbIndexedCustomers++;
-                    
+
                     IndexerActionHome.remove( indexerAction.getIdAction(  ) );
                 }
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
-                AppLogService.error( "Unable to get the customer with id " + indexerAction.getIdCustomer(  ) + " : " + e.getMessage(  ) );
+                AppLogService.error( "Unable to get the customer with id " + indexerAction.getIdCustomer(  ) + " : " +
+                    e.getMessage(  ) );
             }
         }
-        
+
         return nNbIndexedCustomers;
     }
 }
