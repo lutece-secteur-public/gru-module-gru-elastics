@@ -36,6 +36,7 @@ package fr.paris.lutece.plugins.grusupply.service;
 import fr.paris.lutece.plugins.customerprovisioning.services.ProvisioningService;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 
+
 /**
  * This class provides customers
  *
@@ -47,9 +48,8 @@ public final class CustomerProvider
      */
     private CustomerProvider(  )
     {
-        
     }
-    
+
     /**
      * Provides a customer with the specified GUID / CID
      * @param strGuid the GUID
@@ -58,19 +58,19 @@ public final class CustomerProvider
      */
     public static Customer provide( String strGuid, String strCid )
     {
-        fr.paris.lutece.plugins.gru.business.customer.Customer gruCustomer = ProvisioningService.processGuidCuid( strGuid,
+        fr.paris.lutece.plugins.grubusiness.business.customer.Customer gruCustomer = ProvisioningService.processGuidCuid( strGuid,
                 strCid, null );
 
         return convert( gruCustomer );
     }
-    
+
     /**
      * Converts a GRU customer to a GRU supply customer
      *
      * @param customerGru the GRU customer
      * @return the GRU supply customer
      */
-    private static Customer convert( fr.paris.lutece.plugins.gru.business.customer.Customer customerGru )
+    private static Customer convert( fr.paris.lutece.plugins.grubusiness.business.customer.Customer customerGru )
     {
         Customer customerGruSupply = new Customer(  );
         customerGruSupply.setCustomerId( customerGru.getId(  ) );
