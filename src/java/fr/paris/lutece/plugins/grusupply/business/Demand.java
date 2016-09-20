@@ -45,7 +45,6 @@ public class Demand
     private int _nDemandTypeId;
     private int _nDemandMaxStep;
     private int _nDemandUserCurrentStep;
-    private int _nDemandState;
     private int _nDemandStatus;
     private String _strNotifType;
     private int _nCRMStatus;

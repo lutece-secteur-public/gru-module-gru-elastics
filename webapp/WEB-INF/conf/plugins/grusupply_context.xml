@@ -19,7 +19,19 @@
     <!-- NOTIFICATION SERVICE -->
    <bean id="grusupply.notificationService" class="fr.paris.lutece.plugins.grusupply.service.NotificationService"/>  
    
-   
+    <!-- IDENTITYSTORE BEAN -->
+    <bean id="grusupply.identitystore.simpleRestTransport" class="fr.paris.lutece.plugins.identitystore.web.service.SimpleRestTransport" />
+    <bean id="grusupply.identitystore.httpTransport" class="fr.paris.lutece.plugins.identitystore.web.rs.service.IdentityTransportRest">
+        <property name="IdentityStoreEndPoint">
+            <value>http://127.0.0.1:9092/lutece/rest/identitystore/</value>
+        </property>
+        <property name="httpTransport">
+            <ref bean="grusupply.identitystore.simpleRestTransport"/>
+        </property>
+    </bean>       
+    <bean id="grusupply.identitystore.service" class="fr.paris.lutece.plugins.identitystore.web.service.IdentityService">
+        <constructor-arg ref="grusupply.identitystore.httpTransport"/>
+    </bean>
     
     
 </beans>

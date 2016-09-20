@@ -52,7 +52,7 @@ public interface IIndexerActionDAO
      * @param plugin the plugin
      */
     void delete( int nId, Plugin plugin );
-    
+
     /**
      * Loads the data of all indexerAction and returns them in a list
      * @param filter the search filter

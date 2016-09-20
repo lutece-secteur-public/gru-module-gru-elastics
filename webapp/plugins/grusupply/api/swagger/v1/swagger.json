@@ -1,0 +1,284 @@
+{
+    "basePath": "/notification",
+    "paths": {
+        "/send": {
+            "post": {
+                "x-auth-type": "Application & Application User",
+                "x-throttling-tier": "Unlimited",
+                "description": "allows to create / update a demand or add a notification for the 'Guichet' and 'Agent' applications\n",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "schema": {
+                            "$ref": "#/definitions/notification"
+                        },
+                        "name": "body",
+                        "required": true,
+                        "in": "body"
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "schema": {
+                            "$ref": "#/definitions/acknowledge"
+                        },
+                        "description": "Successful response"
+                    },
+                    "400": {
+                            "schema": {
+                            "$ref": "#/definitions/error"
+                        },
+                        "description": "Unsuccessful response"
+                    }
+                }
+            }
+        }
+    },
+    "host": "127.0.0.1",
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "definitions": {
+        "acknowledge": {
+            "properties": {
+                "status": {
+                    "description": "confirmation that the request was well received by the ESB",
+                    "example": "received",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "error": {
+                "properties": {
+                        "status": {
+                                "description": "confirmation that the request was not received by the ESB",
+                                "example": "not received",
+                                "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "notification": {
+            "properties": {
+                "crm_status_id": {
+                    "minimum": 0,
+                    "description": "single CRM status id",
+                    "example": 1,
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "demand_user_current_step": {
+                        "minimum": 1,
+                        "description": "the current step the notification is about",
+                        "example": 3,
+                        "format": "int32",
+                        "type": "integer"
+                },
+                "demand_max_step": {
+                        "minimum": 1,
+                        "description": "Maximum number of step for the demand; used for display the progession of the demand",
+                        "example": 5,
+                        "format": "int32",
+                        "type": "integer"
+                },
+                "demand_id": {
+                    "minimum": 1,
+                    "description": "request ID for the current user",
+                    "example": 1234,
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "notification_type": {
+                        "description": "type of the notification",
+                        "example": "",
+                        "type": "string"
+                },
+                "backoffice_logging": {
+                    "properties": {
+                        "status_text": {
+                            "description": "status label which will be displayed",
+                            "example": "En attente de validation",
+                            "type": "string"
+                        },
+                        "message": {
+                                "description": "Message to display in the 'Agent' service",
+                                "example": "Traitement de la demande en cours par le service de la DVD",
+                                "type": "string"
+                        },
+                        "view_email_notification": {
+                                "description" : "message to display in the 'Agent' service about the email received by the user",
+                                "example": "Email envoyé à l adresse : john.doe@somewhere.com – Objet : ... _ Message : ...",
+                                "type": "string"
+                        },
+                        "view_sms_notification": {
+                                "description": "message to display in the 'Agent' service about the SMS received by the user",
+                                "example": "SMS envoyé au numéro 0680125345 _ Message : Votre demande de carte de stationnement est en attente de validation",
+                                "type": "string"
+                        },
+                        "view_dashboard_notification": {
+                                "description": "Message to display in the 'Agent' service about the notification received in the user account (MyDashboard)",
+                                "example": "Notification envoyée sur le compte Parisien de M. Martin Dupont",
+                                "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "user_email": {
+                    "properties": {
+                        "cci": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "example": "Bonjour Monsieur John Doe, Votre demande de carte de stationnement est en attente de validation",
+                            "type": "string"
+                        },
+                        "subject": {
+                            "example": "[Mairie de Paris] Demande de carte de stationnement",
+                            "type": "string"
+                        },
+                        "sender_email": {
+                            "example": "no_reply@paris.fr",
+                            "type": "string"
+                        },
+                        "sender_name": {
+                            "example": "Mairie de Paris",
+                            "type": "string"
+                        },
+                        "cc": {
+                            "type": "string"
+                        },
+                        "recipient": {
+                            "minimum": 1,
+                            "example": "john.doe@somewhere.com",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "notification_date": {
+                        "description": "date for the notification in milliseconds since 1970-01-01 00:00:00 UTC",
+                        "example": 1455631063473,
+                        "format": "int32",
+                        "type": "integer"
+                },
+                "demand_id_type": {
+                    "minimum": 1,
+                    "description": "single request type id associated with 'Guichet' services",
+                    "example": 14,
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "email": {
+                    "description": "user email",
+                    "example": "john.doe@somewhere.com",
+                    "type": "string"
+                },
+                "demand_reference": {
+                    "example": "RCL160200116",
+                    "type": "string"
+                },
+                "user_guid": {
+                    "description": "user OpenAM account id",
+                    "example": "12312",
+                    "type": "string"
+                },
+                "user_sms": {
+                    "properties": {
+                        "message": {
+                            "description": "the message to be sent to the user",
+                            "example": "Votre demande de carte de stationnement est en attente de validation",
+                            "type": "string"
+                        },
+                        "phone_number": {
+                                "description": "user phone numer",
+                                "example": "0600000000",
+                                "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "user_dashboard": {
+                    "properties": {
+                        "message": {
+                            "description": "content of the new notif to add",
+                            "example": "this is a test!",
+                            "type": "string"
+                        },
+                        "status_text": {
+                            "description": "status label which will be displayed",
+                            "example": "En attente de validation",
+                            "type": "string"
+                        },
+                        "subject": {
+                            "description": "Subject of the new notif to add",
+                            "example": "this is a test!",
+                            "type": "string"
+                        },
+                        "data": {
+                            "description": "technical field to store several datas",
+                            "type": "string"
+                        },
+                        "sender_name": {
+                            "description": "Sender name of the new notif to add",
+                            "example": "Mairie de Paris",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "user_infos": {
+                        "properties": {
+                                "user_lastname": {
+                                        "description": "user lastname",
+                                        "example": "Dupont",
+                                        "type": "string"
+                                },
+                                "user_firstname": {
+                                        "description": "user firstname",
+                                        "example": "Martin",
+                                        "type": "string"
+                                },
+                                "user_email": {
+                                        "description": "user email",
+                                        "example": "martin.dupont@email.com",
+                                        "type": "string"
+                                },
+                                "user_mobile_phone": {
+                                        "description": "user mobile phone",
+                                        "example": "0600000000",
+                                        "type": "string"
+                                }
+
+                        },
+                        "type": "object"
+                },
+                "customer_id": {
+                    "description": "id for the user Identity",
+                    "example": "123456",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "info": {
+        "title": "Notification_DEV_API",
+        "description": "DEV API(s) display to manage notifications for 'Guichet' and 'Agent' services",
+        "termsOfService": "http://swagger.io/terms/",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "contact": {
+            "name": "Pierre.Levy@paris.fr"
+        },
+        "version": "v1"
+    }
+}

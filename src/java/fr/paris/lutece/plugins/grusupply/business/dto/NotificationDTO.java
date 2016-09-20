@@ -62,7 +62,6 @@ public class NotificationDTO
     private int _nDemandTypeId;
     private int _nMaxStep;
     private int _nUserCurrentStep;
-    private int _nDemandState;
     private long _lNotificationDate;
     private String _strReference;
     private EmailNotification _userEmail;

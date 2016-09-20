@@ -33,13 +33,13 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
+
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 
 public class NotificationService

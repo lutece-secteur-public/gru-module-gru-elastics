@@ -86,10 +86,7 @@ public class GRUSupplyRestService
             NotificationDTO notif = mapper.readValue( strJson, NotificationDTO.class );
             AppLogService.info( "grusupply - Received strJson : " + strJson );
 
-            String strTempCid = notif.getCustomerid(  ) == null || notif.getCustomerid(  ).equals( "0" ) ? null : notif.getCustomerid(  ) ;
-            String strTempGuid = notif.getUserGuid(  );
-
-            Customer user = CustomerProvider.provide( strTempGuid, strTempCid );
+            Customer user = CustomerProvider.instance(  ).get( notif.getUserGuid(  ), notif.getCustomerid(  ) );
             Demand demand = buildDemand( notif, user );
             Notification notification = buildNotif( notif, demand, strJson );
 
@@ -152,7 +149,7 @@ public class GRUSupplyRestService
     /**
      * Method which create a demand from an flux
      * @param notifDTO
-     * @param nCustomerId
+     * @param customer
      * @return
      */
     private static Demand buildDemand( NotificationDTO notifDTO, Customer user )

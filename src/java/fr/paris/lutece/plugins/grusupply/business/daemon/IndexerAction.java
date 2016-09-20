@@ -40,7 +40,7 @@ package fr.paris.lutece.plugins.grusupply.business.daemon;
  *
  */
 public class IndexerAction
-{   
+{
     private int _nIdAction;
     private IndexerTask _indexerTask;
     private int _nIdCustomer;
