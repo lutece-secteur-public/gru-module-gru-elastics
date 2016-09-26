@@ -54,23 +54,26 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 public class CustomerProvider
 {
     //FIXME ? full recopie de IdentityStoreCustomerInfoService
-    private static final String ATTRIBUTE_USER_NAME_GIVEN = "customerprovisioning.identity.attribute.user.name.given";
-    private static final String ATTRIBUTE_USER_NAME_FAMILLY = "customerprovisioning.identity.attribute.user.name.family";
-    private static final String ATTRIBUTE_USER_HOMEINFO_ONLINE_EMAIL = "customerprovisioning.identity.attribute.user.home-info.online.email";
-    private static final String ATTRIBUTE_USER_HOMEINFO_TELECOM_TELEPHONE_NUMBER = "customerprovisioning.identity.attribute.user.home-info.telecom.telephone.number";
-    private static final String ATTRIBUTE_USER_HOMEINFO_TELECOM_MOBILE_NUMBER = "customerprovisioning.identity.attribute.user.home-info.telecom.mobile.number";
-    private static final String ATTRIBUTE_IDENTITY_NAME_GIVEN = AppPropertiesService.getProperty( ATTRIBUTE_USER_NAME_GIVEN );
-    private static final String ATTRIBUTE_IDENTITY_NAME_FAMILLY = AppPropertiesService.getProperty( ATTRIBUTE_USER_NAME_FAMILLY );
-    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL = AppPropertiesService.getProperty( ATTRIBUTE_USER_HOMEINFO_ONLINE_EMAIL );
-    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER = AppPropertiesService.getProperty( ATTRIBUTE_USER_HOMEINFO_TELECOM_TELEPHONE_NUMBER );
-    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER = AppPropertiesService.getProperty( ATTRIBUTE_USER_HOMEINFO_TELECOM_MOBILE_NUMBER );
+    
+    // Properties
+    private static final String PROPERTIES_APPLICATION_CODE = "grusupply.application.code";
+    private static final String PROPERTIES_ATTRIBUTE_USER_NAME_GIVEN = "grusupply.identity.attribute.user.name.given";
+    private static final String PROPERTIES_ATTRIBUTE_USER_NAME_FAMILLY = "grusupply.identity.attribute.user.name.family";
+    private static final String PROPERTIES_ATTRIBUTE_USER_HOMEINFO_ONLINE_EMAIL = "grusupply.identity.attribute.user.home-info.online.email";
+    private static final String PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_TELEPHONE_NUMBER = "grusupply.identity.attribute.user.home-info.telecom.telephone.number";
+    private static final String PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_MOBILE_NUMBER = "grusupply.identity.attribute.user.home-info.telecom.mobile.number";
+    private static final String APPLICATION_CODE = AppPropertiesService.getProperty( PROPERTIES_APPLICATION_CODE );
+    private static final String ATTRIBUTE_IDENTITY_NAME_GIVEN = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_NAME_GIVEN );
+    private static final String ATTRIBUTE_IDENTITY_NAME_FAMILLY = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_NAME_FAMILLY );
+    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_ONLINE_EMAIL );
+    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_TELEPHONE_NUMBER );
+    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_MOBILE_NUMBER );
     private static final String DEFAULT_CUSTOMER_ID = "0";
 
     //Service identityStore
     private static final String BEAN_IDENTITYSTORE_SERVICE = "grusupply.identitystore.service";
     private static CustomerProvider _singleton;
     private static boolean bIsInitialized = false;
-    private static final String APPLICATION_CODE = "GruSupply";
     private IdentityService _identityService;
 
     /**
