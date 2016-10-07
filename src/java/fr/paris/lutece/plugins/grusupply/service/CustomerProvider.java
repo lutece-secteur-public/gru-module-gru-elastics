@@ -46,7 +46,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 
-
 /**
  * This class provides customers
  *
@@ -54,7 +53,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 public class CustomerProvider
 {
     //FIXME ? full recopie de IdentityStoreCustomerInfoService
-    
+
     // Properties
     private static final String PROPERTIES_APPLICATION_CODE = "grusupply.application.code";
     private static final String PROPERTIES_ATTRIBUTE_USER_NAME_GIVEN = "grusupply.identity.attribute.user.name.given";
@@ -81,7 +80,6 @@ public class CustomerProvider
      */
     public static CustomerProvider instance(  )
     {
-
         if ( !bIsInitialized )
         {
             try
@@ -127,8 +125,7 @@ public class CustomerProvider
             strCid = DEFAULT_CUSTOMER_ID;
         }
 
-        IdentityDto identityDto = _identityService.getIdentity( strGuid, Integer.parseInt( strCid ), APPLICATION_CODE,
-                StringUtils.EMPTY );
+        IdentityDto identityDto = _identityService.getIdentity( strGuid, Integer.parseInt( strCid ), APPLICATION_CODE );
 
         return convert( identityDto );
     }
@@ -139,7 +136,6 @@ public class CustomerProvider
      * @param IdentityDto the identityDto
      * @return the GRU supply customer
      */
-
     private static Customer convert( IdentityDto identityDto )
     {
         Customer customerGruSupply = new Customer(  );
