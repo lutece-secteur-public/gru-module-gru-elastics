@@ -43,6 +43,7 @@ import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.NotificationService;
 import fr.paris.lutece.plugins.grusupply.service.StorageService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
+import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 import org.codehaus.jackson.JsonParseException;
@@ -86,15 +87,24 @@ public class GRUSupplyRestService
             NotificationDTO notif = mapper.readValue( strJson, NotificationDTO.class );
             AppLogService.info( "grusupply - Received strJson : " + strJson );
 
-            Customer user = CustomerProvider.instance(  ).get( notif.getUserGuid(  ), notif.getCustomerid(  ) );
-            Demand demand = buildDemand( notif, user );
-            Notification notification = buildNotif( notif, demand, strJson );
+            //STORE FOR AGENT
+            try
+            {
+            	Customer user = CustomerProvider.instance(  ).get( notif.getUserGuid(  ), notif.getCustomerid(  ) );
+                
+                Demand demand = buildDemand( notif, user );
+                Notification notification = buildNotif( notif, demand, strJson );
 
-            // Parse to Demand
-            StorageService.instance(  ).store( demand );
+                // Parse to Demand
+                StorageService.instance(  ).store( demand );
 
-            // Parse to Notifications
-            StorageService.instance(  ).store( notification );
+                // Parse to Notifications
+                StorageService.instance(  ).store( notification );
+            }
+            catch ( AppException e )
+            {
+            	//NOTHING TO DO
+            }
 
             // Notify user and crm if a bean NotificationService is instantiated
             NotificationService notificationService = NotificationService.instance(  );
@@ -105,12 +115,12 @@ public class GRUSupplyRestService
 
                 if ( notif.getUserEmail(  ) != null )
                 {
-                    notificationService.sendEmail( notif, user );
+                    notificationService.sendEmail( notif );
                 }
 
                 if ( notif.getUserSms(  ) != null )
                 {
-                    notificationService.sendSms( notif, user );
+                    notificationService.sendSms( notif );
                 }
 
                 try

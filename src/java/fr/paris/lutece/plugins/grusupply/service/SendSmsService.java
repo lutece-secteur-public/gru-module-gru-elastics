@@ -33,21 +33,15 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.grusupply.business.Customer;
-import fr.paris.lutece.plugins.grusupply.business.EmailNotification;
+import org.apache.commons.lang.StringUtils;
+
 import fr.paris.lutece.plugins.grusupply.business.SMSNotification;
 import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
-import fr.paris.lutece.portal.service.mail.MailService;
 import fr.paris.lutece.portal.service.util.AppLogService;
-import fr.paris.lutece.portal.service.util.AppPropertiesService;
-
-import org.apache.commons.lang.StringUtils;
 
 
 public class SendSmsService
 {
-    private static final String PROPERTY_SMS_SERVER = "grusupply.sms.server";
-
     /** private constructor */
     SendSmsService(  )
     {
@@ -57,49 +51,14 @@ public class SendSmsService
      * Send SMS
      * @param smsNotification
      */
-    public void sendSms( Customer customer, NotificationDTO notification )
+    public void sendSms( NotificationDTO notification )
     {
         SMSNotification smsNotification = notification.getUserSms(  );
-        String strMessage = smsNotification.getMessage(  );
-        String strPhoneNumber = getEmailForSms( smsNotification );
-        EmailNotification emailNotification = notification.getUserEmail(  );
 
-        if ( StringUtils.isNotBlank( strPhoneNumber ) )
+        if ( StringUtils.isNotBlank( smsNotification.getPhoneNumber(  ) ) )
         {
-            if ( emailNotification != null )
-            {
-                MailService.sendMailText( strPhoneNumber, emailNotification.getSenderName(  ),
-                    emailNotification.getSenderEmail(  ), emailNotification.getSubject(  ), strMessage );
-            }
-            else if ( customer != null )
-            {
-                MailService.sendMailText( strPhoneNumber, customer.getName(  ), customer.getEmail(  ), strMessage,
-                    strMessage );
-            }
-            else
-            {
-                AppLogService.info( "SMS STUB : phone number=" + notification.getUserSms(  ).getPhoneNumber(  ) +
-                    " message=" + notification.getUserSms(  ).getMessage(  ) );
-            }
+            AppLogService.info( "SMS STUB : phone number=" + smsNotification.getPhoneNumber(  ) +
+                    " message=" + smsNotification.getMessage(  ) );
         }
-    }
-
-    /**
-     * Return email for SMS
-     * @param smsNotification
-     * @return
-     */
-    private String getEmailForSms( SMSNotification smsNotification )
-    {
-        String strPhoneNumber = null;
-
-        if ( ( smsNotification != null ) && ( smsNotification.getPhoneNumber(  ) != null ) &&
-                StringUtils.isNotBlank( smsNotification.getPhoneNumber(  ) ) )
-        {
-            strPhoneNumber = smsNotification.getPhoneNumber(  ) +
-                AppPropertiesService.getProperty( PROPERTY_SMS_SERVER );
-        }
-
-        return strPhoneNumber;
     }
 }

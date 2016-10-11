@@ -33,13 +33,12 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
-import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
-
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 
 public class NotificationService
@@ -84,11 +83,11 @@ public class NotificationService
      * send Email
      * @param notification
      */
-    public void sendEmail( NotificationDTO notification, Customer customer )
+    public void sendEmail( NotificationDTO notification )
     {
         if ( notification != null )
         {
-            _sendEmailService.sendEmail( customer, notification );
+            _sendEmailService.sendEmail( notification );
         }
     }
 
@@ -96,11 +95,11 @@ public class NotificationService
      * send Sms
      * @param notification
      */
-    public void sendSms( NotificationDTO notification, Customer customer )
+    public void sendSms( NotificationDTO notification )
     {
         if ( notification != null )
         {
-            _sendSmsService.sendSms( customer, notification );
+            _sendSmsService.sendSms( notification );
         }
     }
 
