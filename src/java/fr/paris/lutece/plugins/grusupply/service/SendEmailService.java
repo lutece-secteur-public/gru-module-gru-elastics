@@ -33,11 +33,11 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import org.apache.commons.lang.StringUtils;
-
 import fr.paris.lutece.plugins.grusupply.business.EmailNotification;
 import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
 import fr.paris.lutece.portal.service.mail.MailService;
+
+import org.apache.commons.lang.StringUtils;
 
 
 public class SendEmailService

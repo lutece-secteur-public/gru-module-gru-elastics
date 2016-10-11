@@ -90,8 +90,8 @@ public class GRUSupplyRestService
             //STORE FOR AGENT
             try
             {
-            	Customer user = CustomerProvider.instance(  ).get( notif.getUserGuid(  ), notif.getCustomerid(  ) );
-                
+                Customer user = CustomerProvider.instance(  ).get( notif.getUserGuid(  ), notif.getCustomerid(  ) );
+
                 Demand demand = buildDemand( notif, user );
                 Notification notification = buildNotif( notif, demand, strJson );
 
@@ -103,7 +103,7 @@ public class GRUSupplyRestService
             }
             catch ( AppException e )
             {
-            	//NOTHING TO DO
+                //NOTHING TO DO
             }
 
             // Notify user and crm if a bean NotificationService is instantiated
