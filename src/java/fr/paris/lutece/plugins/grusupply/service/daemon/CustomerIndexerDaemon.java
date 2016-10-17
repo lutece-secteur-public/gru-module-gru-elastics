@@ -134,8 +134,7 @@ public class CustomerIndexerDaemon extends Daemon
         {
             try
             {
-                Customer customer = CustomerProvider.instance(  )
-                                                    .get( null, String.valueOf( indexerAction.getIdCustomer(  ) ) );
+                Customer customer = CustomerProvider.instance(  ).get( null, indexerAction.getIdCustomer(  ) );
 
                 if ( customer != null )
                 {

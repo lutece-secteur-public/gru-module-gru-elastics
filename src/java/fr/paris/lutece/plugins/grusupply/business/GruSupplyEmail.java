@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2002-2013, Mairie de Paris
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
+ * Copyright (c) 2002-2016, Mairie de Paris
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  *
@@ -33,58 +33,45 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
-
 /**
- * This is the business class for the object EmailNotification
+ * Email object for GruSupply services
  */
-public class EmailNotification
+public class GruSupplyEmail
 {
-    // Variables declarations 
+    // Variables declarations
     private String _strSenderName;
     private String _strSenderEmail;
     private String _strRecipient;
     private String _strSubject;
     private String _strMessage;
+    private String _strCc;
+    private String _strCci;
+    
 
-    public EmailNotification(  )
-    {
-        super(  );
-    }
-
-    public EmailNotification( String strSenderName, String strSenderEmail, String strRecipient, String strSubject,
-        String strMessage )
-    {
-        super(  );
-        this._strSenderName = strSenderName;
-        this._strSenderEmail = strSenderEmail;
-        this._strRecipient = strRecipient;
-        this._strSubject = strSubject;
-        this._strMessage = strMessage;
-    }
 
     /**
-    * Returns the SenderName
-    * @return The SenderName
-    */
+     * Returns the SenderName.
+     *
+     * @return The SenderName
+     */
     public String getSenderName(  )
     {
         return _strSenderName;
     }
 
     /**
-     * Sets the SenderName
+     * Sets the SenderName.
+     *
      * @param strSenderName The SenderName
      */
-    @JsonProperty( "sender_name" )
     public void setSenderName( String strSenderName )
     {
         _strSenderName = strSenderName;
     }
 
     /**
-     * Returns the SenderEmail
+     * Returns the SenderEmail.
+     *
      * @return The SenderEmail
      */
     public String getSenderEmail(  )
@@ -93,17 +80,18 @@ public class EmailNotification
     }
 
     /**
-     * Sets the SenderEmail
+     * Sets the SenderEmail.
+     *
      * @param strSenderEmail The SenderEmail
      */
-    @JsonProperty( "sender_email" )
     public void setSenderEmail( String strSenderEmail )
     {
         _strSenderEmail = strSenderEmail;
     }
 
     /**
-     * Returns the Recipient
+     * Returns the Recipient.
+     *
      * @return The Recipient
      */
     public String getRecipient(  )
@@ -112,17 +100,18 @@ public class EmailNotification
     }
 
     /**
-     * Sets the Recipient
+     * Sets the Recipient.
+     *
      * @param strRecipient The Recipient
      */
-    @JsonProperty( "recipient" )
     public void setRecipient( String strRecipient )
     {
         _strRecipient = strRecipient;
     }
 
     /**
-     * Returns the Subject
+     * Returns the Subject.
+     *
      * @return The Subject
      */
     public String getSubject(  )
@@ -131,17 +120,18 @@ public class EmailNotification
     }
 
     /**
-     * Sets the Subject
+     * Sets the Subject.
+     *
      * @param strSubject The Subject
      */
-    @JsonProperty( "subject" )
     public void setSubject( String strSubject )
     {
         _strSubject = strSubject;
     }
 
     /**
-     * Returns the Message
+     * Returns the Message.
+     *
      * @return The Message
      */
     public String getMessage(  )
@@ -150,12 +140,52 @@ public class EmailNotification
     }
 
     /**
-     * Sets the Message
+     * Sets the Message.
+     *
      * @param strMessage The Message
      */
-    @JsonProperty( "message" )
     public void setMessage( String strMessage )
     {
         _strMessage = strMessage;
+    }
+
+    /**
+     * Gets the cc.
+     *
+     * @return the cc
+     */
+    public String getCc(  )
+    {
+        return _strCc;
+    }
+
+    /**
+     * Sets the cc.
+     *
+     * @param strCc the new cc
+     */
+    public void setCc( String strCc )
+    {
+        _strCc = strCc;
+    }
+
+    /**
+     * Gets the cci.
+     *
+     * @return the cci
+     */
+    public String getCci(  )
+    {
+        return _strCci;
+    }
+
+    /**
+     * Sets the cci.
+     *
+     * @param strCci the new cci
+     */
+    public void setCci( String strCci )
+    {
+        _strCci = strCci;
     }
 }

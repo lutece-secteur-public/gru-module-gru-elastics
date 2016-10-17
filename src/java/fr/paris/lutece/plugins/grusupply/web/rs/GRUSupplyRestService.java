@@ -34,10 +34,9 @@
 package fr.paris.lutece.plugins.grusupply.web.rs;
 
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
+import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
-import fr.paris.lutece.plugins.grusupply.business.Notification;
-import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.NotificationService;
@@ -45,11 +44,6 @@ import fr.paris.lutece.plugins.grusupply.service.StorageService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
-
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.DeserializationConfig.Feature;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 
@@ -59,6 +53,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME )
@@ -81,19 +80,18 @@ public class GRUSupplyRestService
         {
             // Format from JSON
             ObjectMapper mapper = new ObjectMapper(  );
-            mapper.configure( Feature.UNWRAP_ROOT_VALUE, true );
-            mapper.configure( Feature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+            mapper.configure( DeserializationFeature.UNWRAP_ROOT_VALUE, true );
+            mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
 
-            NotificationDTO notif = mapper.readValue( strJson, NotificationDTO.class );
+            NotifyGruGlobalNotification notification = mapper.readValue( strJson, NotifyGruGlobalNotification.class );
             AppLogService.info( "grusupply - Received strJson : " + strJson );
 
             //STORE FOR AGENT
             try
             {
-                Customer user = CustomerProvider.instance(  ).get( notif.getUserGuid(  ), notif.getCustomerid(  ) );
+                Customer user = CustomerProvider.instance(  ).get( notification.getGuid(  ), notification.getCustomerId(  ) );
 
-                Demand demand = buildDemand( notif, user );
-                Notification notification = buildNotif( notif, demand, strJson );
+                Demand demand = buildDemand( notification, user );
 
                 // Parse to Demand
                 StorageService.instance(  ).store( demand );
@@ -113,21 +111,26 @@ public class GRUSupplyRestService
             {
                 AppLogService.info( " \n \n GRUSUPPLY - Bean Notifcation not null \n \n" );
 
-                if ( notif.getUserEmail(  ) != null )
+                if ( notification.getUserEmail(  ) != null )
                 {
-                    notificationService.sendEmail( notif );
+                    notificationService.sendEmail( notification );
                 }
 
-                if ( notif.getUserSms(  ) != null )
+                if ( notification.getUserSMS(  ) != null )
                 {
-                    notificationService.sendSms( notif );
+                    notificationService.sendSms( notification );
+                }
+                
+                if ( notification.getBroadcast(  ) != null )
+                {
+                    notificationService.sendBroadcastEmail( notification );
                 }
 
                 try
                 {
-                    if ( notif.getUserDashBoard(  ) != null )
+                    if ( notification.getUserDashboard(  ) != null )
                     {
-                        notificationService.notifyCrm( notif );
+                        notificationService.notifyCrm( notification );
                     }
                 }
                 catch ( CRMException ex )
@@ -162,49 +165,25 @@ public class GRUSupplyRestService
      * @param customer
      * @return
      */
-    private static Demand buildDemand( NotificationDTO notifDTO, Customer user )
+    private static Demand buildDemand( NotifyGruGlobalNotification notification, Customer user )
     {
-        if ( ( notifDTO == null ) || ( user == null ) )
+        if ( ( notification == null ) || ( user == null ) )
         {
             throw new NullPointerException(  );
         }
 
         Demand demand = new Demand(  );
         demand.setCustomer( user );
-        demand.setDemandId( notifDTO.getDemandeId(  ) );
-        demand.setDemandTypeId( notifDTO.getDemandTypeId(  ) );
-        demand.setDemandMaxStep( notifDTO.getMaxStep(  ) );
-        demand.setDemandUserCurrentStep( notifDTO.getUserCurrentStep(  ) );
-        demand.setNotifType( notifDTO.getNotificationType(  ) );
-        demand.setCRMStatus( notifDTO.getCrmStatusId(  ) );
-        demand.setReference( notifDTO.getReference(  ) );
-        demand.setDemandStatus( notifDTO.getDemandStatus(  ) );
+        demand.setDemandId( notification.getDemandId(  ) );
+        demand.setDemandTypeId( notification.getDemandTypeId(  ) );
+        demand.setDemandMaxStep( notification.getDemandMaxStep(  ) );
+        demand.setDemandUserCurrentStep( notification.getDemandUserCurrentStep(  ) );
+        demand.setNotifType( notification.getNotificationType(  ) );
+        demand.setCRMStatus( notification.getCrmStatusId(  ) );
+        demand.setReference( notification.getDemandReference(  ) );
+        demand.setDemandStatus( notification.getDemandStatus(  ) );
 
         return demand;
-    }
-
-    /**
-     * Method which create a notification from a flux
-     * @param notifDTO
-     * @return
-     */
-    private static Notification buildNotif( NotificationDTO notifDTO, Demand demand, String strJson )
-    {
-        if ( notifDTO == null )
-        {
-            throw new NullPointerException(  );
-        }
-
-        Notification notification = new Notification(  );
-        notification.setDemand( demand );
-        notification.setDateNotification( notifDTO.getNotificationDate(  ) );
-        notification.setUserEmail( notifDTO.getUserEmail(  ) );
-        notification.setUserDashBoard( notifDTO.getUserDashBoard(  ) );
-        notification.setUserSms( notifDTO.getUserSms(  ) );
-        notification.setUserBackOffice( notifDTO.getUserBackOffice(  ) );
-        notification.setJson( strJson );
-
-        return notification;
     }
 
     /**

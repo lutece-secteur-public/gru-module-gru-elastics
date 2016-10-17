@@ -33,9 +33,9 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
-import fr.paris.lutece.plugins.grusupply.business.Notification;
 
 
 /**
@@ -53,7 +53,7 @@ public interface INotificationStorageService
      * Store the notification
      * @param notification the reference of the Notification
      */
-    public void store( Notification notification );
+    public void store( NotifyGruGlobalNotification notification );
 
     /**
      *  Store the demand

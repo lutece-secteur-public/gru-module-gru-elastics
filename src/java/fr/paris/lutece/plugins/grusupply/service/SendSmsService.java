@@ -33,8 +33,8 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.grusupply.business.SMSNotification;
-import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
+import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
+import fr.paris.lutece.plugins.grubusiness.business.notification.SMSNotification;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 import org.apache.commons.lang.StringUtils;
@@ -51,9 +51,9 @@ public class SendSmsService
      * Send SMS
      * @param smsNotification
      */
-    public void sendSms( NotificationDTO notification )
+    public void sendSms( NotifyGruGlobalNotification notification )
     {
-        SMSNotification smsNotification = notification.getUserSms(  );
+        SMSNotification smsNotification = notification.getUserSMS(  );
 
         if ( StringUtils.isNotBlank( smsNotification.getPhoneNumber(  ) ) )
         {

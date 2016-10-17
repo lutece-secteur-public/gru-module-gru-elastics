@@ -33,11 +33,8 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.grusupply.business.EmailNotification;
-import fr.paris.lutece.plugins.grusupply.business.dto.NotificationDTO;
+import fr.paris.lutece.plugins.grusupply.business.GruSupplyEmail;
 import fr.paris.lutece.portal.service.mail.MailService;
-
-import org.apache.commons.lang.StringUtils;
 
 
 public class SendEmailService
@@ -52,23 +49,10 @@ public class SendEmailService
      * @param notification
      * @param customer
      */
-    public void sendEmail( NotificationDTO notification )
+    public void sendEmail( GruSupplyEmail email )
     {
-        EmailNotification emailNotification = notification.getUserEmail(  );
-
-        boolean bHasRecipients = ( ( emailNotification.getRecipient(  ) != null ) &&
-            StringUtils.isNotBlank( emailNotification.getRecipient(  ) ) );
-
-        if ( bHasRecipients )
-        {
-            MailService.sendMailHtml( notification.getEmail(  ), emailNotification.getRecipient(  ), "",
-                emailNotification.getSenderName(  ), emailNotification.getSenderEmail(  ),
-                emailNotification.getSubject(  ), emailNotification.getMessage(  ) );
-        }
-        else
-        {
-            MailService.sendMailHtml( notification.getEmail(  ), emailNotification.getSenderName(  ),
-                emailNotification.getSenderEmail(  ), emailNotification.getSubject(  ), emailNotification.getMessage(  ) );
-        }
+    	MailService.sendMailHtml( email.getRecipient(  ), email.getCc(  ), email.getCci(  ),
+    			email.getSenderName(  ), email.getSenderEmail(  ),
+    			email.getSubject(  ), email.getMessage(  ) );
     }
 }

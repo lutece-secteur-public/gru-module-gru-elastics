@@ -67,7 +67,6 @@ public class CustomerProvider
     private static final String ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_ONLINE_EMAIL );
     private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_TELEPHONE_NUMBER );
     private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_MOBILE_NUMBER );
-    private static final String DEFAULT_CUSTOMER_ID = "0";
 
     //Service identityStore
     private static final String BEAN_IDENTITYSTORE_SERVICE = "grusupply.identitystore.service";
@@ -113,19 +112,14 @@ public class CustomerProvider
      * @param strCid the customer id
      * @return the customer
      */
-    public Customer get( String strGuid, String strCid )
+    public Customer get( String strGuid, int nCid )
     {
         if ( StringUtils.isBlank( strGuid ) )
         {
             strGuid = StringUtils.EMPTY;
         }
 
-        if ( StringUtils.isBlank( strCid ) || !StringUtils.isNumeric( strCid ) )
-        {
-            strCid = DEFAULT_CUSTOMER_ID;
-        }
-
-        IdentityDto identityDto = _identityService.getIdentity( strGuid, Integer.parseInt( strCid ), APPLICATION_CODE );
+        IdentityDto identityDto = _identityService.getIdentity( strGuid, nCid, APPLICATION_CODE );
 
         return convert( identityDto );
     }

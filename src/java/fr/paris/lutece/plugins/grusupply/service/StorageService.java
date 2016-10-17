@@ -33,9 +33,9 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
-import fr.paris.lutece.plugins.grusupply.business.Notification;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 
@@ -73,7 +73,7 @@ public class StorageService
      *
      * @param notification The notification
      */
-    public void store( Notification notification )
+    public void store( NotifyGruGlobalNotification notification )
     {
         _notificationStorageService.store( notification );
     }
