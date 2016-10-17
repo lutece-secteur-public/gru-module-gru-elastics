@@ -51,8 +51,7 @@ public class SendEmailService
      */
     public void sendEmail( GruSupplyEmail email )
     {
-    	MailService.sendMailHtml( email.getRecipient(  ), email.getCc(  ), email.getCci(  ),
-    			email.getSenderName(  ), email.getSenderEmail(  ),
-    			email.getSubject(  ), email.getMessage(  ) );
+        MailService.sendMailHtml( email.getRecipient(  ), email.getCc(  ), email.getCci(  ), email.getSenderName(  ),
+            email.getSenderEmail(  ), email.getSubject(  ), email.getMessage(  ) );
     }
 }

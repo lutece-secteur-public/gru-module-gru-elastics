@@ -42,6 +42,7 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.httpaccess.HttpAccess;
 import fr.paris.lutece.util.httpaccess.HttpAccessException;
+
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import net.sf.json.util.JSONUtils;
@@ -107,7 +108,8 @@ public class NotifyCrmService
      * @param notif
      * @throws CRMException
      */
-    public void createDemand( NotifyGruGlobalNotification notif ) throws CRMException
+    public void createDemand( NotifyGruGlobalNotification notif )
+        throws CRMException
     {
         AppLogService.info( " \n \n GRUSUPPLY - sendCreateDemand( NotificationDTO notif ) \n \n" );
 
@@ -121,7 +123,8 @@ public class NotifyCrmService
      * @param notif the notification
      * @throws CRMException if there is an exception during the treatment
      */
-    public void updateDemand( NotifyGruGlobalNotification notif ) throws CRMException
+    public void updateDemand( NotifyGruGlobalNotification notif )
+        throws CRMException
     {
         AppLogService.info( " \n \n GRUSUPPLY - updateDemand( NotificationDTO notif ) \n \n" );
 
@@ -135,7 +138,8 @@ public class NotifyCrmService
      * @param notif
      * @throws CRMException
      */
-    public void notify( NotifyGruGlobalNotification notif ) throws CRMException
+    public void notify( NotifyGruGlobalNotification notif )
+        throws CRMException
     {
         AppLogService.info( " \n \n GRUSUPPLY - notify( NotificationDTO notif ) \n \n" );
 

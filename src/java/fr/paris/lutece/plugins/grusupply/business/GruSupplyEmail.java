@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
+
 /**
  * Email object for GruSupply services
  */
@@ -46,8 +47,6 @@ public class GruSupplyEmail
     private String _strMessage;
     private String _strCc;
     private String _strCci;
-    
-
 
     /**
      * Returns the SenderName.

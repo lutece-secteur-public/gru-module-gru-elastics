@@ -33,6 +33,11 @@
  */
 package fr.paris.lutece.plugins.grusupply.web.rs;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
@@ -53,11 +58,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME )
@@ -89,7 +89,8 @@ public class GRUSupplyRestService
             //STORE FOR AGENT
             try
             {
-                Customer user = CustomerProvider.instance(  ).get( notification.getGuid(  ), notification.getCustomerId(  ) );
+                Customer user = CustomerProvider.instance(  )
+                                                .get( notification.getGuid(  ), notification.getCustomerId(  ) );
 
                 Demand demand = buildDemand( notification, user );
 
@@ -120,7 +121,7 @@ public class GRUSupplyRestService
                 {
                     notificationService.sendSms( notification );
                 }
-                
+
                 if ( notification.getBroadcast(  ) != null )
                 {
                     notificationService.sendBroadcastEmail( notification );

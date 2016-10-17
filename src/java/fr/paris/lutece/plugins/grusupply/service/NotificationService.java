@@ -88,18 +88,18 @@ public class NotificationService
      */
     public void sendEmail( NotifyGruGlobalNotification notification )
     {
-        if ( notification != null && notification.getUserEmail(  ) != null )
+        if ( ( notification != null ) && ( notification.getUserEmail(  ) != null ) )
         {
-        	GruSupplyEmail gruEmail = new GruSupplyEmail(  );
-        	EmailNotification notifEmail = notification.getUserEmail(  );
-        	gruEmail.setRecipient( notifEmail.getRecipient(  ) );
-        	gruEmail.setCc( notifEmail.getCc(  ) );
-        	gruEmail.setCci( notifEmail.getCci(  ) );
-        	gruEmail.setSenderEmail( notifEmail.getSenderEmail(  ) );
-        	gruEmail.setSenderName( notifEmail.getSenderName( ) );
-        	gruEmail.setSubject( notifEmail.getSubject(  ) );
-        	gruEmail.setMessage( notifEmail.getMessage(  ) );
-        	
+            GruSupplyEmail gruEmail = new GruSupplyEmail(  );
+            EmailNotification notifEmail = notification.getUserEmail(  );
+            gruEmail.setRecipient( notifEmail.getRecipient(  ) );
+            gruEmail.setCc( notifEmail.getCc(  ) );
+            gruEmail.setCci( notifEmail.getCci(  ) );
+            gruEmail.setSenderEmail( notifEmail.getSenderEmail(  ) );
+            gruEmail.setSenderName( notifEmail.getSenderName(  ) );
+            gruEmail.setSubject( notifEmail.getSubject(  ) );
+            gruEmail.setMessage( notifEmail.getMessage(  ) );
+
             _sendEmailService.sendEmail( gruEmail );
         }
     }
@@ -110,18 +110,18 @@ public class NotificationService
      */
     public void sendBroadcastEmail( NotifyGruGlobalNotification notification )
     {
-        if ( notification != null && notification.getBroadcast(  ) != null )
+        if ( ( notification != null ) && ( notification.getBroadcast(  ) != null ) )
         {
-        	GruSupplyEmail gruEmail = new GruSupplyEmail(  );
-        	BroadcastNotification notifBroadcast = notification.getBroadcast(  );
-        	gruEmail.setRecipient( notifBroadcast.getRecipient(  ) );
-        	gruEmail.setCc( notifBroadcast.getCc(  ) );
-        	gruEmail.setCci( notifBroadcast.getCci(  ) );
-        	gruEmail.setSenderEmail( notifBroadcast.getSenderEmail(  ) );
-        	gruEmail.setSenderName( notifBroadcast.getSenderName( ) );
-        	gruEmail.setSubject( notifBroadcast.getSubject(  ) );
-        	gruEmail.setMessage( notifBroadcast.getMessage(  ) );
-        	
+            GruSupplyEmail gruEmail = new GruSupplyEmail(  );
+            BroadcastNotification notifBroadcast = notification.getBroadcast(  );
+            gruEmail.setRecipient( notifBroadcast.getRecipient(  ) );
+            gruEmail.setCc( notifBroadcast.getCc(  ) );
+            gruEmail.setCci( notifBroadcast.getCci(  ) );
+            gruEmail.setSenderEmail( notifBroadcast.getSenderEmail(  ) );
+            gruEmail.setSenderName( notifBroadcast.getSenderName(  ) );
+            gruEmail.setSubject( notifBroadcast.getSubject(  ) );
+            gruEmail.setMessage( notifBroadcast.getMessage(  ) );
+
             _sendEmailService.sendEmail( gruEmail );
         }
     }
