@@ -162,6 +162,63 @@
                     },
                     "type": "object"
                 },
+                "broadcast_email": {
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "bcc": {
+                                "items": {
+                                    "properties": {
+                                        "address": {
+                                            "type": "string",
+                                            "example": "john.doe.privatecopy@somewhere.com"
+                                        }
+                                    }
+                                },
+                                "type": "array"
+                            },
+                            "message": {
+                                "example": "Bonjour Monsieur John Doe, Votre demande de carte de stationnement est en attente de validation",
+                                "type": "string"
+                            },
+                            "subject": {
+                                "example": "[Mairie de Paris] Demande de carte de stationnement",
+                                "type": "string"
+                            },
+                            "sender_email": {
+                                "example": "no_reply@paris.fr",
+                                "type": "string"
+                            },
+                            "sender_name": {
+                                "example": "Mairie de Paris",
+                                "type": "string"
+                            },
+                            "cc": {
+                                "items": {
+                                    "properties": {
+                                        "address": {
+                                            "type": "string",
+                                            "example": "john.doe.copy@somewhere.com"
+                                        }
+                                    }
+                                },
+                                "type": "array"
+                            },
+                            "recipient": {
+                                "items": {
+                                    "properties": {
+                                        "address": {
+                                            "type": "string",
+                                            "example": "john.doe@somewhere.com"
+                                        }
+                                    }
+                                },
+                                "type": "array"
+                            }
+                        }
+                    },
+                    "type": "array"
+                },
                 "notification_date": {
                         "description": "date for the notification in milliseconds since 1970-01-01 00:00:00 UTC",
                         "example": 1455631063473,
@@ -258,39 +315,6 @@
 
                         },
                         "type": "object"
-                },
-                "broadcast_email": {
-                    "properties": {
-                        "cci": {
-                            "type": "string"
-                        },
-                        "message": {
-                            "example": "Bonjour Monsieur John Doe, Votre demande de carte de stationnement est en attente de validation",
-                            "type": "string"
-                        },
-                        "subject": {
-                            "example": "[Mairie de Paris] Demande de carte de stationnement",
-                            "type": "string"
-                        },
-                        "sender_email": {
-                            "example": "no_reply@paris.fr",
-                            "type": "string"
-                        },
-                        "sender_name": {
-                            "example": "Mairie de Paris",
-                            "type": "string"
-                        },
-                        "cc": {
-                            "type": "string"
-                        },
-                        "recipient": {
-                            "description": "recipient(s) email(s) ';' separator",
-                            "minimum": 1,
-                            "example": "john.doe@somewhere.com;jane.doe@anywhere.com;",
-                            "type": "string"
-                        }
-                    },
-                    "type": "object"
                 },
                 "customer_id": {
                     "description": "id for the user Identity",
