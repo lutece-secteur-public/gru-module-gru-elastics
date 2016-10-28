@@ -122,7 +122,7 @@ public class GRUSupplyRestService
                     notificationService.sendSms( notification );
                 }
 
-                if ( notification.getBroadcast(  ) != null )
+                if ( notification.getBroadcastEmail(  ) != null && ! notification.getBroadcastEmail(  ).isEmpty(  ) )
                 {
                     notificationService.sendBroadcastEmail( notification );
                 }

@@ -33,20 +33,24 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grubusiness.business.notification.BroadcastNotification;
+import fr.paris.lutece.plugins.grubusiness.business.notification.EmailAddress;
 import fr.paris.lutece.plugins.grubusiness.business.notification.EmailNotification;
 import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
 import fr.paris.lutece.plugins.grusupply.business.GruSupplyEmail;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-
 
 public class NotificationService
 {
     private static final String BEAN_NOTIFICATION_SERVICE = "grusupply.notificationService";
+    private static final String ADRESS_SEPARATOR = ";";
     private static NotificationService _singleton;
     private static SendEmailService _sendEmailService;
     private static SendSmsService _sendSmsService;
@@ -94,7 +98,7 @@ public class NotificationService
             EmailNotification notifEmail = notification.getUserEmail(  );
             gruEmail.setRecipient( notifEmail.getRecipient(  ) );
             gruEmail.setCc( notifEmail.getCc(  ) );
-            gruEmail.setCci( notifEmail.getCci(  ) );
+            gruEmail.setBcc( notifEmail.getCci(  ) );
             gruEmail.setSenderEmail( notifEmail.getSenderEmail(  ) );
             gruEmail.setSenderName( notifEmail.getSenderName(  ) );
             gruEmail.setSubject( notifEmail.getSubject(  ) );
@@ -110,20 +114,40 @@ public class NotificationService
      */
     public void sendBroadcastEmail( NotifyGruGlobalNotification notification )
     {
-        if ( ( notification != null ) && ( notification.getBroadcast(  ) != null ) )
+        if ( ( notification != null ) && ( notification.getBroadcastEmail(  ) != null ) )
         {
-            GruSupplyEmail gruEmail = new GruSupplyEmail(  );
-            BroadcastNotification notifBroadcast = notification.getBroadcast(  );
-            gruEmail.setRecipient( notifBroadcast.getRecipient(  ) );
-            gruEmail.setCc( notifBroadcast.getCc(  ) );
-            gruEmail.setCci( notifBroadcast.getCci(  ) );
-            gruEmail.setSenderEmail( notifBroadcast.getSenderEmail(  ) );
-            gruEmail.setSenderName( notifBroadcast.getSenderName(  ) );
-            gruEmail.setSubject( notifBroadcast.getSubject(  ) );
-            gruEmail.setMessage( notifBroadcast.getMessage(  ) );
-
-            _sendEmailService.sendEmail( gruEmail );
+            GruSupplyEmail gruEmail = null;
+            for ( BroadcastNotification notifBroadcast : notification.getBroadcastEmail(  ) )
+            {
+                gruEmail = new GruSupplyEmail(  );
+                gruEmail.setRecipient( buildEmailAdresses( notifBroadcast.getRecipient(  ) ) );
+                gruEmail.setCc( buildEmailAdresses( notifBroadcast.getCc(  ) ) );
+                gruEmail.setBcc( buildEmailAdresses( notifBroadcast.getBcc(  ) ) );
+                gruEmail.setSenderEmail( notifBroadcast.getSenderEmail(  ) );
+                gruEmail.setSenderName( notifBroadcast.getSenderName(  ) );
+                gruEmail.setSubject( notifBroadcast.getSubject(  ) );
+                gruEmail.setMessage( notifBroadcast.getMessage(  ) );
+                _sendEmailService.sendEmail( gruEmail );
+            }
         }
+    }
+    
+    private String buildEmailAdresses( List<EmailAddress> lstEmailAdress )
+    {
+    	StringBuilder strEmailAdresses = new StringBuilder(  );
+		if( lstEmailAdress != null && !lstEmailAdress.isEmpty(  ) )
+    	{
+    		for ( EmailAddress emailAddress : lstEmailAdress )
+            {
+	            if( strEmailAdresses.length(  ) > 0 )
+	            {
+	            	strEmailAdresses.append( ADRESS_SEPARATOR );
+	            }
+	            strEmailAdresses.append( emailAddress.getAddress(  ) );
+            }
+    	}
+		
+		return strEmailAdresses.toString(  );
     }
 
     /**

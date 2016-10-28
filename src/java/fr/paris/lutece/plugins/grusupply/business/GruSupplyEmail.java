@@ -46,7 +46,7 @@ public class GruSupplyEmail
     private String _strSubject;
     private String _strMessage;
     private String _strCc;
-    private String _strCci;
+    private String _strBcc;
 
     /**
      * Returns the SenderName.
@@ -169,22 +169,22 @@ public class GruSupplyEmail
     }
 
     /**
-     * Gets the cci.
+     * Gets the bcc.
      *
-     * @return the cci
+     * @return the bcc
      */
-    public String getCci(  )
+    public String getBcc(  )
     {
-        return _strCci;
+        return _strBcc;
     }
 
     /**
-     * Sets the cci.
+     * Sets the bcc.
      *
-     * @param strCci the new cci
+     * @param strBcc the new bcc
      */
-    public void setCci( String strCci )
+    public void setBcc( String strBcc )
     {
-        _strCci = strCci;
+        _strBcc = strBcc;
     }
 }
