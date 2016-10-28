@@ -33,10 +33,6 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grubusiness.business.notification.BroadcastNotification;
 import fr.paris.lutece.plugins.grubusiness.business.notification.EmailAddress;
@@ -45,6 +41,10 @@ import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobal
 import fr.paris.lutece.plugins.grusupply.business.GruSupplyEmail;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
+
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+
+import java.util.List;
 
 
 public class NotificationService
@@ -117,6 +117,7 @@ public class NotificationService
         if ( ( notification != null ) && ( notification.getBroadcastEmail(  ) != null ) )
         {
             GruSupplyEmail gruEmail = null;
+
             for ( BroadcastNotification notifBroadcast : notification.getBroadcastEmail(  ) )
             {
                 gruEmail = new GruSupplyEmail(  );
@@ -131,23 +132,25 @@ public class NotificationService
             }
         }
     }
-    
+
     private String buildEmailAdresses( List<EmailAddress> lstEmailAdress )
     {
-    	StringBuilder strEmailAdresses = new StringBuilder(  );
-		if( lstEmailAdress != null && !lstEmailAdress.isEmpty(  ) )
-    	{
-    		for ( EmailAddress emailAddress : lstEmailAdress )
+        StringBuilder strEmailAdresses = new StringBuilder(  );
+
+        if ( ( lstEmailAdress != null ) && !lstEmailAdress.isEmpty(  ) )
+        {
+            for ( EmailAddress emailAddress : lstEmailAdress )
             {
-	            if( strEmailAdresses.length(  ) > 0 )
-	            {
-	            	strEmailAdresses.append( ADRESS_SEPARATOR );
-	            }
-	            strEmailAdresses.append( emailAddress.getAddress(  ) );
+                if ( strEmailAdresses.length(  ) > 0 )
+                {
+                    strEmailAdresses.append( ADRESS_SEPARATOR );
+                }
+
+                strEmailAdresses.append( emailAddress.getAddress(  ) );
             }
-    	}
-		
-		return strEmailAdresses.toString(  );
+        }
+
+        return strEmailAdresses.toString(  );
     }
 
     /**
