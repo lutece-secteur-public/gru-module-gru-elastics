@@ -43,7 +43,7 @@ public class IndexerAction
 {
     private int _nIdAction;
     private IndexerTask _indexerTask;
-    private int _nIdCustomer;
+    private String _strCustomerId;
 
     /**
      * Gets the action id
@@ -67,18 +67,18 @@ public class IndexerAction
      * Gets the customer id
      * @return the customer Id
      */
-    public int getIdCustomer(  )
+    public String getCustomerId(  )
     {
-        return _nIdCustomer;
+        return _strCustomerId;
     }
 
     /**
      * Sets the customer id
-     * @param nIdCustomer the customer id
+     * @param strCustomerId the customer id
      */
-    public void setIdTicket( int nIdCustomer )
+    public void setCustomerId( String strCustomerId )
     {
-        _nIdCustomer = nIdCustomer;
+        _strCustomerId = strCustomerId;
     }
 
     /**

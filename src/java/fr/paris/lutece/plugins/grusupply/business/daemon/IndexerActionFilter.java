@@ -33,6 +33,10 @@
  */
 package fr.paris.lutece.plugins.grusupply.business.daemon;
 
+import fr.paris.lutece.plugins.identitystore.web.rs.service.Constants;
+
+import org.apache.commons.lang.StringUtils;
+
 
 /**
  *
@@ -46,7 +50,7 @@ public class IndexerActionFilter
      */
     public static final int ALL_INT = -1;
     private IndexerTask _indexerTask = IndexerTask.ALL;
-    private int _nIdCustomer = ALL_INT;
+    private String _strCustomerId = Constants.NO_CUSTOMER_ID;
 
     /**
      * Gets the indexer task
@@ -79,26 +83,26 @@ public class IndexerActionFilter
      * Gets the id of the identity
      * @return The id of the identity
      */
-    public int getIdCustomer(  )
+    public String getCustomerId(  )
     {
-        return _nIdCustomer;
+        return _strCustomerId;
     }
 
     /**
      * Sets the id of the customer
-     * @param nIdCustomer The id of the customer
+     * @param strCustomerId The id of the customer
      */
-    public void setIdCustomer( int nIdCustomer )
+    public void setCustomerId( String strCustomerId )
     {
-        this._nIdCustomer = nIdCustomer;
+        this._strCustomerId = strCustomerId;
     }
 
     /**
      * Tests if the filter contains a customer to filter or not
      * @return {@code true} if the filter contains a customer to filter, {@code false} otherwise
      */
-    public boolean containsIdCustomer(  )
+    public boolean containsCustomerId(  )
     {
-        return ( _nIdCustomer != ALL_INT );
+        return ( !Constants.NO_CUSTOMER_ID.equals( _strCustomerId ) );
     }
 }

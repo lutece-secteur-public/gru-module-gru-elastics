@@ -112,14 +112,14 @@ public class CustomerProvider
      * @param strCid the customer id
      * @return the customer
      */
-    public Customer get( String strGuid, int nCid )
+    public Customer get( String strGuid, String strCid )
     {
         if ( StringUtils.isBlank( strGuid ) )
         {
             strGuid = StringUtils.EMPTY;
         }
 
-        IdentityDto identityDto = _identityService.getIdentity( strGuid, nCid, APPLICATION_CODE );
+        IdentityDto identityDto = _identityService.getIdentity( strGuid, strCid, APPLICATION_CODE );
 
         return convert( identityDto );
     }

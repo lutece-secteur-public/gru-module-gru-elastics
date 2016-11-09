@@ -40,7 +40,7 @@ package fr.paris.lutece.plugins.grusupply.business;
 public class Customer
 {
     // Variables declarations 
-    private int _nCustomerId;
+    private String _strCustomerId;
     private String _strName;
     private String _strFirstName;
     private String _strEmail;
@@ -78,18 +78,18 @@ public class Customer
      * Returns the CustomerId
      * @return The CustomerId
      */
-    public int getCustomerId(  )
+    public String getCustomerId(  )
     {
-        return _nCustomerId;
+        return _strCustomerId;
     }
 
     /**
      * Sets the CustomerId
      * @param CustomerId The CustomerId
      */
-    public void setCustomerId( int luserGuid )
+    public void setCustomerId( String strCustomerId )
     {
-        _nCustomerId = luserGuid;
+        _strCustomerId = strCustomerId;
     }
 
     /**

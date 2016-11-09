@@ -83,7 +83,7 @@ public final class IndexerActionDAO implements IIndexerActionDAO
             listStrFilter.add( SQL_FILTER_ID_TASK );
         }
 
-        if ( filter.containsIdCustomer(  ) )
+        if ( filter.containsCustomerId(  ) )
         {
             listStrFilter.add( SQL_FILTER_ID_CUSTOMER );
         }
@@ -100,9 +100,9 @@ public final class IndexerActionDAO implements IIndexerActionDAO
             nIndex++;
         }
 
-        if ( filter.containsIdCustomer(  ) )
+        if ( filter.containsCustomerId(  ) )
         {
-            daoUtil.setInt( nIndex, filter.getIdCustomer(  ) );
+            daoUtil.setString( nIndex, filter.getCustomerId(  ) );
         }
 
         daoUtil.executeQuery(  );
@@ -111,7 +111,7 @@ public final class IndexerActionDAO implements IIndexerActionDAO
         {
             indexerAction = new IndexerAction(  );
             indexerAction.setIdAction( daoUtil.getInt( 1 ) );
-            indexerAction.setIdTicket( daoUtil.getInt( 2 ) );
+            indexerAction.setCustomerId( daoUtil.getString( 2 ) );
             indexerAction.setTask( IndexerTask.valueOf( daoUtil.getInt( 3 ) ) );
 
             indexerActionList.add( indexerAction );
