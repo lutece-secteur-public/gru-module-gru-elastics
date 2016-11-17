@@ -61,12 +61,17 @@ public class CustomerProvider
     private static final String PROPERTIES_ATTRIBUTE_USER_HOMEINFO_ONLINE_EMAIL = "grusupply.identity.attribute.user.home-info.online.email";
     private static final String PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_TELEPHONE_NUMBER = "grusupply.identity.attribute.user.home-info.telecom.telephone.number";
     private static final String PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_MOBILE_NUMBER = "grusupply.identity.attribute.user.home-info.telecom.mobile.number";
+    private static final String PROPERTIES_ATTRIBUTE_USER_GENDER = "grusupply.identity.attribute.user.gender";
+    private static final String PROPERTIES_ATTRIBUTE_USER_BIRTHDATE ="grusupply.identity.attribute.user.bdate";
+
     private static final String APPLICATION_CODE = AppPropertiesService.getProperty( PROPERTIES_APPLICATION_CODE );
     private static final String ATTRIBUTE_IDENTITY_NAME_GIVEN = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_NAME_GIVEN );
     private static final String ATTRIBUTE_IDENTITY_NAME_FAMILLY = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_NAME_FAMILLY );
     private static final String ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_ONLINE_EMAIL );
     private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_TELEPHONE_NUMBER );
     private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_MOBILE_NUMBER );
+    private static final String ATTRIBUTE_IDENTITY_GENDER = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_GENDER );
+    private static final String ATTRIBUTE_IDENTITY_BIRTHDATE = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_BIRTHDATE );
 
     //Service identityStore
     private static final String BEAN_IDENTITYSTORE_SERVICE = "grusupply.identitystore.service";
@@ -143,6 +148,8 @@ public class CustomerProvider
         customerGruSupply.setFixedTelephoneNumber( getAttribute( identityDto,
                 ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER ) );
         customerGruSupply.setStayConnected( true );
+        customerGruSupply.setCivility( getAttribute(identityDto, ATTRIBUTE_IDENTITY_GENDER) );
+        customerGruSupply.setBirthday( getAttribute(identityDto, ATTRIBUTE_IDENTITY_BIRTHDATE) );
 
         return customerGruSupply;
     }
