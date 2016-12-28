@@ -39,7 +39,7 @@ import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerActionFilter;
 import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerActionHome;
 import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerTask;
 import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
-import fr.paris.lutece.plugins.grusupply.service.StorageService;
+import fr.paris.lutece.plugins.grusupply.service.IndexService;
 import fr.paris.lutece.portal.service.daemon.Daemon;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -138,7 +138,7 @@ public class CustomerIndexerDaemon extends Daemon
 
                 if ( customer != null )
                 {
-                    StorageService.instance(  ).store( customer );
+                    IndexService.instance(  ).index( customer );
 
                     nNbIndexedCustomers++;
 

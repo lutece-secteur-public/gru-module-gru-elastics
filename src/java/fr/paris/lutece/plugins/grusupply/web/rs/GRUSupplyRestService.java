@@ -39,19 +39,22 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
+import fr.paris.lutece.plugins.grubusiness.business.demand.DemandService;
 import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.NotificationService;
-import fr.paris.lutece.plugins.grusupply.service.StorageService;
+import fr.paris.lutece.plugins.grusupply.service.IndexService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -63,7 +66,15 @@ import javax.ws.rs.core.Response;
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME )
 public class GRUSupplyRestService
 {
+    // Bean names
+    private static final String BEAN_STORAGE_SERVICE = "grusupply.storageService";
+    
+    // Other constants
     private static final String STATUS_RECEIVED = "{ \"acknowledge\" : { \"status\": \"received\" } }";
+    
+    @Inject
+    @Named( BEAN_STORAGE_SERVICE )
+    private DemandService _demandService;
 
     /**
      * Web Service methode which permit to store the notification flow into a data store
@@ -85,6 +96,8 @@ public class GRUSupplyRestService
 
             NotifyGruGlobalNotification notification = mapper.readValue( strJson, NotifyGruGlobalNotification.class );
             AppLogService.info( "grusupply - Received strJson : " + strJson );
+            
+            store( notification );
 
             //STORE FOR AGENT
             try
@@ -92,13 +105,13 @@ public class GRUSupplyRestService
                 Customer user = CustomerProvider.instance(  )
                                                 .get( notification.getGuid(  ), notification.getCustomerId(  ) );
 
-                Demand demand = buildDemand( notification, user );
+                Demand demandGruSupply = buildDemand( notification, user );
 
                 // Parse to Demand
-                StorageService.instance(  ).store( demand );
+                IndexService.instance(  ).index( demandGruSupply );
 
                 // Parse to Notifications
-                StorageService.instance(  ).store( notification );
+                IndexService.instance(  ).index( notification );
             }
             catch ( AppException e )
             {
@@ -158,6 +171,40 @@ public class GRUSupplyRestService
         }
 
         return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build(  );
+    }
+    
+    /**
+     * Stores a notification and the associated demand
+     * @param notification the notification to store
+     */
+    private void store( NotifyGruGlobalNotification notification )
+    {
+        fr.paris.lutece.plugins.grubusiness.business.demand.Demand demand = _demandService.findByPrimaryKey( String.valueOf( notification.getDemandId(  ) ), String.valueOf( notification.getDemandTypeId(  ) ) );
+        
+        if ( demand == null )
+        {
+            demand = new fr.paris.lutece.plugins.grubusiness.business.demand.Demand(  );
+
+            demand.setId( String.valueOf( notification.getDemandId(  ) ) );
+            demand.setTypeId( String.valueOf( notification.getDemandTypeId(  ) ) );
+            demand.setReference( notification.getDemandReference(  ) );
+            demand.setCustomerId( notification.getCustomerId(  ) );
+            demand.setMaxSteps( notification.getDemandMaxStep(  ) );
+            demand.setCurrentStep( notification.getDemandUserCurrentStep(  ) );
+            demand.setStatusId( notification.getDemandStatus(  ) );
+            
+            _demandService.create( demand );
+        }
+        else
+        {
+            demand.setCustomerId( notification.getCustomerId(  ) );
+            demand.setCurrentStep( notification.getDemandUserCurrentStep(  ) );
+            demand.setStatusId( notification.getDemandStatus(  ) );
+            
+            _demandService.update( demand );
+        }
+        
+        _demandService.create( notification );
     }
 
     /**

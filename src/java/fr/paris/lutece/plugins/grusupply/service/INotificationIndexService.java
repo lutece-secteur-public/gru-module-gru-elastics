@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2015, Mairie de Paris
+ * Copyright (c) 2002-2016, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,25 +39,25 @@ import fr.paris.lutece.plugins.grusupply.business.Demand;
 
 
 /**
- * INotificationStorageService Interface
+ * This interface enables to index entities
  */
-public interface INotificationStorageService
+public interface INotificationIndexService
 {
     /**
-    * Store the user
-    * @param user the reference of the Customer
+    * Indexes a customer
+    * @param customer the Customer to index
     */
-    public void store( Customer user );
+    void index( Customer customer );
 
     /**
-     * Store the notification
-     * @param notification the reference of the Notification
+     * Indexes a notification
+     * @param notification the Notification to index
      */
-    public void store( NotifyGruGlobalNotification notification );
+    void index( NotifyGruGlobalNotification notification );
 
     /**
-     *  Store the demand
-     * @param demand the demand
+     *  Indexes a demand
+     * @param demand the demand to index
      */
-    public void store( Demand demand );
+    void index( Demand demand );
 }

@@ -7,6 +7,13 @@
     <!-- DAO -->
     <bean id="grusupply.indexerActionDAO"
         class="fr.paris.lutece.plugins.grusupply.business.daemon.IndexerActionDAO" />
+        
+    <bean id="grusupply.demandDAO"  class="fr.paris.lutece.plugins.grubusiness.business.demand.MockDemandDAO" />  
+    <bean id="grusupply.notificationDAO"  class="fr.paris.lutece.plugins.grubusiness.business.notification.MockNotificationDAO" />
+    <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grubusiness.business.demand.DemandService">
+      <constructor-arg ref="grusupply.demandDAO"/>
+      <constructor-arg ref="grusupply.notificationDAO"/>
+    </bean>
     
     <!-- REST -->
     <bean id="grusupply.grurestdatabase" class="fr.paris.lutece.plugins.grusupply.web.rs.GRUSupplyRestService"/>
@@ -14,7 +21,7 @@
     
     <!-- STORAGE SERVICE -->
     <!-- <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustoragedb.service.DatabaseNotificationStorageService"/> -->
-   <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustorageelastic.service.ElasticNotificationStorageService"/>  
+   <bean id="grusupply.indexService" class="fr.paris.lutece.plugins.grustorageelastic.service.ElasticNotificationStorageService"/>  
     
     <!-- NOTIFICATION SERVICE -->
    <bean id="grusupply.notificationService" class="fr.paris.lutece.plugins.grusupply.service.NotificationService"/>  

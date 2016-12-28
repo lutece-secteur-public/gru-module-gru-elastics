@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2015, Mairie de Paris
+ * Copyright (c) 2002-2016, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,16 +40,16 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 
 /**
- * StorageService
+ * This class represents a service for indexing
  */
-public class StorageService
+public final class IndexService
 {
-    private static final String BEAN_STORAGE_SERVICE = "grusupply.storageService";
-    private static StorageService _singleton;
-    private static INotificationStorageService _notificationStorageService;
+    private static final String BEAN_INDEX_SERVICE = "grusupply.indexService";
+    private static IndexService _singleton;
+    private static INotificationIndexService _notificationIndexService;
 
     /** private constructor */
-    private StorageService(  )
+    private IndexService(  )
     {
     }
 
@@ -57,44 +57,44 @@ public class StorageService
      * Returns the unique instance
      * @return The unique instance
      */
-    public static StorageService instance(  )
+    public static IndexService instance(  )
     {
         if ( _singleton == null )
         {
-            _singleton = new StorageService(  );
-            _notificationStorageService = SpringContextService.getBean( BEAN_STORAGE_SERVICE );
+            _singleton = new IndexService(  );
+            _notificationIndexService = SpringContextService.getBean( BEAN_INDEX_SERVICE );
         }
 
         return _singleton;
     }
 
     /**
-     * Store notification
+     * Indexes notification
      *
      * @param notification The notification
      */
-    public void store( NotifyGruGlobalNotification notification )
+    public void index( NotifyGruGlobalNotification notification )
     {
-        _notificationStorageService.store( notification );
+        _notificationIndexService.index( notification );
     }
 
     /**
-     * Store the customer
+     * Indexes the customer
      *
      * @param customer The customer
      */
-    public void store( Customer customer )
+    public void index( Customer customer )
     {
-        _notificationStorageService.store( customer );
+        _notificationIndexService.index( customer );
     }
 
     /**
-     * Store the demand
+     * Indexes the demand
      *
      * @param demand The demand
      */
-    public void store( Demand demand )
+    public void index( Demand demand )
     {
-        _notificationStorageService.store( demand );
+        _notificationIndexService.index( demand );
     }
 }
