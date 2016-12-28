@@ -51,6 +51,8 @@ import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.IOException;
 
 import javax.inject.Inject;
@@ -102,8 +104,13 @@ public class GRUSupplyRestService
             //STORE FOR AGENT
             try
             {
-                Customer user = CustomerProvider.instance(  )
-                                                .get( notification.getGuid(  ), notification.getCustomerId(  ) );
+                Customer user = null;
+
+                if ( ( notification.getCustomerId(  ) != null ) &&
+                        StringUtils.isNotBlank( notification.getCustomerId(  ) ) )
+                {
+                    user = CustomerProvider.instance(  ).get( notification.getGuid(  ), notification.getCustomerId(  ) );
+                }
 
                 Demand demandGruSupply = buildDemand( notification, user );
 
@@ -215,7 +222,7 @@ public class GRUSupplyRestService
      */
     private static Demand buildDemand( NotifyGruGlobalNotification notification, Customer user )
     {
-        if ( ( notification == null ) || ( user == null ) )
+        if ( ( notification == null ) )
         {
             throw new NullPointerException(  );
         }
