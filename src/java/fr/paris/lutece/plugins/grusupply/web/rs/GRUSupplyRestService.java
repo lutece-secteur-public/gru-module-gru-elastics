@@ -196,6 +196,7 @@ public class GRUSupplyRestService
             demand.setTypeId( String.valueOf( notification.getDemandTypeId(  ) ) );
             demand.setReference( notification.getDemandReference(  ) );
             demand.setCustomerId( notification.getCustomerId(  ) );
+            demand.setCreationDate( notification.getNotificationDate(  ) );
             demand.setMaxSteps( notification.getDemandMaxStep(  ) );
             demand.setCurrentStep( notification.getDemandUserCurrentStep(  ) );
             demand.setStatusId( notification.getDemandStatus(  ) );
@@ -206,8 +207,23 @@ public class GRUSupplyRestService
         {
             demand.setCustomerId( notification.getCustomerId(  ) );
             demand.setCurrentStep( notification.getDemandUserCurrentStep(  ) );
-            demand.setStatusId( notification.getDemandStatus(  ) );
-            
+
+            // Demand opened to closed
+            if ( ( demand.getStatusId(  ) != fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) &&
+                    ( notification.getDemandStatus(  ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
+            {
+                demand.setStatusId( notification.getDemandStatus(  ) );
+                demand.setClosureDate( notification.getNotificationDate(  ) );
+            }
+
+            // Demand closed to opened
+            if ( ( demand.getStatusId(  ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) &&
+                    ( notification.getDemandStatus(  ) != fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
+            {
+                demand.setStatusId( notification.getDemandStatus(  ) );
+                demand.setClosureDate( 0 );
+            }
+
             _demandService.update( demand );
         }
         
