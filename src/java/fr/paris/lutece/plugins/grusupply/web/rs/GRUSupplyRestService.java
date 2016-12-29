@@ -45,8 +45,8 @@ import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
-import fr.paris.lutece.plugins.grusupply.service.NotificationService;
 import fr.paris.lutece.plugins.grusupply.service.IndexService;
+import fr.paris.lutece.plugins.grusupply.service.NotificationService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
@@ -57,6 +57,7 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -70,10 +71,9 @@ public class GRUSupplyRestService
 {
     // Bean names
     private static final String BEAN_STORAGE_SERVICE = "grusupply.storageService";
-    
+
     // Other constants
     private static final String STATUS_RECEIVED = "{ \"acknowledge\" : { \"status\": \"received\" } }";
-    
     @Inject
     @Named( BEAN_STORAGE_SERVICE )
     private DemandService _demandService;
@@ -98,7 +98,7 @@ public class GRUSupplyRestService
 
             NotifyGruGlobalNotification notification = mapper.readValue( strJson, NotifyGruGlobalNotification.class );
             AppLogService.info( "grusupply - Received strJson : " + strJson );
-            
+
             store( notification );
 
             //STORE FOR AGENT
@@ -179,15 +179,16 @@ public class GRUSupplyRestService
 
         return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build(  );
     }
-    
+
     /**
      * Stores a notification and the associated demand
      * @param notification the notification to store
      */
     private void store( NotifyGruGlobalNotification notification )
     {
-        fr.paris.lutece.plugins.grubusiness.business.demand.Demand demand = _demandService.findByPrimaryKey( String.valueOf( notification.getDemandId(  ) ), String.valueOf( notification.getDemandTypeId(  ) ) );
-        
+        fr.paris.lutece.plugins.grubusiness.business.demand.Demand demand = _demandService.findByPrimaryKey( String.valueOf( 
+                    notification.getDemandId(  ) ), String.valueOf( notification.getDemandTypeId(  ) ) );
+
         if ( demand == null )
         {
             demand = new fr.paris.lutece.plugins.grubusiness.business.demand.Demand(  );
@@ -200,7 +201,7 @@ public class GRUSupplyRestService
             demand.setMaxSteps( notification.getDemandMaxStep(  ) );
             demand.setCurrentStep( notification.getDemandUserCurrentStep(  ) );
             demand.setStatusId( notification.getDemandStatus(  ) );
-            
+
             _demandService.create( demand );
         }
         else
@@ -226,7 +227,7 @@ public class GRUSupplyRestService
 
             _demandService.update( demand );
         }
-        
+
         _demandService.create( notification );
     }
 
