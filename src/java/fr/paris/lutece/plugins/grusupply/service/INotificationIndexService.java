@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
 
@@ -48,12 +47,6 @@ public interface INotificationIndexService
     * @param customer the Customer to index
     */
     void index( Customer customer );
-
-    /**
-     * Indexes a notification
-     * @param notification the Notification to index
-     */
-    void index( NotifyGruGlobalNotification notification );
 
     /**
      *  Indexes a demand

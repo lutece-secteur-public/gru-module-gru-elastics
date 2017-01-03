@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
 import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
@@ -66,16 +65,6 @@ public final class IndexService
         }
 
         return _singleton;
-    }
-
-    /**
-     * Indexes notification
-     *
-     * @param notification The notification
-     */
-    public void index( NotifyGruGlobalNotification notification )
-    {
-        _notificationIndexService.index( notification );
     }
 
     /**

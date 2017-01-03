@@ -116,9 +116,6 @@ public class GRUSupplyRestService
 
                 // Parse to Demand
                 IndexService.instance(  ).index( demandGruSupply );
-
-                // Parse to Notifications
-                IndexService.instance(  ).index( notification );
             }
             catch ( AppException e )
             {
@@ -248,12 +245,7 @@ public class GRUSupplyRestService
         demand.setCustomer( user );
         demand.setDemandId( notification.getDemandId(  ) );
         demand.setDemandTypeId( notification.getDemandTypeId(  ) );
-        demand.setDemandMaxStep( notification.getDemandMaxStep(  ) );
-        demand.setDemandUserCurrentStep( notification.getDemandUserCurrentStep(  ) );
-        demand.setNotifType( notification.getNotificationType(  ) );
-        demand.setCRMStatus( notification.getCrmStatusId(  ) );
         demand.setReference( notification.getDemandReference(  ) );
-        demand.setDemandStatus( notification.getDemandStatus(  ) );
 
         return demand;
     }
