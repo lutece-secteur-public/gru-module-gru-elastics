@@ -33,8 +33,8 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
-import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 
@@ -81,9 +81,10 @@ public final class IndexService
      * Indexes the demand
      *
      * @param demand The demand
+     * @param customer the customer
      */
-    public void index( Demand demand )
+    public void index( Demand demand, Customer customer )
     {
-        _notificationIndexService.index( demand );
+        _notificationIndexService.index( demand, customer );
     }
 }

@@ -33,8 +33,8 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
-import fr.paris.lutece.plugins.grusupply.business.Demand;
 
 
 /**
@@ -51,6 +51,7 @@ public interface INotificationIndexService
     /**
      *  Indexes a demand
      * @param demand the demand to index
+     * @param customer the customer
      */
-    void index( Demand demand );
+    void index( Demand demand, Customer customer );
 }

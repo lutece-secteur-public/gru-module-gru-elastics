@@ -39,10 +39,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
+import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.demand.DemandService;
 import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
 import fr.paris.lutece.plugins.grusupply.business.Customer;
-import fr.paris.lutece.plugins.grusupply.business.Demand;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.IndexService;
@@ -112,10 +112,10 @@ public class GRUSupplyRestService
                     user = CustomerProvider.instance(  ).get( notification.getGuid(  ), notification.getCustomerId(  ) );
                 }
 
-                Demand demandGruSupply = buildDemand( notification, user );
+                Demand demand = buildDemand( notification, user );
 
                 // Parse to Demand
-                IndexService.instance(  ).index( demandGruSupply );
+                IndexService.instance(  ).index( demand, user );
             }
             catch ( AppException e )
             {
@@ -183,12 +183,12 @@ public class GRUSupplyRestService
      */
     private void store( NotifyGruGlobalNotification notification )
     {
-        fr.paris.lutece.plugins.grubusiness.business.demand.Demand demand = _demandService.findByPrimaryKey( String.valueOf( 
-                    notification.getDemandId(  ) ), String.valueOf( notification.getDemandTypeId(  ) ) );
+        Demand demand = _demandService.findByPrimaryKey( String.valueOf( notification.getDemandId(  ) ),
+                String.valueOf( notification.getDemandTypeId(  ) ) );
 
         if ( demand == null )
         {
-            demand = new fr.paris.lutece.plugins.grubusiness.business.demand.Demand(  );
+            demand = new Demand(  );
 
             demand.setId( String.valueOf( notification.getDemandId(  ) ) );
             demand.setTypeId( String.valueOf( notification.getDemandTypeId(  ) ) );
@@ -242,9 +242,9 @@ public class GRUSupplyRestService
         }
 
         Demand demand = new Demand(  );
-        demand.setCustomer( user );
-        demand.setDemandId( notification.getDemandId(  ) );
-        demand.setDemandTypeId( notification.getDemandTypeId(  ) );
+        demand.setCustomerId( user.getCustomerId(  ) );
+        demand.setId( String.valueOf( notification.getDemandId(  ) ) );
+        demand.setTypeId( String.valueOf( notification.getDemandTypeId(  ) ) );
         demand.setReference( notification.getDemandReference(  ) );
 
         return demand;
