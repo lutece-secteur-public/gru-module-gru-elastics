@@ -53,5 +53,5 @@ public interface INotificationIndexService
      * @param demand the demand to index
      * @param customer the customer
      */
-    void index( Demand demand, Customer customer );
+    void index( Demand demand );
 }

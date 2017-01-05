@@ -104,18 +104,10 @@ public class GRUSupplyRestService
             //STORE FOR AGENT
             try
             {
-                Customer user = null;
-
-                if ( ( notification.getCustomerId(  ) != null ) &&
-                        StringUtils.isNotBlank( notification.getCustomerId(  ) ) )
-                {
-                    user = CustomerProvider.instance(  ).get( notification.getGuid(  ), notification.getCustomerId(  ) );
-                }
-
-                Demand demand = buildDemand( notification, user );
+                Demand demand = buildDemand( notification );
 
                 // Parse to Demand
-                IndexService.instance(  ).index( demand, user );
+                IndexService.instance(  ).index( demand );
             }
             catch ( AppException e )
             {
@@ -234,20 +226,21 @@ public class GRUSupplyRestService
      * @param customer
      * @return
      */
-    private static Demand buildDemand( NotifyGruGlobalNotification notification, Customer user )
+    private static Demand buildDemand( NotifyGruGlobalNotification notification )
     {
-        if ( ( notification == null ) )
-        {
-            throw new NullPointerException(  );
-        }
+    	if ( ( notification == null ) )
+    	{
+    		throw new NullPointerException(  );
+    	}
 
-        Demand demand = new Demand(  );
-        demand.setCustomerId( user.getCustomerId(  ) );
-        demand.setId( String.valueOf( notification.getDemandId(  ) ) );
-        demand.setTypeId( String.valueOf( notification.getDemandTypeId(  ) ) );
-        demand.setReference( notification.getDemandReference(  ) );
+    	Demand demand = new Demand(  );
 
-        return demand;
+    	demand.setCustomerId( String.valueOf( notification.getCustomerId() ) );
+    	demand.setId( String.valueOf( notification.getDemandId(  ) ) );
+    	demand.setTypeId( String.valueOf( notification.getDemandTypeId(  ) ) );
+    	demand.setReference( notification.getDemandReference(  ) );
+
+    	return demand;
     }
 
     /**

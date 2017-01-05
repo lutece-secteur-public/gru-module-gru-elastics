@@ -83,8 +83,8 @@ public final class IndexService
      * @param demand The demand
      * @param customer the customer
      */
-    public void index( Demand demand, Customer customer )
+    public void index( Demand demand )
     {
-        _notificationIndexService.index( demand, customer );
+        _notificationIndexService.index( demand );
     }
 }
