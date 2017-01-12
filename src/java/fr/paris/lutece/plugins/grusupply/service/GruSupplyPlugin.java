@@ -34,6 +34,7 @@
 package fr.paris.lutece.plugins.grusupply.service;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.plugin.PluginService;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 
@@ -63,5 +64,15 @@ public class GruSupplyPlugin extends Plugin
         BeanUtilsBean.getInstance(  ).getConvertUtils(  )
                      .register( new DateConverter( DateFormat.getDateInstance( DateFormat.SHORT, Locale.FRANCE ) ),
             java.sql.Date.class );
+    }
+    
+    /**
+     * Gives the plugin
+     *
+     * @return The plugin
+     */
+    public static Plugin getPlugin(  )
+    {
+        return PluginService.getPlugin( PLUGIN_NAME );
     }
 }

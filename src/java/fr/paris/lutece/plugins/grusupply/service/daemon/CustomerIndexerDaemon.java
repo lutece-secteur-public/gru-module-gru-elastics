@@ -134,7 +134,7 @@ public class CustomerIndexerDaemon extends Daemon
         {
             try
             {
-                Customer customer = CustomerProvider.instance(  ).get( null, indexerAction.getCustomerId(  ) );
+                Customer customer = CustomerProvider.instance(  ).get( null, indexerAction.getResourceId(  ) );
 
                 if ( customer != null )
                 {
@@ -147,7 +147,7 @@ public class CustomerIndexerDaemon extends Daemon
             }
             catch ( Exception e )
             {
-                AppLogService.error( "Unable to get the customer with id " + indexerAction.getCustomerId(  ) + " : " +
+                AppLogService.error( "Unable to get the customer with id " + indexerAction.getResourceId(  ) + " : " +
                     e.getMessage(  ) );
             }
         }

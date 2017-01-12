@@ -45,19 +45,32 @@ import java.util.List;
  */
 public interface IIndexerActionDAO
 {
+    
+    /**
+     * Inserts a new record in the table.
+     *
+     * @param indexerAction instance of the IndexerAction object to insert
+     */
+    void insert( IndexerAction indexerAction );
+    
     /**
      * Deletes a record from the table
      *
      * @param nId The identifier of the action
-     * @param plugin the plugin
      */
-    void delete( int nId, Plugin plugin );
+    void delete( int nId );
 
     /**
      * Loads the data of all indexerAction and returns them in a list
      * @param filter the search filter
-     * @param plugin the plugin
      * @return The list which contains the data of all actions
      */
-    List<IndexerAction> selectList( IndexerActionFilter filter, Plugin plugin );
+    List<IndexerAction> selectList( IndexerActionFilter filter );
+
+    /**
+     * Load the data of the IndexerAction from its id
+     * @param idIndexerAction
+     * @return
+     */
+    IndexerAction findByPrimaryKey( int idIndexerAction );
 }

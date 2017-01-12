@@ -43,7 +43,8 @@ public class IndexerAction
 {
     private int _nIdAction;
     private IndexerTask _indexerTask;
-    private String _strCustomerId;
+    private String _strResourceId;
+    private String _strResourceType;
 
     /**
      * Gets the action id
@@ -64,24 +65,6 @@ public class IndexerAction
     }
 
     /**
-     * Gets the customer id
-     * @return the customer Id
-     */
-    public String getCustomerId(  )
-    {
-        return _strCustomerId;
-    }
-
-    /**
-     * Sets the customer id
-     * @param strCustomerId the customer id
-     */
-    public void setCustomerId( String strCustomerId )
-    {
-        _strCustomerId = strCustomerId;
-    }
-
-    /**
      * Gets the task
      * @return the task
      */
@@ -98,4 +81,41 @@ public class IndexerAction
     {
         _indexerTask = indexerTask;
     }
+
+    /**
+     * Get the resource id
+     * @return the _strResourceId
+     */
+    public String getResourceId( )
+    {
+        return _strResourceId;
+    }
+
+    /**
+     * Set the resource id
+     * @param _strResourceId the _strResourceId to set
+     */
+    public void setResourceId( String _strResourceId )
+    {
+        this._strResourceId = _strResourceId;
+    }
+
+    /**
+     * Get the resource type
+     * @return the _strResourceType
+     */
+    public String getResourceType( )
+    {
+        return _strResourceType;
+    }
+
+    /**
+     * Set the resource type
+     * @param _strResourceType the _strResourceType to set
+     */
+    public void setResourceType( String _strResourceType )
+    {
+        this._strResourceType = _strResourceType;
+    }
+    
 }

@@ -33,9 +33,8 @@
  */
 package fr.paris.lutece.plugins.grusupply.business.daemon;
 
+import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.identitystore.web.rs.service.Constants;
-
-import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -50,7 +49,8 @@ public class IndexerActionFilter
      */
     public static final int ALL_INT = -1;
     private IndexerTask _indexerTask = IndexerTask.ALL;
-    private String _strCustomerId = Constants.NO_CUSTOMER_ID;
+    private String _strResourceId = GruSupplyConstants.NO_RESOURCE_ID;
+    private String _strResourceType = GruSupplyConstants.NO_RESOURCE_TYPE;
 
     /**
      * Gets the indexer task
@@ -80,29 +80,56 @@ public class IndexerActionFilter
     }
 
     /**
-     * Gets the id of the identity
-     * @return The id of the identity
+     * Get the resource id
+     * @return the _strResourceId
      */
-    public String getCustomerId(  )
+    public String getResourceId( )
     {
-        return _strCustomerId;
+        return _strResourceId;
     }
 
     /**
-     * Sets the id of the customer
-     * @param strCustomerId The id of the customer
+     * Set the resource id in the filter
+     * @param _strResourceId the _strResourceId to set
      */
-    public void setCustomerId( String strCustomerId )
+    public void setResourceId( String _strResourceId )
     {
-        this._strCustomerId = strCustomerId;
+        this._strResourceId = _strResourceId;
+    }
+    
+    /**
+     * Tests if the filter contains a resource id to filter or not
+     * @return {@code true} if the filter contains a resource to filter, {@code false} otherwise
+     */
+    public boolean containsResourceId(  )
+    {
+        return ( !GruSupplyConstants.NO_RESOURCE_ID.equals( _strResourceId ) );
     }
 
     /**
-     * Tests if the filter contains a customer to filter or not
-     * @return {@code true} if the filter contains a customer to filter, {@code false} otherwise
+     * Get the resource type
+     * @return the _strResourceType
      */
-    public boolean containsCustomerId(  )
+    public String getResourceType( )
     {
-        return ( !Constants.NO_CUSTOMER_ID.equals( _strCustomerId ) );
+        return _strResourceType;
+    }
+
+    /**
+     * Set the resource type in the filter
+     * @param _strResourceType the _strResourceType to set
+     */
+    public void setResourceType( String _strResourceType )
+    {
+        this._strResourceType = _strResourceType;
+    }
+
+    /**
+     * Tests if the filter contains a resource type to filter or not
+     * @return {@code true} if the filter contains a resource type to filter, {@code false} otherwise
+     */
+    public boolean containsResourceType(  )
+    {
+        return ( !GruSupplyConstants.NO_RESOURCE_TYPE.equals( _strResourceType ) );
     }
 }

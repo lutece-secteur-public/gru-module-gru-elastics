@@ -33,6 +33,8 @@
  */
 package fr.paris.lutece.plugins.grusupply.constant;
 
+import org.apache.commons.lang.StringUtils;
+
 public class GruSupplyConstants
 {
     // REST CONSTANTS
@@ -41,4 +43,8 @@ public class GruSupplyConstants
     // EXIT STATUS
     public static final String STATUS_201 = "{" + "\"status\":" + "\"201\"" + "}";
     public static final String STATUS_404 = "{" + "\"status\":" + "\"404\"" + "}";
+    
+    // FILTER INDEX CONSTANTS
+    public static final String NO_RESOURCE_ID = StringUtils.EMPTY;
+    public static final String NO_RESOURCE_TYPE = StringUtils.EMPTY;
 }

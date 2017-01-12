@@ -49,13 +49,22 @@ public final class IndexerActionHome
 {
     // Static variable pointed at the DAO instance
     private static IIndexerActionDAO _dao = SpringContextService.getBean( "grusupply.indexerActionDAO" );
-    private static Plugin _plugin = PluginService.getPlugin( GruSupplyPlugin.PLUGIN_NAME );
 
     /**
      * Private constructor
      */
     private IndexerActionHome(  )
     {
+    }
+    
+    /**
+     * Creation of an instance of Indexer Action
+     * @param indexerAction The instance of the indexer action which contains
+     *            the informations to store
+     */
+    public static synchronized void create( IndexerAction indexerAction )
+    {
+        _dao.insert( indexerAction );
     }
 
     /**
@@ -64,7 +73,7 @@ public final class IndexerActionHome
      */
     public static synchronized void remove( int nId )
     {
-        _dao.delete( nId, _plugin );
+        _dao.delete( nId );
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -78,6 +87,6 @@ public final class IndexerActionHome
      */
     public static List<IndexerAction> getList( IndexerActionFilter filter )
     {
-        return _dao.selectList( filter, _plugin );
+        return _dao.selectList( filter );
     }
 }
