@@ -33,7 +33,7 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
+import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
 import fr.paris.lutece.plugins.grubusiness.business.notification.SMSNotification;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -51,7 +51,7 @@ public class SendSmsService
      * Send SMS
      * @param smsNotification
      */
-    public void sendSms( NotifyGruGlobalNotification notification )
+    public void sendSms( Notification notification )
     {
         SMSNotification smsNotification = notification.getUserSMS(  );
 
