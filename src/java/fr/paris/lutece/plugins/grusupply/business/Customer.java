@@ -39,6 +39,8 @@ package fr.paris.lutece.plugins.grusupply.business;
  */
 public class Customer
 {
+    public static final String CUSTOMER_RESOURCE_TYPE = "customer";
+    
     // Variables declarations 
     private String _strCustomerId;
     private String _strName;
