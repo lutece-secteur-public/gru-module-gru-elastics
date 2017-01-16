@@ -41,6 +41,7 @@ public class Customer
 {   
     // Variables declarations 
     private String _strCustomerId;
+    private String _strConnectionId;
     private String _strName;
     private String _strFirstName;
     private String _strEmail;
@@ -92,6 +93,26 @@ public class Customer
         _strCustomerId = strCustomerId;
     }
 
+    /**
+     * Returns the Connection Id
+     * @return The ConnectionId
+     */
+    public String getConnectionId(  )
+    {
+        return _strConnectionId;
+    }
+
+    /**
+     * Sets the Connection Id
+     * @param strConnectionId The Connection Id
+     */
+    public void setConnectionId( String strConnectionId )
+    {
+    	_strConnectionId = strConnectionId;
+    }
+
+    
+    
     /**
      * Returns the Name
      * @return The Name
@@ -289,4 +310,6 @@ public class Customer
     {
         _strTelephoneNumber = strTelephoneNumber;
     }
+
+
 }
