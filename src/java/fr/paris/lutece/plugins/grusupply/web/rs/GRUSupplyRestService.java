@@ -39,10 +39,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
+import fr.paris.lutece.plugins.grubusiness.business.customer.Customer;
 import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.demand.DemandService;
-import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
-import fr.paris.lutece.plugins.grusupply.business.Customer;
+import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.IndexService;
@@ -96,7 +96,7 @@ public class GRUSupplyRestService
             mapper.configure( DeserializationFeature.UNWRAP_ROOT_VALUE, true );
             mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
 
-            NotifyGruGlobalNotification notification = mapper.readValue( strJson, NotifyGruGlobalNotification.class );
+            Notification notification = mapper.readValue( strJson, Notification.class );
             AppLogService.info( "grusupply - Received strJson : " + strJson );
 
             store( notification );
@@ -173,44 +173,47 @@ public class GRUSupplyRestService
      * Stores a notification and the associated demand
      * @param notification the notification to store
      */
-    private void store( NotifyGruGlobalNotification notification )
+    private void store( Notification notification )
     {
-        Demand demand = _demandService.findByPrimaryKey( String.valueOf( notification.getDemandId(  ) ),
-                String.valueOf( notification.getDemandTypeId(  ) ) );
+        Demand demand = _demandService.findByPrimaryKey( notification.getDemand(  ).getId(  ),
+                notification.getDemand(  ).getTypeId(  ) );
 
         if ( demand == null )
         {
             demand = new Demand(  );
 
-            demand.setId( String.valueOf( notification.getDemandId(  ) ) );
-            demand.setTypeId( String.valueOf( notification.getDemandTypeId(  ) ) );
-            demand.setReference( notification.getDemandReference(  ) );
-            demand.setCustomerId( notification.getCustomerId(  ) );
+            demand.setId( notification.getDemand(  ).getId(  ) );
+            demand.setTypeId( notification.getDemand(  ).getTypeId(  ) );
+            demand.setReference( notification.getDemand(  ).getReference(  ) );
             demand.setCreationDate( notification.getNotificationDate(  ) );
-            demand.setMaxSteps( notification.getDemandMaxStep(  ) );
-            demand.setCurrentStep( notification.getDemandUserCurrentStep(  ) );
-            demand.setStatusId( notification.getDemandStatus(  ) );
+            demand.setMaxSteps( notification.getDemand(  ).getMaxSteps(  ) );
+            demand.setCurrentStep( notification.getDemand(  ).getCurrentStep(  ) );
+            demand.setStatusId( notification.getDemand(  ).getStatusId(  ) );
 
+            Customer customerDemand = new Customer(  );
+            customerDemand.setId( notification.getDemand(  ).getCustomer(  ).getId(  ) );
+            customerDemand.setAccountGuid( notification.getDemand(  ).getCustomer(  ).getAccountGuid(  ) );
+            demand.setCustomer( customerDemand );
             _demandService.create( demand );
         }
         else
         {
-            demand.setCustomerId( notification.getCustomerId(  ) );
-            demand.setCurrentStep( notification.getDemandUserCurrentStep(  ) );
+            demand.getCustomer(  ).setId( notification.getDemand(  ).getCustomer(  ).getId(  ) );
+            demand.setCurrentStep( notification.getDemand(  ).getCurrentStep(  ) );
 
             // Demand opened to closed
             if ( ( demand.getStatusId(  ) != fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) &&
-                    ( notification.getDemandStatus(  ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
+                    ( notification.getDemand(  ).getStatusId(  ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
             {
-                demand.setStatusId( notification.getDemandStatus(  ) );
+                demand.setStatusId( notification.getDemand(  ).getStatusId(  ) );
                 demand.setClosureDate( notification.getNotificationDate(  ) );
             }
 
             // Demand closed to opened
             if ( ( demand.getStatusId(  ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) &&
-                    ( notification.getDemandStatus(  ) != fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
+                    ( notification.getDemand(  ).getStatusId(  ) != fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
             {
-                demand.setStatusId( notification.getDemandStatus(  ) );
+                demand.setStatusId( notification.getDemand(  ).getStatusId(  ) );
                 demand.setClosureDate( 0 );
             }
 
@@ -226,21 +229,28 @@ public class GRUSupplyRestService
      * @param customer
      * @return
      */
-    private static Demand buildDemand( NotifyGruGlobalNotification notification )
+    private static Demand buildDemand( Notification notification )
     {
-    	if ( ( notification == null ) )
-    	{
-    		throw new NullPointerException(  );
-    	}
+        if ( ( notification == null ) )
+        {
+            throw new NullPointerException(  );
+        }
 
-    	Demand demand = new Demand(  );
+        Demand demand = new Demand(  );
 
-    	demand.setCustomerId( String.valueOf( notification.getCustomerId() ) );
-    	demand.setId( String.valueOf( notification.getDemandId(  ) ) );
-    	demand.setTypeId( String.valueOf( notification.getDemandTypeId(  ) ) );
-    	demand.setReference( notification.getDemandReference(  ) );
+        if ( notification.getDemand(  ) != null )
+        {
+            if ( notification.getDemand(  ).getCustomer(  ) != null )
+            {
+                demand.setCustomer( notification.getDemand(  ).getCustomer(  ) );
+            }
 
-    	return demand;
+            demand.setId( notification.getDemand(  ).getId(  ) );
+            demand.setTypeId( notification.getDemand(  ).getTypeId(  ) );
+            demand.setReference( notification.getDemand(  ).getReference(  ) );
+        }
+
+        return demand;
     }
 
     /**

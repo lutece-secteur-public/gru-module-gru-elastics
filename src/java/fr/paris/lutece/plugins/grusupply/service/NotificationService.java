@@ -37,7 +37,7 @@ import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grubusiness.business.notification.BroadcastNotification;
 import fr.paris.lutece.plugins.grubusiness.business.notification.EmailAddress;
 import fr.paris.lutece.plugins.grubusiness.business.notification.EmailNotification;
-import fr.paris.lutece.plugins.grubusiness.business.notification.NotifyGruGlobalNotification;
+import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
 import fr.paris.lutece.plugins.grusupply.business.GruSupplyEmail;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
@@ -90,7 +90,7 @@ public class NotificationService
      * send Email
      * @param notification
      */
-    public void sendEmail( NotifyGruGlobalNotification notification )
+    public void sendEmail( Notification notification )
     {
         if ( ( notification != null ) && ( notification.getUserEmail(  ) != null ) )
         {
@@ -112,7 +112,7 @@ public class NotificationService
      * send Broadcast email
      * @param notification
      */
-    public void sendBroadcastEmail( NotifyGruGlobalNotification notification )
+    public void sendBroadcastEmail( Notification notification )
     {
         if ( ( notification != null ) && ( notification.getBroadcastEmail(  ) != null ) )
         {
@@ -157,7 +157,7 @@ public class NotificationService
      * send Sms
      * @param notification
      */
-    public void sendSms( NotifyGruGlobalNotification notification )
+    public void sendSms( Notification notification )
     {
         if ( notification != null )
         {
@@ -170,7 +170,7 @@ public class NotificationService
      * @param notification
      * @throws CRMException
      */
-    public void notifyCrm( NotifyGruGlobalNotification notification )
+    public void notifyCrm( Notification notification )
         throws CRMException
     {
         if ( notification != null )
