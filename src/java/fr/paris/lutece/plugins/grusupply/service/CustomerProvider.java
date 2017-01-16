@@ -139,6 +139,7 @@ public class CustomerProvider
         Customer customerGruSupply = new Customer(  );
 
         customerGruSupply.setCustomerId( identityDto.getCustomerId(  ) );
+        customerGruSupply.setConnectionId( identityDto.getConnectionId(  ) );
         customerGruSupply.setName( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_FAMILLY ) );
         customerGruSupply.setFirstName( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_GIVEN ) );
         customerGruSupply.setEmail( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL ) );
