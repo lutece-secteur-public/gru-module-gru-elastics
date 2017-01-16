@@ -5,8 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd" >
     
     <!-- DAO -->
-    <bean id="grusupply.indexerActionDAO"
-        class="fr.paris.lutece.plugins.grusupply.business.daemon.IndexerActionDAO" />
+    <bean id="grusupply.demandIndexerActionDAO" class="fr.paris.lutece.plugins.grusupply.business.daemon.demand.DemandIndexerActionDAO" />
         
     <bean id="grusupply.demandDAO"  class="fr.paris.lutece.plugins.grubusiness.business.demand.MockDemandDAO" />  
     <bean id="grusupply.notificationDAO"  class="fr.paris.lutece.plugins.grubusiness.business.notification.MockNotificationDAO" />
@@ -21,7 +20,7 @@
     
     <!-- STORAGE SERVICE -->
     <!-- <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustoragedb.service.DatabaseNotificationStorageService"/> -->
-   <bean id="grusupply.indexService" class="fr.paris.lutece.plugins.grustorageelastic.service.ElasticNotificationStorageService"/>  
+   <!-- <bean id="grusupply.indexService" class="fr.paris.lutece.plugins.grustorageelastic.service.ElasticNotificationStorageService"/>  --> 
     
     <!-- NOTIFICATION SERVICE -->
    <bean id="grusupply.notificationService" class="fr.paris.lutece.plugins.grusupply.service.NotificationService"/>  

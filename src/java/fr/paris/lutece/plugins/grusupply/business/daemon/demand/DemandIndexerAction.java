@@ -31,46 +31,50 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business.daemon;
+package fr.paris.lutece.plugins.grusupply.business.daemon.demand;
 
-import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerAction;
 
-import java.util.List;
-
-
-/**
- *
- * Interface for an IndexerActionDAO
- *
- */
-public interface IIndexerActionDAO
+public class DemandIndexerAction extends IndexerAction
 {
+
+    private String _strDemandId;
+    private String _strDemandTypeId;
     
     /**
-     * Inserts a new record in the table.
-     *
-     * @param indexerAction instance of the IndexerAction object to insert
+     * Get the demand id
+     * @return the _strDemandId
      */
-    void insert( IndexerAction indexerAction );
+    public String getDemandId( )
+    {
+        return _strDemandId;
+    }
     
     /**
-     * Deletes a record from the table
-     *
-     * @param nId The identifier of the action
+     * Set the demand id
+     * @param _strDemandId the _strDemandId to set
      */
-    void delete( int nId );
-
+    public void setDemandId( String _strDemandId )
+    {
+        this._strDemandId = _strDemandId;
+    }
+    
     /**
-     * Loads the data of all indexerAction and returns them in a list
-     * @param filter the search filter
-     * @return The list which contains the data of all actions
+     * Get the demand type id
+     * @return the _strDemandTypeId
      */
-    List<IndexerAction> selectList( IndexerActionFilter filter );
-
+    public String getDemandTypeId( )
+    {
+        return _strDemandTypeId;
+    }
+    
     /**
-     * Load the data of the IndexerAction from its id
-     * @param idIndexerAction
-     * @return
+     * Set the demand type id
+     * @param _strDemandTypeId the _strDemandTypeId to set
      */
-    IndexerAction findByPrimaryKey( int idIndexerAction );
+    public void setDemandTypeId( String _strDemandTypeId )
+    {
+        this._strDemandTypeId = _strDemandTypeId;
+    }
+    
 }

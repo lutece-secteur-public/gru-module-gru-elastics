@@ -38,9 +38,7 @@ package fr.paris.lutece.plugins.grusupply.business;
  * This is the business class for the object Customer
  */
 public class Customer
-{
-    public static final String CUSTOMER_RESOURCE_TYPE = "customer";
-    
+{   
     // Variables declarations 
     private String _strCustomerId;
     private String _strName;

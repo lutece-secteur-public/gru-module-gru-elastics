@@ -31,52 +31,58 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business.daemon;
+package fr.paris.lutece.plugins.grusupply.business.daemon.demand;
+
+import java.util.List;
+
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 /**
- *
- * This class represents an action for the indexer
- *
+ * This class provides instances management methods (create, find, ...) for
+ * DemandIndexerActionHome objects
  */
-public class IndexerAction
+public class DemandIndexerActionHome
 {
-    private int _nIdAction;
-    private IndexerTask _indexerTask;
+    // Static variable pointed at the DAO instance
+    private static IDemandIndexerActionDAO _dao = SpringContextService.getBean( "grusupply.demandIndexerActionDAO" );
 
     /**
-     * Gets the action id
-     * @return the action id
+     * Private constructor
      */
-    public int getIdAction(  )
+    private DemandIndexerActionHome(  )
     {
-        return _nIdAction;
-    }
-
-    /**
-     * Sets the action id
-     * @param nIdAction the action id
-     */
-    public void setIdAction( int nIdAction )
-    {
-        _nIdAction = nIdAction;
-    }
-
-    /**
-     * Gets the task
-     * @return the task
-     */
-    public IndexerTask getTask(  )
-    {
-        return _indexerTask;
-    }
-
-    /**
-     * Sets the task
-     * @param indexerTask the task
-     */
-    public void setTask( IndexerTask indexerTask )
-    {
-        _indexerTask = indexerTask;
     }
     
+    /**
+     * Creation of an instance of Demand Indexer Action
+     * @param demandIndexerAction The instance of the indexer action which contains
+     *            the informations to store
+     */
+    public static synchronized void create( DemandIndexerAction demandIndexerAction )
+    {
+        _dao.insert( demandIndexerAction );
+    }
+
+    /**
+     * Removes the demandIndexerAction whose identifier is specified in parameter
+     * @param nId The DemandIndexerAction
+     */
+    public static synchronized void remove( int nId )
+    {
+        _dao.delete( nId );
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Finders
+
+    /**
+     * Loads the data of all the DemandIndexerAction who verify the filter and returns
+     * them in a list
+     * @param filter the filter
+     * @return the list which contains the data of all the DemandIndexerAction
+     */
+    public static List<DemandIndexerAction> getList( DemandIndexerActionFilter filter )
+    {
+        return _dao.selectList( filter );
+    }
 }

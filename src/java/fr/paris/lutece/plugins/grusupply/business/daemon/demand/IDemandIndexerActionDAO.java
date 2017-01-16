@@ -31,52 +31,42 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business.daemon;
+package fr.paris.lutece.plugins.grusupply.business.daemon.demand;
+
+import java.util.List;
 
 /**
- *
- * This class represents an action for the indexer
- *
- */
-public class IndexerAction
+*
+* Interface for an DemandIndexerActionDAO
+*
+*/
+public interface IDemandIndexerActionDAO
 {
-    private int _nIdAction;
-    private IndexerTask _indexerTask;
-
     /**
-     * Gets the action id
-     * @return the action id
+     * Inserts a new record in the table.
+     *
+     * @param DemandIndexerAction instance of the DemandIndexerAction object to insert
      */
-    public int getIdAction(  )
-    {
-        return _nIdAction;
-    }
-
-    /**
-     * Sets the action id
-     * @param nIdAction the action id
-     */
-    public void setIdAction( int nIdAction )
-    {
-        _nIdAction = nIdAction;
-    }
-
-    /**
-     * Gets the task
-     * @return the task
-     */
-    public IndexerTask getTask(  )
-    {
-        return _indexerTask;
-    }
-
-    /**
-     * Sets the task
-     * @param indexerTask the task
-     */
-    public void setTask( IndexerTask indexerTask )
-    {
-        _indexerTask = indexerTask;
-    }
+    void insert( DemandIndexerAction demandIndexerAction );
     
+    /**
+     * Deletes a record from the table
+     *
+     * @param nId The identifier of the action
+     */
+    void delete( int nId );
+
+    /**
+     * Loads the data of all DemandIndexerAction and returns them in a list
+     * @param filter the search filter
+     * @return The list which contains the data of all actions
+     */
+    List<DemandIndexerAction> selectList( DemandIndexerActionFilter demandIndexerActionFilter );
+
+    /**
+     * Load the data of the DemandIndexerAction from its id
+     * @param idDemandIndexerAction
+     * @return the DemandIndexerAction with the given id
+     */
+    DemandIndexerAction findByPrimaryKey( int idDemandIndexerAction );
 }

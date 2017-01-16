@@ -31,62 +31,75 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business.daemon;
+package fr.paris.lutece.plugins.grusupply.business.daemon.demand;
 
-import fr.paris.lutece.plugins.grusupply.service.GruSupplyPlugin;
-import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
+import org.apache.commons.lang.StringUtils;
 
-import java.util.List;
-
+import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerActionFilter;
 
 /**
- * This class provides instances management methods (create, find, ...) for
- * IndexerAction objects
- */
-public final class IndexerActionHome
+*
+* This class is a filter for DemandIndexerActionFilter
+*
+*/
+public class DemandIndexerActionFilter extends IndexerActionFilter
 {
-    // Static variable pointed at the DAO instance
-    private static IIndexerActionDAO _dao = SpringContextService.getBean( "grusupply.indexerActionDAO" );
 
+    private String _strDemandId;
+    private String _strDemandTypeId;
+    
     /**
-     * Private constructor
+     * Get the demand id
+     * @return the _strDemandId
      */
-    private IndexerActionHome(  )
+    public String getDemandId( )
     {
+        return _strDemandId;
     }
     
     /**
-     * Creation of an instance of Indexer Action
-     * @param indexerAction The instance of the indexer action which contains
-     *            the informations to store
+     * Set the demand id
+     * @param _strDemandId the _strDemandId to set
      */
-    public static synchronized void create( IndexerAction indexerAction )
+    public void setDemandId( String _strDemandId )
     {
-        _dao.insert( indexerAction );
+        this._strDemandId = _strDemandId;
+    }
+    
+    /**
+     * Tests if the filter contains a demand id to filter or not
+     * @return {@code true} if the filter contains a demand to filter, {@code false} otherwise
+     */
+    public boolean containsDemandId(  )
+    {
+        return StringUtils.isNotBlank( _strDemandId );
+    }
+    
+    /**
+     * Get the demand type id
+     * @return the _strDemandTypeId
+     */
+    public String getDemandTypeId( )
+    {
+        return _strDemandTypeId;
+    }
+    
+    /**
+     * Set the demand type id
+     * @param _strDemandTypeId the _strDemandTypeId to set
+     */
+    public void setDemandTypeId( String _strDemandTypeId )
+    {
+        this._strDemandTypeId = _strDemandTypeId;
     }
 
     /**
-     * Removes the indexerAction whose identifier is specified in parameter
-     * @param nId The IndexerActionId
+     * Tests if the filter contains a demand type id to filter or not
+     * @return {@code true} if the filter contains a demand type to filter, {@code false} otherwise
      */
-    public static synchronized void remove( int nId )
+    public boolean containsDemandTypeId(  )
     {
-        _dao.delete( nId );
+        return StringUtils.isNotBlank( _strDemandTypeId );
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Finders
-
-    /**
-     * Loads the data of all the IndexerAction who verify the filter and returns
-     * them in a list
-     * @param filter the filter
-     * @return the list which contains the data of all the indexerAction
-     */
-    public static List<IndexerAction> getList( IndexerActionFilter filter )
-    {
-        return _dao.selectList( filter );
-    }
+    
 }
