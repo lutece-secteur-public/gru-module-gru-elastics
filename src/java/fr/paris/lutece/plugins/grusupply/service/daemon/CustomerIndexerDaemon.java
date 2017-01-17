@@ -45,10 +45,9 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 
 import java.util.List;
 
-
 /**
  *
- *  Daemon used to index customers in incremental mode
+ * Daemon used to index customers in incremental mode
  */
 public class CustomerIndexerDaemon extends Daemon
 {
@@ -60,30 +59,31 @@ public class CustomerIndexerDaemon extends Daemon
     /**
      * Constructor
      */
-    public CustomerIndexerDaemon(  )
+    public CustomerIndexerDaemon( )
     {
-        super(  );
+        super( );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void run(  )
+    public void run( )
     {
-        StringBuilder sbLogs = new StringBuilder(  );
+        StringBuilder sbLogs = new StringBuilder( );
 
         indexCreatedCustomers( sbLogs );
         indexUpdatedCustomers( sbLogs );
         indexDeletedCustomers( sbLogs );
 
-        setLastRunLogs( sbLogs.toString(  ) );
+        setLastRunLogs( sbLogs.toString( ) );
     }
 
     /**
-     * Indexes created customers.
-     * Logs the action in the specified StringBuilder
-     * @param sbLogs the StringBuilder used to log the action
+     * Indexes created customers. Logs the action in the specified StringBuilder
+     * 
+     * @param sbLogs
+     *            the StringBuilder used to log the action
      */
     private void indexCreatedCustomers( StringBuilder sbLogs )
     {
@@ -93,9 +93,10 @@ public class CustomerIndexerDaemon extends Daemon
     }
 
     /**
-     * Indexes updated customers.
-     * Logs the action in the specified StringBuilder
-     * @param sbLogs the StringBuilder used to log the action
+     * Indexes updated customers. Logs the action in the specified StringBuilder
+     * 
+     * @param sbLogs
+     *            the StringBuilder used to log the action
      */
     private void indexUpdatedCustomers( StringBuilder sbLogs )
     {
@@ -105,9 +106,10 @@ public class CustomerIndexerDaemon extends Daemon
     }
 
     /**
-     * Indexes deleted customers.
-     * Logs the action in the specified StringBuilder
-     * @param sbLogs the StringBuilder used to log the action
+     * Indexes deleted customers. Logs the action in the specified StringBuilder
+     * 
+     * @param sbLogs
+     *            the StringBuilder used to log the action
      */
     private void indexDeletedCustomers( StringBuilder sbLogs )
     {
@@ -118,14 +120,16 @@ public class CustomerIndexerDaemon extends Daemon
 
     /**
      * Indexes updated customers
-     * @param indexerTask the indexer task
+     * 
+     * @param indexerTask
+     *            the indexer task
      * @return the number of indexed customers
      */
     private int indexUpdatedCustomers( IndexerTask indexerTask )
     {
         int nNbIndexedCustomers = 0;
 
-        IndexerActionFilter indexerActionFilter = new IndexerActionFilter(  );
+        IndexerActionFilter indexerActionFilter = new IndexerActionFilter( );
         indexerActionFilter.setTask( indexerTask );
 
         List<IndexerAction> listIndexerActions = IndexerActionHome.getList( indexerActionFilter );
@@ -134,21 +138,20 @@ public class CustomerIndexerDaemon extends Daemon
         {
             try
             {
-                Customer customer = CustomerProvider.instance(  ).get( null, indexerAction.getCustomerId(  ) );
+                Customer customer = CustomerProvider.instance( ).get( null, indexerAction.getCustomerId( ) );
 
                 if ( customer != null )
                 {
-//                    IndexService.instance(  ).index( customer );
+                    // IndexService.instance( ).index( customer );
 
                     nNbIndexedCustomers++;
 
-                    IndexerActionHome.remove( indexerAction.getIdAction(  ) );
+                    IndexerActionHome.remove( indexerAction.getIdAction( ) );
                 }
             }
-            catch ( Exception e )
+            catch( Exception e )
             {
-                AppLogService.error( "Unable to get the customer with id " + indexerAction.getCustomerId(  ) + " : " +
-                    e.getMessage(  ) );
+                AppLogService.error( "Unable to get the customer with id " + indexerAction.getCustomerId( ) + " : " + e.getMessage( ) );
             }
         }
 

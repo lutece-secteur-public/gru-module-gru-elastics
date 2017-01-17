@@ -37,7 +37,6 @@ import fr.paris.lutece.plugins.identitystore.web.rs.service.Constants;
 
 import org.apache.commons.lang.StringUtils;
 
-
 /**
  *
  * This class is a filter for IndexerAction
@@ -54,16 +53,19 @@ public class IndexerActionFilter
 
     /**
      * Gets the indexer task
+     * 
      * @return the indexer task in the filter
      */
-    public IndexerTask getIndexerTask(  )
+    public IndexerTask getIndexerTask( )
     {
         return _indexerTask;
     }
 
     /**
      * Sets the indexer task in the filter
-     * @param indexerTask the indexer task to insert in the filter
+     * 
+     * @param indexerTask
+     *            the indexer task to insert in the filter
      */
     public void setTask( IndexerTask indexerTask )
     {
@@ -72,25 +74,29 @@ public class IndexerActionFilter
 
     /**
      * Tests if the filter contains a task to filter or not
+     * 
      * @return {@code true} if the filter contains a task to filter, {@code false} otherwise
      */
-    public boolean containsTask(  )
+    public boolean containsTask( )
     {
         return ( _indexerTask != IndexerTask.ALL );
     }
 
     /**
      * Gets the id of the identity
+     * 
      * @return The id of the identity
      */
-    public String getCustomerId(  )
+    public String getCustomerId( )
     {
         return _strCustomerId;
     }
 
     /**
      * Sets the id of the customer
-     * @param strCustomerId The id of the customer
+     * 
+     * @param strCustomerId
+     *            The id of the customer
      */
     public void setCustomerId( String strCustomerId )
     {
@@ -99,9 +105,10 @@ public class IndexerActionFilter
 
     /**
      * Tests if the filter contains a customer to filter or not
+     * 
      * @return {@code true} if the filter contains a customer to filter, {@code false} otherwise
      */
-    public boolean containsCustomerId(  )
+    public boolean containsCustomerId( )
     {
         return ( !Constants.NO_CUSTOMER_ID.equals( _strCustomerId ) );
     }

@@ -37,7 +37,6 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 
 import java.util.List;
 
-
 /**
  *
  * Interface for an IndexerActionDAO
@@ -48,15 +47,20 @@ public interface IIndexerActionDAO
     /**
      * Deletes a record from the table
      *
-     * @param nId The identifier of the action
-     * @param plugin the plugin
+     * @param nId
+     *            The identifier of the action
+     * @param plugin
+     *            the plugin
      */
     void delete( int nId, Plugin plugin );
 
     /**
      * Loads the data of all indexerAction and returns them in a list
-     * @param filter the search filter
-     * @param plugin the plugin
+     * 
+     * @param filter
+     *            the search filter
+     * @param plugin
+     *            the plugin
      * @return The list which contains the data of all actions
      */
     List<IndexerAction> selectList( IndexerActionFilter filter, Plugin plugin );

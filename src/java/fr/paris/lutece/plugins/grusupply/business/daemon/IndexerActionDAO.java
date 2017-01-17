@@ -39,19 +39,17 @@ import fr.paris.lutece.util.sql.DAOUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * This class provides Data Access methods for Indexer Action objects
  */
 public final class IndexerActionDAO implements IIndexerActionDAO
 {
-    //Constants
+    // Constants
     public static final String CONSTANT_WHERE = " WHERE ";
     public static final String CONSTANT_AND = " AND ";
 
     // Constants
-    private static final String SQL_QUERY_SELECT = "SELECT id_action,id_customer,id_task" +
-        " FROM grusupply_customer_indexer_action  ";
+    private static final String SQL_QUERY_SELECT = "SELECT id_action,id_customer,id_task" + " FROM grusupply_customer_indexer_action  ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM grusupply_customer_indexer_action WHERE id_action = ? ";
     private static final String SQL_FILTER_ID_TASK = " id_task = ? ";
     private static final String SQL_FILTER_ID_CUSTOMER = " id_customer = ? ";
@@ -64,8 +62,8 @@ public final class IndexerActionDAO implements IIndexerActionDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
         daoUtil.setInt( 1, nId );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -74,16 +72,16 @@ public final class IndexerActionDAO implements IIndexerActionDAO
     @Override
     public List<IndexerAction> selectList( IndexerActionFilter filter, Plugin plugin )
     {
-        List<IndexerAction> indexerActionList = new ArrayList<IndexerAction>(  );
+        List<IndexerAction> indexerActionList = new ArrayList<IndexerAction>( );
         IndexerAction indexerAction = null;
-        List<String> listStrFilter = new ArrayList<String>(  );
+        List<String> listStrFilter = new ArrayList<String>( );
 
-        if ( filter.containsTask(  ) )
+        if ( filter.containsTask( ) )
         {
             listStrFilter.add( SQL_FILTER_ID_TASK );
         }
 
-        if ( filter.containsCustomerId(  ) )
+        if ( filter.containsCustomerId( ) )
         {
             listStrFilter.add( SQL_FILTER_ID_CUSTOMER );
         }
@@ -94,22 +92,22 @@ public final class IndexerActionDAO implements IIndexerActionDAO
 
         int nIndex = 1;
 
-        if ( filter.containsTask(  ) )
+        if ( filter.containsTask( ) )
         {
-            daoUtil.setInt( nIndex, filter.getIndexerTask(  ).getValue(  ) );
+            daoUtil.setInt( nIndex, filter.getIndexerTask( ).getValue( ) );
             nIndex++;
         }
 
-        if ( filter.containsCustomerId(  ) )
+        if ( filter.containsCustomerId( ) )
         {
-            daoUtil.setString( nIndex, filter.getCustomerId(  ) );
+            daoUtil.setString( nIndex, filter.getCustomerId( ) );
         }
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
-            indexerAction = new IndexerAction(  );
+            indexerAction = new IndexerAction( );
             indexerAction.setIdAction( daoUtil.getInt( 1 ) );
             indexerAction.setCustomerId( daoUtil.getString( 2 ) );
             indexerAction.setTask( IndexerTask.valueOf( daoUtil.getInt( 3 ) ) );
@@ -117,21 +115,25 @@ public final class IndexerActionDAO implements IIndexerActionDAO
             indexerActionList.add( indexerAction );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return indexerActionList;
     }
 
     /**
      * Builds a query with filters placed in parameters
-     * @param strSelect the select of the query
-     * @param listStrFilter the list of filter to add in the query
-     * @param strOrder the order by of the query
+     * 
+     * @param strSelect
+     *            the select of the query
+     * @param listStrFilter
+     *            the list of filter to add in the query
+     * @param strOrder
+     *            the order by of the query
      * @return a query
      */
     private static String buildRequestWithFilter( String strSelect, List<String> listStrFilter, String strOrder )
     {
-        StringBuffer strBuffer = new StringBuffer(  );
+        StringBuffer strBuffer = new StringBuffer( );
         strBuffer.append( strSelect );
 
         int nCount = 0;
@@ -145,7 +147,7 @@ public final class IndexerActionDAO implements IIndexerActionDAO
 
             strBuffer.append( strFilter );
 
-            if ( nCount != listStrFilter.size(  ) )
+            if ( nCount != listStrFilter.size( ) )
             {
                 strBuffer.append( CONSTANT_AND );
             }
@@ -156,6 +158,6 @@ public final class IndexerActionDAO implements IIndexerActionDAO
             strBuffer.append( strOrder );
         }
 
-        return strBuffer.toString(  );
+        return strBuffer.toString( );
     }
 }

@@ -40,10 +40,8 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 import java.util.List;
 
-
 /**
- * This class provides instances management methods (create, find, ...) for
- * IndexerAction objects
+ * This class provides instances management methods (create, find, ...) for IndexerAction objects
  */
 public final class IndexerActionHome
 {
@@ -54,26 +52,29 @@ public final class IndexerActionHome
     /**
      * Private constructor
      */
-    private IndexerActionHome(  )
+    private IndexerActionHome( )
     {
     }
 
     /**
      * Removes the indexerAction whose identifier is specified in parameter
-     * @param nId The IndexerActionId
+     * 
+     * @param nId
+     *            The IndexerActionId
      */
     public static synchronized void remove( int nId )
     {
         _dao.delete( nId, _plugin );
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
     // Finders
 
     /**
-     * Loads the data of all the IndexerAction who verify the filter and returns
-     * them in a list
-     * @param filter the filter
+     * Loads the data of all the IndexerAction who verify the filter and returns them in a list
+     * 
+     * @param filter
+     *            the filter
      * @return the list which contains the data of all the indexerAction
      */
     public static List<IndexerAction> getList( IndexerActionFilter filter )

@@ -61,7 +61,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME )
 public class GRUSupplyRestService
 {
@@ -76,7 +75,9 @@ public class GRUSupplyRestService
 
     /**
      * Web Service methode which permit to store the notification flow into a data store
-     * @param strJson The JSON flow
+     * 
+     * @param strJson
+     *            The JSON flow
      * @return The response
      */
     @POST
@@ -88,7 +89,7 @@ public class GRUSupplyRestService
         try
         {
             // Format from JSON
-            ObjectMapper mapper = new ObjectMapper(  );
+            ObjectMapper mapper = new ObjectMapper( );
             mapper.configure( DeserializationFeature.UNWRAP_ROOT_VALUE, true );
             mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
 
@@ -97,117 +98,118 @@ public class GRUSupplyRestService
 
             store( notification );
 
-            //STORE FOR AGENT
+            // STORE FOR AGENT
             try
             {
                 // Parse to Demand
-                IndexService.instance(  ).index( notification.getDemand(  ) );
+                IndexService.instance( ).index( notification.getDemand( ) );
             }
-            catch ( IndexingException e )
+            catch( IndexingException e )
             {
-                //NOTHING TO DO
+                // NOTHING TO DO
             }
 
             // Notify user and crm if a bean NotificationService is instantiated
-            NotificationService notificationService = NotificationService.instance(  );
+            NotificationService notificationService = NotificationService.instance( );
 
             if ( notificationService != null )
             {
                 AppLogService.info( " \n \n GRUSUPPLY - Bean Notifcation not null \n \n" );
 
-                if ( notification.getUserEmail(  ) != null )
+                if ( notification.getUserEmail( ) != null )
                 {
                     notificationService.sendEmail( notification );
                 }
 
-                if ( notification.getUserSMS(  ) != null )
+                if ( notification.getUserSMS( ) != null )
                 {
                     notificationService.sendSms( notification );
                 }
 
-                if ( ( notification.getBroadcastEmail(  ) != null ) && !notification.getBroadcastEmail(  ).isEmpty(  ) )
+                if ( ( notification.getBroadcastEmail( ) != null ) && !notification.getBroadcastEmail( ).isEmpty( ) )
                 {
                     notificationService.sendBroadcastEmail( notification );
                 }
 
                 try
                 {
-                    if ( notification.getUserDashboard(  ) != null )
+                    if ( notification.getUserDashboard( ) != null )
                     {
                         notificationService.notifyCrm( notification );
                     }
                 }
-                catch ( CRMException ex )
+                catch( CRMException ex )
                 {
-                    return error( ex + " :" + ex.getMessage(  ), ex );
+                    return error( ex + " :" + ex.getMessage( ), ex );
                 }
             }
         }
-        catch ( JsonParseException ex )
+        catch( JsonParseException ex )
         {
-            return error( ex + " :" + ex.getMessage(  ), ex );
+            return error( ex + " :" + ex.getMessage( ), ex );
         }
-        catch ( JsonMappingException ex )
+        catch( JsonMappingException ex )
         {
-            return error( ex + " :" + ex.getMessage(  ), ex );
+            return error( ex + " :" + ex.getMessage( ), ex );
         }
-        catch ( IOException ex )
+        catch( IOException ex )
         {
-            return error( ex + " :" + ex.getMessage(  ), ex );
+            return error( ex + " :" + ex.getMessage( ), ex );
         }
-        catch ( NullPointerException ex )
+        catch( NullPointerException ex )
         {
-            return error( ex + " :" + ex.getMessage(  ), ex );
+            return error( ex + " :" + ex.getMessage( ), ex );
         }
 
-        return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build(  );
+        return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build( );
     }
 
     /**
      * Stores a notification and the associated demand
-     * @param notification the notification to store
+     * 
+     * @param notification
+     *            the notification to store
      */
     private void store( Notification notification )
     {
-        Demand demand = _demandService.findByPrimaryKey( notification.getDemand(  ).getId(  ),
-                notification.getDemand(  ).getTypeId(  ) );
+        Demand demand = _demandService.findByPrimaryKey( notification.getDemand( ).getId( ), notification.getDemand( ).getTypeId( ) );
 
         if ( demand == null )
         {
-            demand = new Demand(  );
+            demand = new Demand( );
 
-            demand.setId( notification.getDemand(  ).getId(  ) );
-            demand.setTypeId( notification.getDemand(  ).getTypeId(  ) );
-            demand.setReference( notification.getDemand(  ).getReference(  ) );
-            demand.setCreationDate( notification.getNotificationDate(  ) );
-            demand.setMaxSteps( notification.getDemand(  ).getMaxSteps(  ) );
-            demand.setCurrentStep( notification.getDemand(  ).getCurrentStep(  ) );
-            demand.setStatusId( notification.getDemand(  ).getStatusId(  ) );
+            demand.setId( notification.getDemand( ).getId( ) );
+            demand.setTypeId( notification.getDemand( ).getTypeId( ) );
+            demand.setReference( notification.getDemand( ).getReference( ) );
+            demand.setCreationDate( notification.getNotificationDate( ) );
+            demand.setMaxSteps( notification.getDemand( ).getMaxSteps( ) );
+            demand.setCurrentStep( notification.getDemand( ).getCurrentStep( ) );
+            demand.setStatusId( notification.getDemand( ).getStatusId( ) );
 
-            Customer customerDemand = new Customer(  );
-            customerDemand.setId( notification.getDemand(  ).getCustomer(  ).getId(  ) );
-            customerDemand.setAccountGuid( notification.getDemand(  ).getCustomer(  ).getAccountGuid(  ) );
+            Customer customerDemand = new Customer( );
+            customerDemand.setId( notification.getDemand( ).getCustomer( ).getId( ) );
+            customerDemand.setAccountGuid( notification.getDemand( ).getCustomer( ).getAccountGuid( ) );
             demand.setCustomer( customerDemand );
             _demandService.create( demand );
         }
         else
         {
-            demand.getCustomer(  ).setId( notification.getDemand(  ).getCustomer(  ).getId(  ) );
-            demand.setCurrentStep( notification.getDemand(  ).getCurrentStep(  ) );
+            demand.getCustomer( ).setId( notification.getDemand( ).getCustomer( ).getId( ) );
+            demand.setCurrentStep( notification.getDemand( ).getCurrentStep( ) );
 
             // Demand opened to closed
-            if ( ( demand.getStatusId(  ) != fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) &&
-                    ( notification.getDemand(  ).getStatusId(  ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
+            if ( ( demand.getStatusId( ) != fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED )
+                    && ( notification.getDemand( ).getStatusId( ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
             {
-                demand.setStatusId( notification.getDemand(  ).getStatusId(  ) );
-                demand.setClosureDate( notification.getNotificationDate(  ) );
+                demand.setStatusId( notification.getDemand( ).getStatusId( ) );
+                demand.setClosureDate( notification.getNotificationDate( ) );
             }
 
             // Demand closed to opened
-            if ( ( demand.getStatusId(  ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) &&
-                    ( notification.getDemand(  ).getStatusId(  ) != fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
+            if ( ( demand.getStatusId( ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED )
+                    && ( notification.getDemand( ).getStatusId( ) != fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
             {
-                demand.setStatusId( notification.getDemand(  ).getStatusId(  ) );
+                demand.setStatusId( notification.getDemand( ).getStatusId( ) );
                 demand.setClosureDate( 0 );
             }
 
@@ -219,8 +221,11 @@ public class GRUSupplyRestService
 
     /**
      * Build an error response
-     * @param strMessage The error message
-     * @param ex An exception
+     * 
+     * @param strMessage
+     *            The error message
+     * @param ex
+     *            An exception
      * @return The response
      */
     private Response error( String strMessage, Throwable ex )
@@ -236,6 +241,6 @@ public class GRUSupplyRestService
 
         String strError = "{ \"status\": \"Error : " + strMessage + "\" }";
 
-        return Response.status( Response.Status.INTERNAL_SERVER_ERROR ).entity( strError ).build(  );
+        return Response.status( Response.Status.INTERNAL_SERVER_ERROR ).entity( strError ).build( );
     }
 }

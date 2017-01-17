@@ -39,7 +39,6 @@ import fr.paris.lutece.plugins.grubusiness.business.indexing.IIndexingService;
 import fr.paris.lutece.plugins.grubusiness.business.indexing.IndexingException;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
-
 /**
  * This class represents a service for indexing
  */
@@ -52,19 +51,20 @@ public final class IndexService
     private static IIndexingService<Demand> _demandIndexingService;
 
     /** private constructor */
-    private IndexService(  )
+    private IndexService( )
     {
     }
 
     /**
      * Returns the unique instance
+     * 
      * @return The unique instance
      */
-    public static IndexService instance(  )
+    public static IndexService instance( )
     {
         if ( _singleton == null )
         {
-            _singleton = new IndexService(  );
+            _singleton = new IndexService( );
             _customerIndexingService = SpringContextService.getBean( BEAN_CUSTOMER_INDEX_SERVICE );
             _demandIndexingService = SpringContextService.getBean( BEAN_DEMAND_INDEX_SERVICE );
         }
@@ -75,7 +75,8 @@ public final class IndexService
     /**
      * Indexes the customer
      *
-     * @param customer The customer
+     * @param customer
+     *            The customer
      */
     public void index( Customer customer ) throws IndexingException
     {
@@ -85,8 +86,10 @@ public final class IndexService
     /**
      * Indexes the demand
      *
-     * @param demand The demand
-     * @param customer the customer
+     * @param demand
+     *            The demand
+     * @param customer
+     *            the customer
      */
     public void index( Demand demand ) throws IndexingException
     {
