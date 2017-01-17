@@ -138,7 +138,7 @@ public class CustomerIndexerDaemon extends Daemon
 
                 if ( customer != null )
                 {
-                    IndexService.instance(  ).index( customer );
+//                    IndexService.instance(  ).index( customer );
 
                     nNbIndexedCustomers++;
 

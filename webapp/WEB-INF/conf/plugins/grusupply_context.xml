@@ -21,7 +21,6 @@
     
     <!-- STORAGE SERVICE -->
     <!-- <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grustoragedb.service.DatabaseNotificationStorageService"/> -->
-   <bean id="grusupply.indexService" class="fr.paris.lutece.plugins.grustorageelastic.service.ElasticNotificationStorageService"/>  
     
     <!-- NOTIFICATION SERVICE -->
    <bean id="grusupply.notificationService" class="fr.paris.lutece.plugins.grusupply.service.NotificationService"/>  
