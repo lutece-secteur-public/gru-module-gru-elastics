@@ -34,24 +34,24 @@
 package fr.paris.lutece.plugins.grusupply.service;
 
 import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
-import fr.paris.lutece.plugins.grusupply.business.Customer;
-
+import fr.paris.lutece.plugins.grubusiness.business.indexing.IIndexingService;
+import fr.paris.lutece.plugins.grubusiness.business.indexing.IndexingException;
 
 /**
- * This interface enables to index entities
+ * The mock class for the class ElasticDemandIndexingService.
  */
-public interface INotificationIndexService
+public class MockElasticDemandIndexingService implements IIndexingService<Demand>
 {
-    /**
-    * Indexes a customer
-    * @param customer the Customer to index
-    */
-    void index( Customer customer );
 
     /**
-     *  Indexes a demand
-     * @param demand the demand to index
-     * @param customer the customer
+     * {@inheritDoc }.
+     *
+     * @param demand the demand
      */
-    void index( Demand demand );
+    @Override
+    public void index( Demand object ) throws IndexingException
+    {
+        return;
+    }
+
 }

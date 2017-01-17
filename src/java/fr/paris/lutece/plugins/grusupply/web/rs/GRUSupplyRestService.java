@@ -42,22 +42,18 @@ import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grubusiness.business.customer.Customer;
 import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.demand.DemandService;
+import fr.paris.lutece.plugins.grubusiness.business.indexing.IndexingException;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
-import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.IndexService;
 import fr.paris.lutece.plugins.grusupply.service.NotificationService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
-import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
-
-import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -104,12 +100,10 @@ public class GRUSupplyRestService
             //STORE FOR AGENT
             try
             {
-                Demand demand = buildDemand( notification );
-
                 // Parse to Demand
-                IndexService.instance(  ).index( demand );
+                IndexService.instance(  ).index( notification.getDemand(  ) );
             }
-            catch ( AppException e )
+            catch ( IndexingException e )
             {
                 //NOTHING TO DO
             }
@@ -221,36 +215,6 @@ public class GRUSupplyRestService
         }
 
         _demandService.create( notification );
-    }
-
-    /**
-     * Method which create a demand from an flux
-     * @param notifDTO
-     * @param customer
-     * @return
-     */
-    private static Demand buildDemand( Notification notification )
-    {
-        if ( ( notification == null ) )
-        {
-            throw new NullPointerException(  );
-        }
-
-        Demand demand = new Demand(  );
-
-        if ( notification.getDemand(  ) != null )
-        {
-            if ( notification.getDemand(  ).getCustomer(  ) != null )
-            {
-                demand.setCustomer( notification.getDemand(  ).getCustomer(  ) );
-            }
-
-            demand.setId( notification.getDemand(  ).getId(  ) );
-            demand.setTypeId( notification.getDemand(  ).getTypeId(  ) );
-            demand.setReference( notification.getDemand(  ).getReference(  ) );
-        }
-
-        return demand;
     }
 
     /**

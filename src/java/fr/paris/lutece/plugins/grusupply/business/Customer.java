@@ -108,11 +108,9 @@ public class Customer
      */
     public void setConnectionId( String strConnectionId )
     {
-    	_strConnectionId = strConnectionId;
+        _strConnectionId = strConnectionId;
     }
 
-    
-    
     /**
      * Returns the Name
      * @return The Name
@@ -310,6 +308,4 @@ public class Customer
     {
         _strTelephoneNumber = strTelephoneNumber;
     }
-
-
 }

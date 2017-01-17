@@ -34,7 +34,8 @@
 package fr.paris.lutece.plugins.grusupply.service;
 
 import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
-import fr.paris.lutece.plugins.grusupply.business.Customer;
+import fr.paris.lutece.plugins.grubusiness.business.indexing.IIndexingService;
+import fr.paris.lutece.plugins.grubusiness.business.indexing.IndexingException;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 
@@ -43,9 +44,9 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
  */
 public final class IndexService
 {
-    private static final String BEAN_INDEX_SERVICE = "grusupply.indexService";
+    private static final String BEAN_DEMAND_INDEX_SERVICE = "grusupply.demandIndexService";
     private static IndexService _singleton;
-    private static INotificationIndexService _notificationIndexService;
+    private static IIndexingService<Demand> _demandIndexingService;
 
     /** private constructor */
     private IndexService(  )
@@ -61,20 +62,10 @@ public final class IndexService
         if ( _singleton == null )
         {
             _singleton = new IndexService(  );
-            _notificationIndexService = SpringContextService.getBean( BEAN_INDEX_SERVICE );
+            _demandIndexingService = SpringContextService.getBean( BEAN_DEMAND_INDEX_SERVICE );
         }
 
         return _singleton;
-    }
-
-    /**
-     * Indexes the customer
-     *
-     * @param customer The customer
-     */
-    public void index( Customer customer )
-    {
-        _notificationIndexService.index( customer );
     }
 
     /**
@@ -83,8 +74,8 @@ public final class IndexService
      * @param demand The demand
      * @param customer the customer
      */
-    public void index( Demand demand )
+    public void index( Demand demand ) throws IndexingException
     {
-        _notificationIndexService.index( demand );
+        _demandIndexingService.index( demand );
     }
 }
