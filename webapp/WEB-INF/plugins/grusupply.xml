@@ -43,12 +43,12 @@
    </filters>
    
     <!-- Daemons -->
-<!--     <daemons>
+    <daemons>
         <daemon>
-            <daemon-id>grusupplyCustomerIndexerDaemon</daemon-id>
-            <daemon-name>grusupply.daemon.customerindexerDaemon.name</daemon-name>
-            <daemon-description>grusupply.daemon.customerindexerDaemon.description</daemon-description>
-            <daemon-class>fr.paris.lutece.plugins.grusupply.service.daemon.CustomerIndexerDaemon</daemon-class>
+            <daemon-id>demandIndexerDaemon</daemon-id>
+            <daemon-name>grusupply.daemon.demandIndexerDaemon.name</daemon-name>
+            <daemon-description>grusupply.daemon.demandIndexerDaemon.description</daemon-description>
+            <daemon-class>fr.paris.lutece.plugins.grusupply.service.daemon.DemandIndexerDaemon</daemon-class>
         </daemon>
-    </daemons> -->
+    </daemons>
 </plug-in>
