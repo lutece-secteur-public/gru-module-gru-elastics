@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
-
 /**
  * Email object for GruSupply services
  */
@@ -53,7 +52,7 @@ public class GruSupplyEmail
      *
      * @return The SenderName
      */
-    public String getSenderName(  )
+    public String getSenderName( )
     {
         return _strSenderName;
     }
@@ -61,7 +60,8 @@ public class GruSupplyEmail
     /**
      * Sets the SenderName.
      *
-     * @param strSenderName The SenderName
+     * @param strSenderName
+     *            The SenderName
      */
     public void setSenderName( String strSenderName )
     {
@@ -73,7 +73,7 @@ public class GruSupplyEmail
      *
      * @return The SenderEmail
      */
-    public String getSenderEmail(  )
+    public String getSenderEmail( )
     {
         return _strSenderEmail;
     }
@@ -81,7 +81,8 @@ public class GruSupplyEmail
     /**
      * Sets the SenderEmail.
      *
-     * @param strSenderEmail The SenderEmail
+     * @param strSenderEmail
+     *            The SenderEmail
      */
     public void setSenderEmail( String strSenderEmail )
     {
@@ -93,7 +94,7 @@ public class GruSupplyEmail
      *
      * @return The Recipient
      */
-    public String getRecipient(  )
+    public String getRecipient( )
     {
         return _strRecipient;
     }
@@ -101,7 +102,8 @@ public class GruSupplyEmail
     /**
      * Sets the Recipient.
      *
-     * @param strRecipient The Recipient
+     * @param strRecipient
+     *            The Recipient
      */
     public void setRecipient( String strRecipient )
     {
@@ -113,7 +115,7 @@ public class GruSupplyEmail
      *
      * @return The Subject
      */
-    public String getSubject(  )
+    public String getSubject( )
     {
         return _strSubject;
     }
@@ -121,7 +123,8 @@ public class GruSupplyEmail
     /**
      * Sets the Subject.
      *
-     * @param strSubject The Subject
+     * @param strSubject
+     *            The Subject
      */
     public void setSubject( String strSubject )
     {
@@ -133,7 +136,7 @@ public class GruSupplyEmail
      *
      * @return The Message
      */
-    public String getMessage(  )
+    public String getMessage( )
     {
         return _strMessage;
     }
@@ -141,7 +144,8 @@ public class GruSupplyEmail
     /**
      * Sets the Message.
      *
-     * @param strMessage The Message
+     * @param strMessage
+     *            The Message
      */
     public void setMessage( String strMessage )
     {
@@ -153,7 +157,7 @@ public class GruSupplyEmail
      *
      * @return the cc
      */
-    public String getCc(  )
+    public String getCc( )
     {
         return _strCc;
     }
@@ -161,7 +165,8 @@ public class GruSupplyEmail
     /**
      * Sets the cc.
      *
-     * @param strCc the new cc
+     * @param strCc
+     *            the new cc
      */
     public void setCc( String strCc )
     {
@@ -173,7 +178,7 @@ public class GruSupplyEmail
      *
      * @return the bcc
      */
-    public String getBcc(  )
+    public String getBcc( )
     {
         return _strBcc;
     }
@@ -181,7 +186,8 @@ public class GruSupplyEmail
     /**
      * Sets the bcc.
      *
-     * @param strBcc the new bcc
+     * @param strBcc
+     *            the new bcc
      */
     public void setBcc( String strBcc )
     {

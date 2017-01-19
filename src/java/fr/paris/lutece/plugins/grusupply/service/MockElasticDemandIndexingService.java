@@ -53,5 +53,4 @@ public class MockElasticDemandIndexingService implements IIndexingService<Demand
     {
         return;
     }
-
 }

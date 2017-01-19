@@ -46,7 +46,6 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import java.util.List;
 
-
 public class NotificationService
 {
     private static final String BEAN_NOTIFICATION_SERVICE = "grusupply.notificationService";
@@ -59,20 +58,21 @@ public class NotificationService
 
     /**
      * Returns the unique instance
+     * 
      * @return The unique instance
      */
-    public static NotificationService instance(  )
+    public static NotificationService instance( )
     {
         if ( !bIsInitialized )
         {
             try
             {
                 _singleton = SpringContextService.getBean( BEAN_NOTIFICATION_SERVICE );
-                _sendEmailService = new SendEmailService(  );
-                _sendSmsService = new SendSmsService(  );
-                _notifyCrmService = new NotifyCrmService(  );
+                _sendEmailService = new SendEmailService( );
+                _sendSmsService = new SendSmsService( );
+                _notifyCrmService = new NotifyCrmService( );
             }
-            catch ( NoSuchBeanDefinitionException e )
+            catch( NoSuchBeanDefinitionException e )
             {
                 // The notification bean has not been found, the application must use the ESB
                 AppLogService.info( "No notification bean found, the application must use the ESB" );
@@ -88,21 +88,22 @@ public class NotificationService
 
     /**
      * send Email
+     * 
      * @param notification
      */
     public void sendEmail( Notification notification )
     {
-        if ( ( notification != null ) && ( notification.getUserEmail(  ) != null ) )
+        if ( ( notification != null ) && ( notification.getUserEmail( ) != null ) )
         {
-            GruSupplyEmail gruEmail = new GruSupplyEmail(  );
-            EmailNotification notifEmail = notification.getUserEmail(  );
-            gruEmail.setRecipient( notifEmail.getRecipient(  ) );
-            gruEmail.setCc( notifEmail.getCc(  ) );
-            gruEmail.setBcc( notifEmail.getCci(  ) );
-            gruEmail.setSenderEmail( notifEmail.getSenderEmail(  ) );
-            gruEmail.setSenderName( notifEmail.getSenderName(  ) );
-            gruEmail.setSubject( notifEmail.getSubject(  ) );
-            gruEmail.setMessage( notifEmail.getMessage(  ) );
+            GruSupplyEmail gruEmail = new GruSupplyEmail( );
+            EmailNotification notifEmail = notification.getUserEmail( );
+            gruEmail.setRecipient( notifEmail.getRecipient( ) );
+            gruEmail.setCc( notifEmail.getCc( ) );
+            gruEmail.setBcc( notifEmail.getCci( ) );
+            gruEmail.setSenderEmail( notifEmail.getSenderEmail( ) );
+            gruEmail.setSenderName( notifEmail.getSenderName( ) );
+            gruEmail.setSubject( notifEmail.getSubject( ) );
+            gruEmail.setMessage( notifEmail.getMessage( ) );
 
             _sendEmailService.sendEmail( gruEmail );
         }
@@ -110,24 +111,25 @@ public class NotificationService
 
     /**
      * send Broadcast email
+     * 
      * @param notification
      */
     public void sendBroadcastEmail( Notification notification )
     {
-        if ( ( notification != null ) && ( notification.getBroadcastEmail(  ) != null ) )
+        if ( ( notification != null ) && ( notification.getBroadcastEmail( ) != null ) )
         {
             GruSupplyEmail gruEmail = null;
 
-            for ( BroadcastNotification notifBroadcast : notification.getBroadcastEmail(  ) )
+            for ( BroadcastNotification notifBroadcast : notification.getBroadcastEmail( ) )
             {
-                gruEmail = new GruSupplyEmail(  );
-                gruEmail.setRecipient( buildEmailAdresses( notifBroadcast.getRecipient(  ) ) );
-                gruEmail.setCc( buildEmailAdresses( notifBroadcast.getCc(  ) ) );
-                gruEmail.setBcc( buildEmailAdresses( notifBroadcast.getBcc(  ) ) );
-                gruEmail.setSenderEmail( notifBroadcast.getSenderEmail(  ) );
-                gruEmail.setSenderName( notifBroadcast.getSenderName(  ) );
-                gruEmail.setSubject( notifBroadcast.getSubject(  ) );
-                gruEmail.setMessage( notifBroadcast.getMessage(  ) );
+                gruEmail = new GruSupplyEmail( );
+                gruEmail.setRecipient( buildEmailAdresses( notifBroadcast.getRecipient( ) ) );
+                gruEmail.setCc( buildEmailAdresses( notifBroadcast.getCc( ) ) );
+                gruEmail.setBcc( buildEmailAdresses( notifBroadcast.getBcc( ) ) );
+                gruEmail.setSenderEmail( notifBroadcast.getSenderEmail( ) );
+                gruEmail.setSenderName( notifBroadcast.getSenderName( ) );
+                gruEmail.setSubject( notifBroadcast.getSubject( ) );
+                gruEmail.setMessage( notifBroadcast.getMessage( ) );
                 _sendEmailService.sendEmail( gruEmail );
             }
         }
@@ -135,26 +137,27 @@ public class NotificationService
 
     private String buildEmailAdresses( List<EmailAddress> lstEmailAdress )
     {
-        StringBuilder strEmailAdresses = new StringBuilder(  );
+        StringBuilder strEmailAdresses = new StringBuilder( );
 
-        if ( ( lstEmailAdress != null ) && !lstEmailAdress.isEmpty(  ) )
+        if ( ( lstEmailAdress != null ) && !lstEmailAdress.isEmpty( ) )
         {
             for ( EmailAddress emailAddress : lstEmailAdress )
             {
-                if ( strEmailAdresses.length(  ) > 0 )
+                if ( strEmailAdresses.length( ) > 0 )
                 {
                     strEmailAdresses.append( ADRESS_SEPARATOR );
                 }
 
-                strEmailAdresses.append( emailAddress.getAddress(  ) );
+                strEmailAdresses.append( emailAddress.getAddress( ) );
             }
         }
 
-        return strEmailAdresses.toString(  );
+        return strEmailAdresses.toString( );
     }
 
     /**
      * send Sms
+     * 
      * @param notification
      */
     public void sendSms( Notification notification )
@@ -167,11 +170,11 @@ public class NotificationService
 
     /**
      * Notify CRM
+     * 
      * @param notification
      * @throws CRMException
      */
-    public void notifyCrm( Notification notification )
-        throws CRMException
+    public void notifyCrm( Notification notification ) throws CRMException
     {
         if ( notification != null )
         {

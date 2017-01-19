@@ -56,7 +56,6 @@ import java.util.Map;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-
 public class NotifyCrmService
 {
     private static final String CRM_REMOTE_ID = "remote_id";
@@ -67,29 +66,30 @@ public class NotifyCrmService
     private static final String URL_WS_UPDATE_DEMAND = "grusupply.url.ws.updateDemand";
     private static final String URL_WS_NOTIFY_DEMAND = "grusupply.url.ws.notifyDemand";
 
-    /**  constructor */
-    public NotifyCrmService(  )
+    /** constructor */
+    public NotifyCrmService( )
     {
     }
 
     /**
      * Tests whether the demand already exists or not
-     * @param notif the notification
+     * 
+     * @param notif
+     *            the notification
      * @return {@code true} if the demand already exists, {@code false} otherwise
-     * @throws CRMException if there is an exception during the treatment
+     * @throws CRMException
+     *             if there is an exception during the treatment
      */
-    public boolean isExistDemand( Notification notif )
-        throws CRMException
+    public boolean isExistDemand( Notification notif ) throws CRMException
     {
         boolean bIsExistDemand = false;
 
         AppLogService.info( " \n \n GRUSUPPLY - isExistDemand( NotificationDTO notif ) \n \n" );
 
-        String strIdDemandType = notif.getDemand(  ).getTypeId(  );
-        String strIdRemoteDemand = String.valueOf( notif.getDemand(  ).getId(  ) );
+        String strIdDemandType = notif.getDemand( ).getTypeId( );
+        String strIdRemoteDemand = String.valueOf( notif.getDemand( ).getId( ) );
 
-        String strResponse = doProcess( AppPropertiesService.getProperty( URL_WS_GET_DEMAND ) + SLASH +
-                strIdDemandType + SLASH + strIdRemoteDemand );
+        String strResponse = doProcess( AppPropertiesService.getProperty( URL_WS_GET_DEMAND ) + SLASH + strIdDemandType + SLASH + strIdRemoteDemand );
 
         if ( JSONUtils.mayBeJSON( strResponse ) )
         {
@@ -106,6 +106,7 @@ public class NotifyCrmService
 
     /**
      * Create CRM Demand
+     * 
      * @param notif
      * @throws CRMException
      */
@@ -120,8 +121,11 @@ public class NotifyCrmService
 
     /**
      * Updates a CRM Demand
-     * @param notif the notification
-     * @throws CRMException if there is an exception during the treatment
+     * 
+     * @param notif
+     *            the notification
+     * @throws CRMException
+     *             if there is an exception during the treatment
      */
     public void updateDemand( Notification notif ) throws CRMException
     {
@@ -134,6 +138,7 @@ public class NotifyCrmService
 
     /**
      * Notify CRM Demand
+     * 
      * @param notif
      * @throws CRMException
      */
@@ -148,25 +153,27 @@ public class NotifyCrmService
 
     /**
      * Call web service rest using POST method
-     * @param crmItem the parameters
-     * @param strWsUrl the web service URL
+     * 
+     * @param crmItem
+     *            the parameters
+     * @param strWsUrl
+     *            the web service URL
      * @return the response
      * @throws CRMException
      */
-    private String doProcess( ICRMItem crmItem, String strWsUrl )
-        throws CRMException
+    private String doProcess( ICRMItem crmItem, String strWsUrl ) throws CRMException
     {
         String strResponse = StringUtils.EMPTY;
 
         try
         {
-            HttpAccess httpAccess = new HttpAccess(  );
-            strResponse = httpAccess.doPost( strWsUrl, crmItem.getParameters(  ) );
+            HttpAccess httpAccess = new HttpAccess( );
+            strResponse = httpAccess.doPost( strWsUrl, crmItem.getParameters( ) );
         }
-        catch ( HttpAccessException e )
+        catch( HttpAccessException e )
         {
             String strError = "Error connecting to '" + strWsUrl + "' : ";
-            AppLogService.error( strError + e.getMessage(  ), e );
+            AppLogService.error( strError + e.getMessage( ), e );
             throw new CRMException( strError, e );
         }
 
@@ -175,8 +182,11 @@ public class NotifyCrmService
 
     /**
      * Call web service rest using GET method
-     * @param crmItem the parameters
-     * @param strWsUrl the web service URL
+     * 
+     * @param crmItem
+     *            the parameters
+     * @param strWsUrl
+     *            the web service URL
      * @return the response
      * @throws CRMException
      */
@@ -186,16 +196,16 @@ public class NotifyCrmService
 
         try
         {
-            HttpAccess httpAccess = new HttpAccess(  );
-            Map<String, String> mapHeaders = new HashMap<String, String>(  );
+            HttpAccess httpAccess = new HttpAccess( );
+            Map<String, String> mapHeaders = new HashMap<String, String>( );
             mapHeaders.put( HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON );
 
             strResponse = httpAccess.doGet( strWsUrl, null, null, mapHeaders );
         }
-        catch ( HttpAccessException e )
+        catch( HttpAccessException e )
         {
             String strError = "Error connecting to '" + strWsUrl + "' : ";
-            AppLogService.error( strError + e.getMessage(  ), e );
+            AppLogService.error( strError + e.getMessage( ), e );
             throw new CRMException( strError, e );
         }
 
@@ -204,77 +214,72 @@ public class NotifyCrmService
 
     /**
      * Builds a CrmItem object for a demand
-     * @param notif the notification
-     * @param crmItemType the CrmItemType
+     * 
+     * @param notif
+     *            the notification
+     * @param crmItemType
+     *            the CrmItemType
      * @return the CrmItem
      */
     private static ICRMItem buildCrmItemForDemand( Notification notif, CRMItemTypeEnum crmItemType )
     {
-        ICRMItem crmItem = SpringContextService.getBean( crmItemType.toString(  ) );
+        ICRMItem crmItem = SpringContextService.getBean( crmItemType.toString( ) );
 
         crmItem.putParameter( ICRMItem.ID_DEMAND_TYPE,
-            ( ( notif.getDemand(  ) != null ) && ( StringUtils.isNotBlank( notif.getDemand(  ).getTypeId(  ) ) ) )
-            ? notif.getDemand(  ).getTypeId(  ) : StringUtils.EMPTY );
+                ( ( notif.getDemand( ) != null ) && ( StringUtils.isNotBlank( notif.getDemand( ).getTypeId( ) ) ) ) ? notif.getDemand( ).getTypeId( )
+                        : StringUtils.EMPTY );
 
-        crmItem.putParameter( ICRMItem.USER_GUID,
-            ( ( notif.getDemand(  ) != null ) && ( notif.getDemand(  ).getCustomer(  ) != null ) &&
-            ( StringUtils.isNotBlank( notif.getDemand(  ).getCustomer(  ).getAccountGuid(  ) ) ) )
-            ? notif.getDemand(  ).getCustomer(  ).getAccountGuid(  ) : StringUtils.EMPTY );
+        crmItem.putParameter(
+                ICRMItem.USER_GUID,
+                ( ( notif.getDemand( ) != null ) && ( notif.getDemand( ).getCustomer( ) != null ) && ( StringUtils.isNotBlank( notif.getDemand( ).getCustomer( )
+                        .getAccountGuid( ) ) ) ) ? notif.getDemand( ).getCustomer( ).getAccountGuid( ) : StringUtils.EMPTY );
 
-        crmItem.putParameter( ICRMItem.ID_STATUS_CRM,
-            ( ( notif.getUserDashboard(  ) != null ) &&
-            ( notif.getUserDashboard(  ).getStatusId(  ) != GruSupplyConstants.DEFAULT_INT ) )
-            ? String.valueOf( notif.getUserDashboard(  ).getStatusId(  ) ) : StringUtils.EMPTY );
+        crmItem.putParameter(
+                ICRMItem.ID_STATUS_CRM,
+                ( ( notif.getUserDashboard( ) != null ) && ( notif.getUserDashboard( ).getStatusId( ) != GruSupplyConstants.DEFAULT_INT ) ) ? String
+                        .valueOf( notif.getUserDashboard( ).getStatusId( ) ) : StringUtils.EMPTY );
 
-        crmItem.putParameter( ICRMItem.STATUS_TEXT,
-            ( ( notif.getUserDashboard(  ) != null ) &&
-            ( StringUtils.isNotBlank( notif.getUserDashboard(  ).getStatusText(  ) ) ) )
-            ? notif.getUserDashboard(  ).getStatusText(  ) : StringUtils.EMPTY );
+        crmItem.putParameter( ICRMItem.STATUS_TEXT, ( ( notif.getUserDashboard( ) != null ) && ( StringUtils.isNotBlank( notif.getUserDashboard( )
+                .getStatusText( ) ) ) ) ? notif.getUserDashboard( ).getStatusText( ) : StringUtils.EMPTY );
 
         crmItem.putParameter( ICRMItem.DEMAND_DATA,
-            ( ( notif.getUserDashboard(  ) != null ) &&
-            ( StringUtils.isNotBlank( notif.getUserDashboard(  ).getData(  ) ) ) )
-            ? notif.getUserDashboard(  ).getData(  ) : StringUtils.EMPTY );
+                ( ( notif.getUserDashboard( ) != null ) && ( StringUtils.isNotBlank( notif.getUserDashboard( ).getData( ) ) ) ) ? notif.getUserDashboard( )
+                        .getData( ) : StringUtils.EMPTY );
 
-        crmItem.putParameter( CRM_REMOTE_ID,
-            ( ( notif.getDemand(  ) != null ) && ( StringUtils.isNotBlank( notif.getDemand(  ).getId(  ) ) ) )
-            ? notif.getDemand(  ).getId(  ) : StringUtils.EMPTY );
+        crmItem.putParameter( CRM_REMOTE_ID, ( ( notif.getDemand( ) != null ) && ( StringUtils.isNotBlank( notif.getDemand( ).getId( ) ) ) ) ? notif
+                .getDemand( ).getId( ) : StringUtils.EMPTY );
 
         return crmItem;
     }
 
     /**
      * Builds a CrmItem object for a notification
-     * @param notif the notification
-     * @param crmItemType the CrmItemType
+     * 
+     * @param notif
+     *            the notification
+     * @param crmItemType
+     *            the CrmItemType
      * @return the CrmItem
      */
     private static ICRMItem buildCrmItemForNotification( Notification notif, CRMItemTypeEnum crmItemType )
     {
-        ICRMItem crmItem = SpringContextService.getBean( crmItemType.toString(  ) );
+        ICRMItem crmItem = SpringContextService.getBean( crmItemType.toString( ) );
 
-        crmItem.putParameter( CRM_REMOTE_ID,
-            ( ( notif.getDemand(  ) != null ) && ( StringUtils.isNotBlank( notif.getDemand(  ).getId(  ) ) ) )
-            ? notif.getDemand(  ).getId(  ) : StringUtils.EMPTY );
+        crmItem.putParameter( CRM_REMOTE_ID, ( ( notif.getDemand( ) != null ) && ( StringUtils.isNotBlank( notif.getDemand( ).getId( ) ) ) ) ? notif
+                .getDemand( ).getId( ) : StringUtils.EMPTY );
 
         crmItem.putParameter( ICRMItem.ID_DEMAND_TYPE,
-            ( ( notif.getDemand(  ) != null ) && ( StringUtils.isNotBlank( notif.getDemand(  ).getTypeId(  ) ) ) )
-            ? notif.getDemand(  ).getTypeId(  ) : StringUtils.EMPTY );
+                ( ( notif.getDemand( ) != null ) && ( StringUtils.isNotBlank( notif.getDemand( ).getTypeId( ) ) ) ) ? notif.getDemand( ).getTypeId( )
+                        : StringUtils.EMPTY );
 
-        crmItem.putParameter( ICRMItem.NOTIFICATION_OBJECT,
-            ( ( notif.getUserDashboard(  ) != null ) &&
-            ( StringUtils.isNotBlank( notif.getUserDashboard(  ).getSubject(  ) ) ) )
-            ? notif.getUserDashboard(  ).getSubject(  ) : StringUtils.EMPTY );
+        crmItem.putParameter( ICRMItem.NOTIFICATION_OBJECT, ( ( notif.getUserDashboard( ) != null ) && ( StringUtils.isNotBlank( notif.getUserDashboard( )
+                .getSubject( ) ) ) ) ? notif.getUserDashboard( ).getSubject( ) : StringUtils.EMPTY );
 
-        crmItem.putParameter( ICRMItem.NOTIFICATION_MESSAGE,
-            ( ( notif.getUserDashboard(  ) != null ) &&
-            ( StringUtils.isNotBlank( notif.getUserDashboard(  ).getMessage(  ) ) ) )
-            ? notif.getUserDashboard(  ).getMessage(  ) : StringUtils.EMPTY );
+        crmItem.putParameter( ICRMItem.NOTIFICATION_MESSAGE, ( ( notif.getUserDashboard( ) != null ) && ( StringUtils.isNotBlank( notif.getUserDashboard( )
+                .getMessage( ) ) ) ) ? notif.getUserDashboard( ).getMessage( ) : StringUtils.EMPTY );
 
-        crmItem.putParameter( ICRMItem.NOTIFICATION_SENDER,
-            ( ( notif.getUserDashboard(  ) != null ) &&
-            ( StringUtils.isNotBlank( notif.getUserDashboard(  ).getSenderName(  ) ) ) )
-            ? notif.getUserDashboard(  ).getSenderName(  ) : StringUtils.EMPTY );
+        crmItem.putParameter( ICRMItem.NOTIFICATION_SENDER, ( ( notif.getUserDashboard( ) != null ) && ( StringUtils.isNotBlank( notif.getUserDashboard( )
+                .getSenderName( ) ) ) ) ? notif.getUserDashboard( ).getSenderName( ) : StringUtils.EMPTY );
 
         return crmItem;
     }

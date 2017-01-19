@@ -45,14 +45,13 @@ import org.apache.commons.lang.StringUtils;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
-
 /**
  * This class provides customers
  *
  */
 public class CustomerProvider
 {
-    //FIXME ? full recopie de IdentityStoreCustomerInfoService
+    // FIXME ? full recopie de IdentityStoreCustomerInfoService
 
     // Properties
     private static final String PROPERTIES_APPLICATION_CODE = "grusupply.application.code";
@@ -67,12 +66,14 @@ public class CustomerProvider
     private static final String ATTRIBUTE_IDENTITY_NAME_GIVEN = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_NAME_GIVEN );
     private static final String ATTRIBUTE_IDENTITY_NAME_FAMILLY = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_NAME_FAMILLY );
     private static final String ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_ONLINE_EMAIL );
-    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_TELEPHONE_NUMBER );
-    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_MOBILE_NUMBER );
+    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER = AppPropertiesService
+            .getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_TELEPHONE_NUMBER );
+    private static final String ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER = AppPropertiesService
+            .getProperty( PROPERTIES_ATTRIBUTE_USER_HOMEINFO_TELECOM_MOBILE_NUMBER );
     private static final String ATTRIBUTE_IDENTITY_GENDER = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_GENDER );
     private static final String ATTRIBUTE_IDENTITY_BIRTHDATE = AppPropertiesService.getProperty( PROPERTIES_ATTRIBUTE_USER_BIRTHDATE );
 
-    //Service identityStore
+    // Service identityStore
     private static final String BEAN_IDENTITYSTORE_SERVICE = "grusupply.identitystore.service";
     private static CustomerProvider _singleton;
     private static boolean bIsInitialized = false;
@@ -81,17 +82,16 @@ public class CustomerProvider
     /**
      * retrieve singleton
      */
-    public static CustomerProvider instance(  )
+    public static CustomerProvider instance( )
     {
         if ( !bIsInitialized )
         {
             try
             {
-                _singleton = new CustomerProvider(  );
-                _singleton.setIdentityService( (IdentityService) SpringContextService.getBean( 
-                        BEAN_IDENTITYSTORE_SERVICE ) );
+                _singleton = new CustomerProvider( );
+                _singleton.setIdentityService( (IdentityService) SpringContextService.getBean( BEAN_IDENTITYSTORE_SERVICE ) );
             }
-            catch ( NoSuchBeanDefinitionException e )
+            catch( NoSuchBeanDefinitionException e )
             {
                 // The notification bean has not been found, the application must use the ESB
                 AppLogService.info( "No notification bean found, the application must use the ESB" );
@@ -112,8 +112,11 @@ public class CustomerProvider
 
     /**
      * Provides a customer with the specified GUID / CID
-     * @param strGuid the GUID
-     * @param strCid the customer id
+     * 
+     * @param strGuid
+     *            the GUID
+     * @param strCid
+     *            the customer id
      * @return the customer
      */
     public Customer get( String strGuid, String strCid )
@@ -131,22 +134,21 @@ public class CustomerProvider
     /**
      * Converts a IdentityDto to a GRU supply customer
      *
-     * @param IdentityDto the identityDto
+     * @param IdentityDto
+     *            the identityDto
      * @return the GRU supply customer
      */
     private static Customer convert( IdentityDto identityDto )
     {
-        Customer customerGruSupply = new Customer(  );
+        Customer customerGruSupply = new Customer( );
 
-        customerGruSupply.setCustomerId( identityDto.getCustomerId(  ) );
-        customerGruSupply.setConnectionId( identityDto.getConnectionId(  ) );
+        customerGruSupply.setCustomerId( identityDto.getCustomerId( ) );
+        customerGruSupply.setConnectionId( identityDto.getConnectionId( ) );
         customerGruSupply.setName( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_FAMILLY ) );
         customerGruSupply.setFirstName( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_GIVEN ) );
         customerGruSupply.setEmail( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL ) );
-        customerGruSupply.setTelephoneNumber( getAttribute( identityDto,
-                ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER ) );
-        customerGruSupply.setFixedTelephoneNumber( getAttribute( identityDto,
-                ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER ) );
+        customerGruSupply.setTelephoneNumber( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER ) );
+        customerGruSupply.setFixedTelephoneNumber( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER ) );
         customerGruSupply.setStayConnected( true );
         customerGruSupply.setCivility( getAttribute( identityDto, ATTRIBUTE_IDENTITY_GENDER ) );
         customerGruSupply.setBirthday( getAttribute( identityDto, ATTRIBUTE_IDENTITY_BIRTHDATE ) );
@@ -156,14 +158,17 @@ public class CustomerProvider
 
     /**
      * Gets the attribute value from the specified identity
-     * @param identityDto the identity
-     * @param strCode the attribute code
+     * 
+     * @param identityDto
+     *            the identity
+     * @param strCode
+     *            the attribute code
      * @return {@code null} if the attribute does not exist, the attribute value otherwise
      */
     private static String getAttribute( IdentityDto identityDto, String strCode )
     {
-        AttributeDto attribute = identityDto.getAttributes(  ).get( strCode );
+        AttributeDto attribute = identityDto.getAttributes( ).get( strCode );
 
-        return ( attribute == null ) ? null : attribute.getValue(  );
+        return ( attribute == null ) ? null : attribute.getValue( );
     }
 }

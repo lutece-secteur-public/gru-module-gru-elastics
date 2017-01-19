@@ -44,7 +44,6 @@ import java.text.DateFormat;
 
 import java.util.Locale;
 
-
 /**
  * GRU supply plugin
  */
@@ -59,11 +58,10 @@ public class GruSupplyPlugin extends Plugin
      * {@inheritDoc}
      */
     @Override
-    public void init(  )
+    public void init( )
     {
-        BeanUtilsBean.getInstance(  ).getConvertUtils(  )
-                     .register( new DateConverter( DateFormat.getDateInstance( DateFormat.SHORT, Locale.FRANCE ) ),
-            java.sql.Date.class );
+        BeanUtilsBean.getInstance( ).getConvertUtils( )
+                .register( new DateConverter( DateFormat.getDateInstance( DateFormat.SHORT, Locale.FRANCE ) ), java.sql.Date.class );
     }
     
     /**

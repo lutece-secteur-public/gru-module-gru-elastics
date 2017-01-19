@@ -45,16 +45,19 @@ public class IndexerAction
 
     /**
      * Gets the action id
+     * 
      * @return the action id
      */
-    public int getIdAction(  )
+    public int getIdAction( )
     {
         return _nIdAction;
     }
 
     /**
      * Sets the action id
-     * @param nIdAction the action id
+     * 
+     * @param nIdAction
+     *            the action id
      */
     public void setIdAction( int nIdAction )
     {
@@ -63,16 +66,19 @@ public class IndexerAction
 
     /**
      * Gets the task
+     * 
      * @return the task
      */
-    public IndexerTask getTask(  )
+    public IndexerTask getTask( )
     {
         return _indexerTask;
     }
 
     /**
      * Sets the task
-     * @param indexerTask the task
+     * 
+     * @param indexerTask
+     *            the task
      */
     public void setTask( IndexerTask indexerTask )
     {

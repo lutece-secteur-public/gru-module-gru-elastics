@@ -36,22 +36,22 @@ package fr.paris.lutece.plugins.grusupply.service;
 import fr.paris.lutece.plugins.grusupply.business.GruSupplyEmail;
 import fr.paris.lutece.portal.service.mail.MailService;
 
-
 public class SendEmailService
 {
-    /**  constructor */
-    SendEmailService(  )
+    /** constructor */
+    SendEmailService( )
     {
     }
 
     /**
      * Send Email
+     * 
      * @param notification
      * @param customer
      */
     public void sendEmail( GruSupplyEmail email )
     {
-        MailService.sendMailHtml( email.getRecipient(  ), email.getCc(  ), email.getBcc(  ), email.getSenderName(  ),
-            email.getSenderEmail(  ), email.getSubject(  ), email.getMessage(  ) );
+        MailService.sendMailHtml( email.getRecipient( ), email.getCc( ), email.getBcc( ), email.getSenderName( ), email.getSenderEmail( ), email.getSubject( ),
+                email.getMessage( ) );
     }
 }

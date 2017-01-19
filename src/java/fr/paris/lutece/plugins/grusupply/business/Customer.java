@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2002-2013, Mairie de Paris
-* All rights reserved.
-*
-* Redistribution and use in source and binary forms, with or without
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
  *
@@ -33,13 +33,12 @@
  */
 package fr.paris.lutece.plugins.grusupply.business;
 
-
 /**
  * This is the business class for the object Customer
  */
 public class Customer
-{   
-    // Variables declarations 
+{
+    // Variables declarations
     private String _strCustomerId;
     private String _strConnectionId;
     private String _strName;
@@ -60,7 +59,7 @@ public class Customer
      *
      * @return the fixe telephone number
      */
-    public String getFixedTelephoneNumber(  )
+    public String getFixedTelephoneNumber( )
     {
         return _strFixedTelephoneNumber;
     }
@@ -68,7 +67,8 @@ public class Customer
     /**
      * Sets the fixe telephone number.
      *
-     * @param strFixedTelephoneNumber the new fixe telephone number
+     * @param strFixedTelephoneNumber
+     *            the new fixe telephone number
      */
     public void setFixedTelephoneNumber( String strFixedTelephoneNumber )
     {
@@ -77,16 +77,19 @@ public class Customer
 
     /**
      * Returns the CustomerId
+     * 
      * @return The CustomerId
      */
-    public String getCustomerId(  )
+    public String getCustomerId( )
     {
         return _strCustomerId;
     }
 
     /**
      * Sets the CustomerId
-     * @param CustomerId The CustomerId
+     * 
+     * @param CustomerId
+     *            The CustomerId
      */
     public void setCustomerId( String strCustomerId )
     {
@@ -95,16 +98,19 @@ public class Customer
 
     /**
      * Returns the Connection Id
+     * 
      * @return The ConnectionId
      */
-    public String getConnectionId(  )
+    public String getConnectionId( )
     {
         return _strConnectionId;
     }
 
     /**
      * Sets the Connection Id
-     * @param strConnectionId The Connection Id
+     * 
+     * @param strConnectionId
+     *            The Connection Id
      */
     public void setConnectionId( String strConnectionId )
     {
@@ -113,16 +119,19 @@ public class Customer
 
     /**
      * Returns the Name
+     * 
      * @return The Name
      */
-    public String getName(  )
+    public String getName( )
     {
         return _strName;
     }
 
     /**
      * Sets the Name
-     * @param strName The Name
+     * 
+     * @param strName
+     *            The Name
      */
     public void setName( String strName )
     {
@@ -131,16 +140,19 @@ public class Customer
 
     /**
      * Returns the FirstName
+     * 
      * @return The FirstName
      */
-    public String getFirstName(  )
+    public String getFirstName( )
     {
         return _strFirstName;
     }
 
     /**
      * Sets the FirstName
-     * @param strFirstName The FirstName
+     * 
+     * @param strFirstName
+     *            The FirstName
      */
     public void setFirstName( String strFirstName )
     {
@@ -149,16 +161,19 @@ public class Customer
 
     /**
      * Returns the Email
+     * 
      * @return The Email
      */
-    public String getEmail(  )
+    public String getEmail( )
     {
         return _strEmail;
     }
 
     /**
      * Sets the Email
-     * @param strEmail The Email
+     * 
+     * @param strEmail
+     *            The Email
      */
     public void setEmail( String strEmail )
     {
@@ -167,16 +182,19 @@ public class Customer
 
     /**
      * Returns the Birthday
+     * 
      * @return The Birthday
      */
-    public String getBirthday(  )
+    public String getBirthday( )
     {
         return _strBirthday;
     }
 
     /**
      * Sets the Birthday
-     * @param strBirthday The Birthday
+     * 
+     * @param strBirthday
+     *            The Birthday
      */
     public void setBirthday( String strBirthday )
     {
@@ -185,16 +203,19 @@ public class Customer
 
     /**
      * Returns the Civility
+     * 
      * @return The Civility
      */
-    public String getCivility(  )
+    public String getCivility( )
     {
         return _strCivility;
     }
 
     /**
      * Sets the Civility
-     * @param strCivility The Civility
+     * 
+     * @param strCivility
+     *            The Civility
      */
     public void setCivility( String strCivility )
     {
@@ -203,16 +224,19 @@ public class Customer
 
     /**
      * Returns the Street
+     * 
      * @return The Street
      */
-    public String getStreet(  )
+    public String getStreet( )
     {
         return _strStreet;
     }
 
     /**
      * Sets the Street
-     * @param strStreet The Street
+     * 
+     * @param strStreet
+     *            The Street
      */
     public void setStreet( String strStreet )
     {
@@ -221,16 +245,19 @@ public class Customer
 
     /**
      * Returns the CityOfBirth
+     * 
      * @return The CityOfBirth
      */
-    public String getCityOfBirth(  )
+    public String getCityOfBirth( )
     {
         return _strCityOfBirth;
     }
 
     /**
      * Sets the CityOfBirth
-     * @param strCityOfBirth The CityOfBirth
+     * 
+     * @param strCityOfBirth
+     *            The CityOfBirth
      */
     public void setCityOfBirth( String strCityOfBirth )
     {
@@ -239,16 +266,19 @@ public class Customer
 
     /**
      * Returns the StayConnected
+     * 
      * @return The StayConnected
      */
-    public boolean getStayConnected(  )
+    public boolean getStayConnected( )
     {
         return _bStayConnected;
     }
 
     /**
      * Sets the StayConnected
-     * @param StayConnected The StayConnected
+     * 
+     * @param StayConnected
+     *            The StayConnected
      */
     public void setStayConnected( boolean stayConnected )
     {
@@ -257,16 +287,19 @@ public class Customer
 
     /**
      * Returns the City
+     * 
      * @return The City
      */
-    public String getCity(  )
+    public String getCity( )
     {
         return _strCity;
     }
 
     /**
      * Sets the City
-     * @param strCity The City
+     * 
+     * @param strCity
+     *            The City
      */
     public void setCity( String strCity )
     {
@@ -275,16 +308,19 @@ public class Customer
 
     /**
      * Returns the PostalCode
+     * 
      * @return The PostalCode
      */
-    public String getPostalCode(  )
+    public String getPostalCode( )
     {
         return _strPostalCode;
     }
 
     /**
      * Sets the PostalCode
-     * @param strPostalCode The PostalCode
+     * 
+     * @param strPostalCode
+     *            The PostalCode
      */
     public void setPostalCode( String strPostalCode )
     {
@@ -293,16 +329,19 @@ public class Customer
 
     /**
      * Returns the TelephoneNumber
+     * 
      * @return The TelephoneNumber
      */
-    public String getTelephoneNumber(  )
+    public String getTelephoneNumber( )
     {
         return _strTelephoneNumber;
     }
 
     /**
      * Sets the TelephoneNumber
-     * @param strTelephoneNumber The TelephoneNumber
+     * 
+     * @param strTelephoneNumber
+     *            The TelephoneNumber
      */
     public void setTelephoneNumber( String strTelephoneNumber )
     {

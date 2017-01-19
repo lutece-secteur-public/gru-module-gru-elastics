@@ -39,26 +39,25 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 
 import org.apache.commons.lang.StringUtils;
 
-
 public class SendSmsService
 {
     /** private constructor */
-    SendSmsService(  )
+    SendSmsService( )
     {
     }
 
     /**
      * Send SMS
+     * 
      * @param smsNotification
      */
     public void sendSms( Notification notification )
     {
-        SMSNotification smsNotification = notification.getUserSMS(  );
+        SMSNotification smsNotification = notification.getUserSMS( );
 
-        if ( StringUtils.isNotBlank( smsNotification.getPhoneNumber(  ) ) )
+        if ( StringUtils.isNotBlank( smsNotification.getPhoneNumber( ) ) )
         {
-            AppLogService.info( "SMS STUB : phone number=" + smsNotification.getPhoneNumber(  ) + " message=" +
-                smsNotification.getMessage(  ) );
+            AppLogService.info( "SMS STUB : phone number=" + smsNotification.getPhoneNumber( ) + " message=" + smsNotification.getMessage( ) );
         }
     }
 }
