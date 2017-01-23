@@ -61,7 +61,7 @@ public final class IndexService
     {
         if ( _singleton == null )
         {
-            _singleton = new IndexService(  );
+            _singleton = new IndexService( );
             _demandIndexingService = SpringContextService.getBean( BEAN_DEMAND_INDEX_SERVICE );
         }
 

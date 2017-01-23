@@ -63,69 +63,69 @@ public class DemandIndexerActionDAOTest extends LuteceTestCase
     private static final String DEMAND_INDEXERACTION_DEMAND_TYPE_ID_1 = "1";
     private static final String DEMAND_INDEXERACTION_DEMAND_TYPE_ID_2 = "2";
     private static final String DEMAND_INDEXERACTION_DEMAND_TYPE_ID_3 = "3";
-    
+
     // DAO
     private final IDemandIndexerActionDAO _demandIndexerActionDao;
 
     /**
      * Constructor
      */
-    public DemandIndexerActionDAOTest(  )
+    public DemandIndexerActionDAOTest( )
     {
-        _demandIndexerActionDao = new DemandIndexerActionDAO(  );
+        _demandIndexerActionDao = new DemandIndexerActionDAO( );
     }
-    
+
     /**
      * Test case for Demand Indexer Action
      */
-    public void testDemandIndexerActionDAO(  )
+    public void testDemandIndexerActionDAO( )
     {
         // Test create and retrieve data
-        DemandIndexerAction demandIndexerAction = new DemandIndexerAction(  );
+        DemandIndexerAction demandIndexerAction = new DemandIndexerAction( );
         demandIndexerAction.setIdAction( INDEXERACTION_ID_1 );
         demandIndexerAction.setDemandId( DEMAND_INDEXERACTION_DEMAND_ID_1 );
         demandIndexerAction.setDemandTypeId( DEMAND_INDEXERACTION_DEMAND_TYPE_ID_1 );
-        demandIndexerAction.setTask( IndexerTask.CREATE );        
+        demandIndexerAction.setTask( IndexerTask.CREATE );
         _demandIndexerActionDao.insert( demandIndexerAction );
-        
-        DemandIndexerAction demandIndexerActionStored = _demandIndexerActionDao.findByPrimaryKey( demandIndexerAction.getIdAction(  ) );
-        assertThat( demandIndexerAction.getIdAction(  ), is( demandIndexerActionStored.getIdAction(  ) ) );
-        assertThat( demandIndexerAction.getDemandId(  ), is( demandIndexerActionStored.getDemandId(  ) ) );
-        assertThat( demandIndexerAction.getDemandTypeId(  ), is( demandIndexerActionStored.getDemandTypeId(  ) ) );
-        assertThat( demandIndexerAction.getTask( ).getValue( ), is( demandIndexerActionStored.getTask(  ).getValue(  ) ) );
-        
+
+        DemandIndexerAction demandIndexerActionStored = _demandIndexerActionDao.findByPrimaryKey( demandIndexerAction.getIdAction( ) );
+        assertThat( demandIndexerAction.getIdAction( ), is( demandIndexerActionStored.getIdAction( ) ) );
+        assertThat( demandIndexerAction.getDemandId( ), is( demandIndexerActionStored.getDemandId( ) ) );
+        assertThat( demandIndexerAction.getDemandTypeId( ), is( demandIndexerActionStored.getDemandTypeId( ) ) );
+        assertThat( demandIndexerAction.getTask( ).getValue( ), is( demandIndexerActionStored.getTask( ).getValue( ) ) );
+
         // Test selectList
-        demandIndexerAction = new DemandIndexerAction(  );
+        demandIndexerAction = new DemandIndexerAction( );
         demandIndexerAction.setIdAction( INDEXERACTION_ID_2 );
         demandIndexerAction.setDemandId( DEMAND_INDEXERACTION_DEMAND_ID_2 );
         demandIndexerAction.setDemandTypeId( DEMAND_INDEXERACTION_DEMAND_TYPE_ID_2 );
-        demandIndexerAction.setTask( IndexerTask.CREATE );        
+        demandIndexerAction.setTask( IndexerTask.CREATE );
         _demandIndexerActionDao.insert( demandIndexerAction );
-        
-        demandIndexerAction = new DemandIndexerAction(  );
+
+        demandIndexerAction = new DemandIndexerAction( );
         demandIndexerAction.setIdAction( INDEXERACTION_ID_3 );
         demandIndexerAction.setDemandId( DEMAND_INDEXERACTION_DEMAND_ID_3 );
         demandIndexerAction.setDemandTypeId( DEMAND_INDEXERACTION_DEMAND_TYPE_ID_3 );
-        demandIndexerAction.setTask( IndexerTask.UPDATE );        
+        demandIndexerAction.setTask( IndexerTask.UPDATE );
         _demandIndexerActionDao.insert( demandIndexerAction );
-        
-        // --- Get all Demand indexer with a create task 
-        DemandIndexerActionFilter demandIndexerActionFilter = new DemandIndexerActionFilter(  );
+
+        // --- Get all Demand indexer with a create task
+        DemandIndexerActionFilter demandIndexerActionFilter = new DemandIndexerActionFilter( );
         demandIndexerActionFilter.setIndexerTask( IndexerTask.CREATE );
-        
+
         List<DemandIndexerAction> listDemandIndexerAction = _demandIndexerActionDao.selectList( demandIndexerActionFilter );
-        assertThat( listDemandIndexerAction.size(  ), is( 2 ) );
-        
+        assertThat( listDemandIndexerAction.size( ), is( 2 ) );
+
         // --- Get all demand indexer with an update task
-        demandIndexerActionFilter = new DemandIndexerActionFilter(  );
+        demandIndexerActionFilter = new DemandIndexerActionFilter( );
         demandIndexerActionFilter.setIndexerTask( IndexerTask.CREATE );
-        
+
         listDemandIndexerAction = _demandIndexerActionDao.selectList( demandIndexerActionFilter );
-        assertThat( listDemandIndexerAction.size(  ), is( 2 ) );
-        
+        assertThat( listDemandIndexerAction.size( ), is( 2 ) );
+
         // Test delete
         _demandIndexerActionDao.delete( INDEXERACTION_ID_1 );
         demandIndexerActionStored = _demandIndexerActionDao.findByPrimaryKey( INDEXERACTION_ID_1 );
-        assertThat( demandIndexerActionStored, is( nullValue(  ) ) );
+        assertThat( demandIndexerActionStored, is( nullValue( ) ) );
     }
 }

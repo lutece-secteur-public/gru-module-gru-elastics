@@ -109,14 +109,14 @@ public class GRUSupplyRestService
             }
             catch( IndexingException e )
             {
-                if ( notification.getDemand(  ) != null )   
+                if ( notification.getDemand( ) != null )
                 {
                     // Storage the Demand in database when the indexation failed
-                    DemandIndexerAction demandIndexerAction = new DemandIndexerAction(  );
-                    demandIndexerAction.setDemandId( String.valueOf( notification.getDemand(  ).getId(  ) ) );
-                    demandIndexerAction.setDemandTypeId( String.valueOf( notification.getDemand(  ).getTypeId(  ) ) );
+                    DemandIndexerAction demandIndexerAction = new DemandIndexerAction( );
+                    demandIndexerAction.setDemandId( String.valueOf( notification.getDemand( ).getId( ) ) );
+                    demandIndexerAction.setDemandTypeId( String.valueOf( notification.getDemand( ).getTypeId( ) ) );
                     demandIndexerAction.setTask( IndexerTask.CREATE );
-                
+
                     DemandIndexerActionHome.create( demandIndexerAction );
                 }
             }

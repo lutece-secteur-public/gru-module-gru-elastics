@@ -84,5 +84,5 @@ public class IndexerAction
     {
         _indexerTask = indexerTask;
     }
-    
+
 }

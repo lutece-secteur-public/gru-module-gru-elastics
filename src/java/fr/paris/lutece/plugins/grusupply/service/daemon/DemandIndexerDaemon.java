@@ -14,13 +14,13 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 /**
- *  Daemon used to index demands in incremental mode
+ * Daemon used to index demands in incremental mode
  */
 public class DemandIndexerDaemon extends AbstractIndexerDaemon
-{   
+{
     private static final String BEAN_DEMAND_SERVICE = "grusupply.storageService";
     private static DemandService _demandService;
-    
+
     /**
      * {@inheritDoc}
      */
@@ -30,7 +30,7 @@ public class DemandIndexerDaemon extends AbstractIndexerDaemon
         _demandService = SpringContextService.getBean( BEAN_DEMAND_SERVICE );
         int nNbIndexedResources = 0;
 
-        DemandIndexerActionFilter demandIndexerActionFilter = new DemandIndexerActionFilter(  );
+        DemandIndexerActionFilter demandIndexerActionFilter = new DemandIndexerActionFilter( );
         demandIndexerActionFilter.setIndexerTask( indexerTask );
 
         List<DemandIndexerAction> listDemandIndexerActions = DemandIndexerActionHome.getList( demandIndexerActionFilter );
@@ -41,40 +41,40 @@ public class DemandIndexerDaemon extends AbstractIndexerDaemon
             {
                 indexObject( demandIndexerAction, nNbIndexedResources );
             }
-            catch ( Exception e )
+            catch( Exception e )
             {
-                AppLogService.error( "Unable to get the demand with id " + demandIndexerAction.getDemandId(  ) + " and with type id " + demandIndexerAction.getDemandTypeId(  ) + " : " +
-                    e.getMessage(  ) );
+                AppLogService.error( "Unable to get the demand with id " + demandIndexerAction.getDemandId( ) + " and with type id "
+                        + demandIndexerAction.getDemandTypeId( ) + " : " + e.getMessage( ) );
             }
         }
 
         return nNbIndexedResources;
     }
-    
+
     /**
      * Method use to index an object of type and id specify in the demandIndexerAction
+     * 
      * @param demandIndexerAction
      * @param nNbIndexedResources
      */
     private void indexObject( DemandIndexerAction demandIndexerAction, int nNbIndexedResources )
     {
-        Demand demand = _demandService.findByPrimaryKey( demandIndexerAction.getDemandId(  ), demandIndexerAction.getDemandTypeId(  ) );
+        Demand demand = _demandService.findByPrimaryKey( demandIndexerAction.getDemandId( ), demandIndexerAction.getDemandTypeId( ) );
 
         if ( demand != null )
         {
             try
             {
-                IndexService.instance(  ).index( demand );
-                
+                IndexService.instance( ).index( demand );
+
                 nNbIndexedResources++;
 
-                DemandIndexerActionHome.remove( demandIndexerAction.getIdAction(  ) );
+                DemandIndexerActionHome.remove( demandIndexerAction.getIdAction( ) );
             }
-            
-            catch ( IndexingException e )
+
+            catch( IndexingException e )
             {
-                AppLogService.error( "Unable to index the demand id " + demandIndexerAction.getDemandId(  ) + " : " +
-                        e.getMessage(  ) );
+                AppLogService.error( "Unable to index the demand id " + demandIndexerAction.getDemandId( ) + " : " + e.getMessage( ) );
             }
 
         }

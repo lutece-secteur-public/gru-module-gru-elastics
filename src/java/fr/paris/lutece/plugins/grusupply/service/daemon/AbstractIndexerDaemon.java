@@ -12,33 +12,34 @@ public abstract class AbstractIndexerDaemon extends Daemon
     protected static final String LOG_INDEX_UPDATED = "Number of updated indexes : ";
     protected static final String LOG_INDEX_DELETED = "Number of deleted indexes : ";
     protected static final String LOG_END_OF_SENTENCE = ". ";
-    
+
     /**
      * Constructor
      */
-    public AbstractIndexerDaemon(  )
+    public AbstractIndexerDaemon( )
     {
-        super(  );
+        super( );
     }
-    
+
     /**
      * {@inheritDoc}
      */
-    public void run(  )
+    public void run( )
     {
-        StringBuilder sbLogs = new StringBuilder(  );
+        StringBuilder sbLogs = new StringBuilder( );
 
         indexCreated( sbLogs );
         indexUpdated( sbLogs );
         indexDeleted( sbLogs );
 
-        setLastRunLogs( sbLogs.toString(  ) );
+        setLastRunLogs( sbLogs.toString( ) );
     }
-    
+
     /**
-     * Indexes created resources.
-     * Logs the action in the specified StringBuilder
-     * @param sbLogs the StringBuilder used to log the action
+     * Indexes created resources. Logs the action in the specified StringBuilder
+     * 
+     * @param sbLogs
+     *            the StringBuilder used to log the action
      */
     private void indexCreated( StringBuilder sbLogs )
     {
@@ -48,9 +49,10 @@ public abstract class AbstractIndexerDaemon extends Daemon
     }
 
     /**
-     * Indexes updated resources.
-     * Logs the action in the specified StringBuilder
-     * @param sbLogs the StringBuilder used to log the action
+     * Indexes updated resources. Logs the action in the specified StringBuilder
+     * 
+     * @param sbLogs
+     *            the StringBuilder used to log the action
      */
     private void indexUpdated( StringBuilder sbLogs )
     {
@@ -60,9 +62,10 @@ public abstract class AbstractIndexerDaemon extends Daemon
     }
 
     /**
-     * Indexes deleted customers.
-     * Logs the action in the specified StringBuilder
-     * @param sbLogs the StringBuilder used to log the action
+     * Indexes deleted customers. Logs the action in the specified StringBuilder
+     * 
+     * @param sbLogs
+     *            the StringBuilder used to log the action
      */
     private void indexDeleted( StringBuilder sbLogs )
     {
@@ -70,12 +73,14 @@ public abstract class AbstractIndexerDaemon extends Daemon
         sbLogs.append( 0 );
         sbLogs.append( LOG_END_OF_SENTENCE );
     }
-    
+
     /**
      * Indexes updated resources and remove them from table
-     * @param indexerTask the indexer task
+     * 
+     * @param indexerTask
+     *            the indexer task
      * @return the number of indexed resources
      */
     protected abstract int indexUpdated( IndexerTask indexerTask );
-    
+
 }

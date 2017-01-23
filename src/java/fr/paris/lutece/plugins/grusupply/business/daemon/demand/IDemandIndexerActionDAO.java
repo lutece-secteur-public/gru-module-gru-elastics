@@ -36,35 +36,40 @@ package fr.paris.lutece.plugins.grusupply.business.daemon.demand;
 import java.util.List;
 
 /**
-*
-* Interface for an DemandIndexerActionDAO
-*
-*/
+ *
+ * Interface for an DemandIndexerActionDAO
+ *
+ */
 public interface IDemandIndexerActionDAO
 {
     /**
      * Inserts a new record in the table.
      *
-     * @param DemandIndexerAction instance of the DemandIndexerAction object to insert
+     * @param DemandIndexerAction
+     *            instance of the DemandIndexerAction object to insert
      */
     void insert( DemandIndexerAction demandIndexerAction );
-    
+
     /**
      * Deletes a record from the table
      *
-     * @param nId The identifier of the action
+     * @param nId
+     *            The identifier of the action
      */
     void delete( int nId );
 
     /**
      * Loads the data of all DemandIndexerAction and returns them in a list
-     * @param filter the search filter
+     * 
+     * @param filter
+     *            the search filter
      * @return The list which contains the data of all actions
      */
     List<DemandIndexerAction> selectList( DemandIndexerActionFilter demandIndexerActionFilter );
 
     /**
      * Load the data of the DemandIndexerAction from its id
+     * 
      * @param idDemandIndexerAction
      * @return the DemandIndexerAction with the given id
      */

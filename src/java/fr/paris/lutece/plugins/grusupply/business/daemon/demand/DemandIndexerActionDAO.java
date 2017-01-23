@@ -48,7 +48,7 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
     // Constants key words
     public static final String CONSTANT_WHERE = " WHERE ";
     public static final String CONSTANT_AND = " AND ";
-    
+
     // Constants filters
     private static final String SQL_FILTER_ID_ACTION = " id_action = ? ";
     private static final String SQL_FILTER_ID_TASK = " id_task = ? ";
@@ -57,54 +57,54 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
 
     // Constants requests
     private static final String SQL_QUERY_NEW_PK = "SELECT max(id_action) FROM grusupply_demand_indexer_action";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO grusupply_demand_indexer_action(id_action,id_demand,demand_type_id,id_task)" +
-            " VALUES(?,?,?,?)";
-    private static final String SQL_QUERY_SELECT = "SELECT id_action,id_demand,demand_type_id,id_task" +
-        " FROM grusupply_demand_indexer_action  ";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO grusupply_demand_indexer_action(id_action,id_demand,demand_type_id,id_task)"
+            + " VALUES(?,?,?,?)";
+    private static final String SQL_QUERY_SELECT = "SELECT id_action,id_demand,demand_type_id,id_task" + " FROM grusupply_demand_indexer_action  ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM grusupply_demand_indexer_action WHERE id_action = ? ";
     private static final String SQL_QUERY_SELECT_BY_ID = SQL_QUERY_SELECT + CONSTANT_WHERE + SQL_FILTER_ID_ACTION;
 
     /**
      * Generates a new primary key
      *
-     * @param plugin the plugin
+     * @param plugin
+     *            the plugin
      * @return The new primary key
      */
-    private synchronized int newPrimaryKey(  )
+    private synchronized int newPrimaryKey( )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, GruSupplyPlugin.getPlugin(  ) );
-        daoUtil.executeQuery(  );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, GruSupplyPlugin.getPlugin( ) );
+        daoUtil.executeQuery( );
 
         int nKey = 1;
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
             nKey = daoUtil.getInt( 1 ) + 1;
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return nKey;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void insert( DemandIndexerAction demandIndexerAction )
     {
-        int nKey = newPrimaryKey(  );
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, GruSupplyPlugin.getPlugin(  ) );
-        daoUtil.setString( 2, demandIndexerAction.getDemandId(  ) );
-        daoUtil.setString( 3, demandIndexerAction.getDemandTypeId(  ) );
-        daoUtil.setInt( 4, demandIndexerAction.getTask(  ).getValue(  ) );
+        int nKey = newPrimaryKey( );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, GruSupplyPlugin.getPlugin( ) );
+        daoUtil.setString( 2, demandIndexerAction.getDemandId( ) );
+        daoUtil.setString( 3, demandIndexerAction.getDemandTypeId( ) );
+        daoUtil.setInt( 4, demandIndexerAction.getTask( ).getValue( ) );
 
         demandIndexerAction.setIdAction( nKey );
-        daoUtil.setInt( 1, demandIndexerAction.getIdAction(  ) );
+        daoUtil.setInt( 1, demandIndexerAction.getIdAction( ) );
 
-        daoUtil.executeUpdate(  );
+        daoUtil.executeUpdate( );
 
-        daoUtil.free(  );
+        daoUtil.free( );
     }
 
     /**
@@ -113,64 +113,63 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
     @Override
     public void delete( int nId )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, GruSupplyPlugin.getPlugin(  ) );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, GruSupplyPlugin.getPlugin( ) );
         daoUtil.setInt( 1, nId );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<DemandIndexerAction> selectList(
-            DemandIndexerActionFilter demandIndexerActionFilter )
+    public List<DemandIndexerAction> selectList( DemandIndexerActionFilter demandIndexerActionFilter )
     {
-        List<DemandIndexerAction> demandIndexerActionList = new ArrayList<DemandIndexerAction>(  );
+        List<DemandIndexerAction> demandIndexerActionList = new ArrayList<DemandIndexerAction>( );
         DemandIndexerAction demandIndexerAction = null;
-        List<String> listStrFilter = new ArrayList<String>(  );
+        List<String> listStrFilter = new ArrayList<String>( );
 
-        if ( demandIndexerActionFilter.containsIndexerTask(  ) )
+        if ( demandIndexerActionFilter.containsIndexerTask( ) )
         {
             listStrFilter.add( SQL_FILTER_ID_TASK );
         }
 
-        if ( demandIndexerActionFilter.containsDemandId(  ) )
+        if ( demandIndexerActionFilter.containsDemandId( ) )
         {
             listStrFilter.add( SQL_FILTER_ID_DEMAND );
         }
-        
-        if ( demandIndexerActionFilter.containsDemandTypeId(  ) )
+
+        if ( demandIndexerActionFilter.containsDemandTypeId( ) )
         {
             listStrFilter.add( SQL_FILTER_DEMAND_TYPE_ID );
         }
 
         String strSQL = buildRequestWithFilter( SQL_QUERY_SELECT, listStrFilter, null );
 
-        DAOUtil daoUtil = new DAOUtil( strSQL, GruSupplyPlugin.getPlugin(  ) );
+        DAOUtil daoUtil = new DAOUtil( strSQL, GruSupplyPlugin.getPlugin( ) );
 
         int nIndex = 1;
 
-        if ( demandIndexerActionFilter.containsIndexerTask(  ) )
+        if ( demandIndexerActionFilter.containsIndexerTask( ) )
         {
-            daoUtil.setInt( nIndex++, demandIndexerActionFilter.getIndexerTask(  ).getValue(  ) );
+            daoUtil.setInt( nIndex++, demandIndexerActionFilter.getIndexerTask( ).getValue( ) );
         }
 
-        if ( demandIndexerActionFilter.containsDemandId(  ) )
+        if ( demandIndexerActionFilter.containsDemandId( ) )
         {
-            daoUtil.setString( nIndex++, demandIndexerActionFilter.getDemandId(  ) );
-        }
-        
-        if ( demandIndexerActionFilter.containsDemandTypeId(  ) )
-        {
-            daoUtil.setString( nIndex, demandIndexerActionFilter.getDemandTypeId(  ) );
+            daoUtil.setString( nIndex++, demandIndexerActionFilter.getDemandId( ) );
         }
 
-        daoUtil.executeQuery(  );
-
-        while ( daoUtil.next(  ) )
+        if ( demandIndexerActionFilter.containsDemandTypeId( ) )
         {
-            demandIndexerAction = new DemandIndexerAction(  );
+            daoUtil.setString( nIndex, demandIndexerActionFilter.getDemandTypeId( ) );
+        }
+
+        daoUtil.executeQuery( );
+
+        while ( daoUtil.next( ) )
+        {
+            demandIndexerAction = new DemandIndexerAction( );
             demandIndexerAction.setIdAction( daoUtil.getInt( 1 ) );
             demandIndexerAction.setDemandId( daoUtil.getString( 2 ) );
             demandIndexerAction.setDemandTypeId( daoUtil.getString( 3 ) );
@@ -179,7 +178,7 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
             demandIndexerActionList.add( demandIndexerAction );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return demandIndexerActionList;
     }
@@ -191,35 +190,39 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
     public DemandIndexerAction findByPrimaryKey( int nIdDemandIndexerAction )
     {
         DemandIndexerAction demandIndexerAction = null;
-        
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_ID, GruSupplyPlugin.getPlugin(  ) );
+
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_ID, GruSupplyPlugin.getPlugin( ) );
         daoUtil.setInt( 1, nIdDemandIndexerAction );
         daoUtil.executeQuery( );
-        
+
         while ( daoUtil.next( ) )
         {
-            demandIndexerAction = new DemandIndexerAction(  );
+            demandIndexerAction = new DemandIndexerAction( );
             demandIndexerAction.setIdAction( daoUtil.getInt( 1 ) );
             demandIndexerAction.setDemandId( daoUtil.getString( 2 ) );
             demandIndexerAction.setDemandTypeId( daoUtil.getString( 3 ) );
             demandIndexerAction.setTask( IndexerTask.valueOf( daoUtil.getInt( 4 ) ) );
         }
-        
-        daoUtil.free(  );
-        
+
+        daoUtil.free( );
+
         return demandIndexerAction;
     }
 
     /**
      * Builds a query with filters placed in parameters
-     * @param strSelect the select of the query
-     * @param listStrFilter the list of filter to add in the query
-     * @param strOrder the order by of the query
+     * 
+     * @param strSelect
+     *            the select of the query
+     * @param listStrFilter
+     *            the list of filter to add in the query
+     * @param strOrder
+     *            the order by of the query
      * @return a query
      */
     private static String buildRequestWithFilter( String strSelect, List<String> listStrFilter, String strOrder )
     {
-        StringBuffer strBuffer = new StringBuffer(  );
+        StringBuffer strBuffer = new StringBuffer( );
         strBuffer.append( strSelect );
 
         int nCount = 0;
@@ -233,7 +236,7 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
 
             strBuffer.append( strFilter );
 
-            if ( nCount != listStrFilter.size(  ) )
+            if ( nCount != listStrFilter.size( ) )
             {
                 strBuffer.append( CONSTANT_AND );
             }
@@ -244,7 +247,7 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
             strBuffer.append( strOrder );
         }
 
-        return strBuffer.toString(  );
+        return strBuffer.toString( );
     }
 
 }

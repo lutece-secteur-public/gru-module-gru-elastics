@@ -38,55 +38,62 @@ import org.apache.commons.lang.StringUtils;
 import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerActionFilter;
 
 /**
-*
-* This class is a filter for DemandIndexerActionFilter
-*
-*/
+ *
+ * This class is a filter for DemandIndexerActionFilter
+ *
+ */
 public class DemandIndexerActionFilter extends IndexerActionFilter
 {
 
     private String _strDemandId;
     private String _strDemandTypeId;
-    
+
     /**
      * Get the demand id
+     * 
      * @return the _strDemandId
      */
     public String getDemandId( )
     {
         return _strDemandId;
     }
-    
+
     /**
      * Set the demand id
-     * @param _strDemandId the _strDemandId to set
+     * 
+     * @param _strDemandId
+     *            the _strDemandId to set
      */
     public void setDemandId( String _strDemandId )
     {
         this._strDemandId = _strDemandId;
     }
-    
+
     /**
      * Tests if the filter contains a demand id to filter or not
+     * 
      * @return {@code true} if the filter contains a demand to filter, {@code false} otherwise
      */
-    public boolean containsDemandId(  )
+    public boolean containsDemandId( )
     {
         return StringUtils.isNotBlank( _strDemandId );
     }
-    
+
     /**
      * Get the demand type id
+     * 
      * @return the _strDemandTypeId
      */
     public String getDemandTypeId( )
     {
         return _strDemandTypeId;
     }
-    
+
     /**
      * Set the demand type id
-     * @param _strDemandTypeId the _strDemandTypeId to set
+     * 
+     * @param _strDemandTypeId
+     *            the _strDemandTypeId to set
      */
     public void setDemandTypeId( String _strDemandTypeId )
     {
@@ -95,11 +102,12 @@ public class DemandIndexerActionFilter extends IndexerActionFilter
 
     /**
      * Tests if the filter contains a demand type id to filter or not
+     * 
      * @return {@code true} if the filter contains a demand type to filter, {@code false} otherwise
      */
-    public boolean containsDemandTypeId(  )
+    public boolean containsDemandTypeId( )
     {
         return StringUtils.isNotBlank( _strDemandTypeId );
     }
-    
+
 }

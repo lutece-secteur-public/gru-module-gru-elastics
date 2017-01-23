@@ -72,7 +72,7 @@ public class IndexerActionFilter
      * 
      * @return {@code true} if the filter contains a task to filter, {@code false} otherwise
      */
-    public boolean containsIndexerTask(  )
+    public boolean containsIndexerTask( )
     {
         return ( _indexerTask != IndexerTask.ALL );
     }

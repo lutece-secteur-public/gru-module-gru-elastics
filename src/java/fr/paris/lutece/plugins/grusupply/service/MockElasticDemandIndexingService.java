@@ -46,7 +46,8 @@ public class MockElasticDemandIndexingService implements IIndexingService<Demand
     /**
      * {@inheritDoc }.
      *
-     * @param demand the demand
+     * @param demand
+     *            the demand
      */
     @Override
     public void index( Demand object ) throws IndexingException

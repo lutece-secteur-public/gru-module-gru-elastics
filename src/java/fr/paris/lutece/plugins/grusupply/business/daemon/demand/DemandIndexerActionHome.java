@@ -38,8 +38,7 @@ import java.util.List;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 /**
- * This class provides instances management methods (create, find, ...) for
- * DemandIndexerActionHome objects
+ * This class provides instances management methods (create, find, ...) for DemandIndexerActionHome objects
  */
 public class DemandIndexerActionHome
 {
@@ -49,14 +48,15 @@ public class DemandIndexerActionHome
     /**
      * Private constructor
      */
-    private DemandIndexerActionHome(  )
+    private DemandIndexerActionHome( )
     {
     }
-    
+
     /**
      * Creation of an instance of Demand Indexer Action
-     * @param demandIndexerAction The instance of the indexer action which contains
-     *            the informations to store
+     * 
+     * @param demandIndexerAction
+     *            The instance of the indexer action which contains the informations to store
      */
     public static synchronized void create( DemandIndexerAction demandIndexerAction )
     {
@@ -65,7 +65,9 @@ public class DemandIndexerActionHome
 
     /**
      * Removes the demandIndexerAction whose identifier is specified in parameter
-     * @param nId The DemandIndexerAction
+     * 
+     * @param nId
+     *            The DemandIndexerAction
      */
     public static synchronized void remove( int nId )
     {
@@ -76,9 +78,10 @@ public class DemandIndexerActionHome
     // Finders
 
     /**
-     * Loads the data of all the DemandIndexerAction who verify the filter and returns
-     * them in a list
-     * @param filter the filter
+     * Loads the data of all the DemandIndexerAction who verify the filter and returns them in a list
+     * 
+     * @param filter
+     *            the filter
      * @return the list which contains the data of all the DemandIndexerAction
      */
     public static List<DemandIndexerAction> getList( DemandIndexerActionFilter filter )

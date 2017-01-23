@@ -63,13 +63,13 @@ public class GruSupplyPlugin extends Plugin
         BeanUtilsBean.getInstance( ).getConvertUtils( )
                 .register( new DateConverter( DateFormat.getDateInstance( DateFormat.SHORT, Locale.FRANCE ) ), java.sql.Date.class );
     }
-    
+
     /**
      * Gives the plugin
      *
      * @return The plugin
      */
-    public static Plugin getPlugin(  )
+    public static Plugin getPlugin( )
     {
         return PluginService.getPlugin( PLUGIN_NAME );
     }
