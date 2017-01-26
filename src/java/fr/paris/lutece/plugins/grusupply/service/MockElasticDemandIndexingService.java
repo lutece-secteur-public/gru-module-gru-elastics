@@ -54,4 +54,16 @@ public class MockElasticDemandIndexingService implements IIndexingService<Demand
     {
         return;
     }
+
+    /**
+     * {@inheritDoc }.
+     * 
+     * @param demand
+     *            the demand to delete
+     */
+    @Override
+    public void deleteIndex( Demand object ) throws IndexingException
+    {
+        return;
+    }
 }
