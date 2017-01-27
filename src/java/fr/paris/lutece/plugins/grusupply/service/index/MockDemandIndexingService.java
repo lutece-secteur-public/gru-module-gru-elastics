@@ -57,9 +57,9 @@ public class MockDemandIndexingService implements IIndexingService<Demand>
 
     /**
      * {@inheritDoc }.
-     *
+     * 
      * @param demand
-     *            the demand
+     *            the demand to delete
      */
     @Override
     public void deleteIndex( Demand object ) throws IndexingException

@@ -121,7 +121,7 @@
                     "description": "user email",
                     "example": "john.doe@somewhere.com",
                     "type": "string"
-                },
+                }
             },
             "type": "object"
         },
