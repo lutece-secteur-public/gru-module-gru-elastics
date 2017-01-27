@@ -86,7 +86,7 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
 
         return nKey;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -106,7 +106,7 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
 
         daoUtil.free( );
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -127,7 +127,7 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
             sbQuery.append( SQL_QUERY_INSERT_VALUES );
             sbQuery.append( CONSTANT_COMMA );
         }
-        
+
         // Removes trailing comma
         sbQuery.deleteCharAt( sbQuery.length( ) - 1 );
 

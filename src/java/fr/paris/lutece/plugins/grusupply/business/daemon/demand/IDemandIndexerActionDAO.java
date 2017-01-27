@@ -56,7 +56,7 @@ public interface IDemandIndexerActionDAO
      * @param listDemandIndexerActions
      */
     void insertAll( List<DemandIndexerAction> listDemandIndexerActions );
-    
+
     /**
      * Deletes a record from the table
      *

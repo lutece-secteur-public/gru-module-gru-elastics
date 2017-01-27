@@ -52,14 +52,14 @@ import fr.paris.lutece.portal.service.util.AppPropertiesService;
  */
 public class DemandIndexer implements IIndexer
 {
-    
+
     private static final String PROPERTY_ES_INDEXER_NAME = "grusupply.indexer.name";
     private static final String PROPERTY_ES_INDEXER_DESCRIPTION = "grusupply.indexer.description";
     private static final String PROPERTY_ES_INDEXER_VERSION = "grusupply.indexer.version";
-    private static final String PROPERTY_ES_INDEXER_ENABLE = "grusupply.indexer.enable";  
+    private static final String PROPERTY_ES_INDEXER_ENABLE = "grusupply.indexer.enable";
     private static final String PLUGIN_NAME = "grusupply";
     private static final String ENABLE_VALUE_TRUE = "1";
-    
+
     private static final String BEAN_DEMAND_SERVICE_NAME = "grusupply.storageService";
     private DemandService _demandService;
 
@@ -99,8 +99,7 @@ public class DemandIndexer implements IIndexer
         boolean bReturn = false;
         String strEnable = AppPropertiesService.getProperty( PROPERTY_ES_INDEXER_ENABLE );
 
-        if ( ( Boolean.parseBoolean( strEnable ) || strEnable.equals( ENABLE_VALUE_TRUE ) )
-                && PluginService.isPluginEnable( PLUGIN_NAME ) )
+        if ( ( Boolean.parseBoolean( strEnable ) || strEnable.equals( ENABLE_VALUE_TRUE ) ) && PluginService.isPluginEnable( PLUGIN_NAME ) )
         {
             bReturn = true;
         }
@@ -117,7 +116,7 @@ public class DemandIndexer implements IIndexer
         // Get all demand from the table
         _demandService = SpringContextService.getBean( BEAN_DEMAND_SERVICE_NAME );
         Collection<Demand> collectionDemands = _demandService.findAllDemands( );
-        if( collectionDemands != null && !collectionDemands.isEmpty( ) )
+        if ( collectionDemands != null && !collectionDemands.isEmpty( ) )
         {
             List<DemandIndexerAction> listDemandIndexerAction = new ArrayList<DemandIndexerAction>( );
             for ( Demand demand : collectionDemands )
@@ -128,7 +127,7 @@ public class DemandIndexer implements IIndexer
                 demandIndexerAction.setTask( IndexerTask.CREATE );
                 listDemandIndexerAction.add( demandIndexerAction );
             }
-            
+
             // Store all demand in daemon indexer table
             DemandIndexerActionHome.createAll( listDemandIndexerAction );
         }
