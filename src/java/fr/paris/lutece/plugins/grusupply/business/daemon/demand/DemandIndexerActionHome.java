@@ -62,6 +62,17 @@ public class DemandIndexerActionHome
     {
         _dao.insert( demandIndexerAction );
     }
+    
+    /**
+     * Creation of an instance foreach Demand Indexer Action in the list
+     * 
+     * @param listDemandIndexerAction
+     *            The list of all the instance of the indexer action which contains the informations to store
+     */
+    public static synchronized void createAll( List<DemandIndexerAction> listDemandIndexerAction )
+    {
+        _dao.insertAll( listDemandIndexerAction );
+    }
 
     /**
      * Removes the demandIndexerAction whose identifier is specified in parameter

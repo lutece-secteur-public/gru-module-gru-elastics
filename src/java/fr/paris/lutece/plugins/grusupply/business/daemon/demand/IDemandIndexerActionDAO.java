@@ -51,6 +51,13 @@ public interface IDemandIndexerActionDAO
     void insert( DemandIndexerAction demandIndexerAction );
 
     /**
+     * Insert a list of records in the table
+     * 
+     * @param listDemandIndexerActions
+     */
+    void insertAll( List<DemandIndexerAction> listDemandIndexerActions );
+    
+    /**
      * Deletes a record from the table
      *
      * @param nId
@@ -74,4 +81,5 @@ public interface IDemandIndexerActionDAO
      * @return the DemandIndexerAction with the given id
      */
     DemandIndexerAction findByPrimaryKey( int idDemandIndexerAction );
+
 }

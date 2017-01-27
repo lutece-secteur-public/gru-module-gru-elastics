@@ -9,7 +9,7 @@ import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerTask;
 import fr.paris.lutece.plugins.grusupply.business.daemon.demand.DemandIndexerAction;
 import fr.paris.lutece.plugins.grusupply.business.daemon.demand.DemandIndexerActionFilter;
 import fr.paris.lutece.plugins.grusupply.business.daemon.demand.DemandIndexerActionHome;
-import fr.paris.lutece.plugins.grusupply.service.IndexService;
+import fr.paris.lutece.plugins.grusupply.service.index.DemandIndexService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -65,7 +65,7 @@ public class DemandIndexerDaemon extends AbstractIndexerDaemon
         {
             try
             {
-                IndexService.instance( ).index( demand );
+                DemandIndexService.instance( ).index( demand );
 
                 nNbIndexedResources++;
 

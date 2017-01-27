@@ -48,8 +48,8 @@ import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerTask;
 import fr.paris.lutece.plugins.grusupply.business.daemon.demand.DemandIndexerAction;
 import fr.paris.lutece.plugins.grusupply.business.daemon.demand.DemandIndexerActionHome;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
-import fr.paris.lutece.plugins.grusupply.service.IndexService;
 import fr.paris.lutece.plugins.grusupply.service.NotificationService;
+import fr.paris.lutece.plugins.grusupply.service.index.DemandIndexService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -105,7 +105,7 @@ public class GRUSupplyRestService
             try
             {
                 // Parse to Demand
-                IndexService.instance( ).index( notification.getDemand( ) );
+                DemandIndexService.instance( ).index( notification.getDemand( ) );
             }
             catch( IndexingException e )
             {

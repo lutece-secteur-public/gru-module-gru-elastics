@@ -48,6 +48,7 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
     // Constants key words
     public static final String CONSTANT_WHERE = " WHERE ";
     public static final String CONSTANT_AND = " AND ";
+    public static final String CONSTANT_COMMA = ",";
 
     // Constants filters
     private static final String SQL_FILTER_ID_ACTION = " id_action = ? ";
@@ -57,8 +58,9 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
 
     // Constants requests
     private static final String SQL_QUERY_NEW_PK = "SELECT max(id_action) FROM grusupply_demand_indexer_action";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO grusupply_demand_indexer_action(id_action,id_demand,demand_type_id,id_task)"
-            + " VALUES(?,?,?,?)";
+    private static final String SQL_QUERY_INSERT_REQ = "INSERT INTO grusupply_demand_indexer_action(id_action,id_demand,demand_type_id,id_task) VALUES";
+    private static final String SQL_QUERY_INSERT_VALUES = " (?,?,?,?)";
+    private static final String SQL_QUERY_INSERT = SQL_QUERY_INSERT_REQ + SQL_QUERY_INSERT_VALUES;
     private static final String SQL_QUERY_SELECT = "SELECT id_action,id_demand,demand_type_id,id_task" + " FROM grusupply_demand_indexer_action  ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM grusupply_demand_indexer_action WHERE id_action = ? ";
     private static final String SQL_QUERY_SELECT_BY_ID = SQL_QUERY_SELECT + CONSTANT_WHERE + SQL_FILTER_ID_ACTION;
@@ -66,8 +68,6 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
     /**
      * Generates a new primary key
      *
-     * @param plugin
-     *            the plugin
      * @return The new primary key
      */
     private synchronized int newPrimaryKey( )
@@ -86,7 +86,7 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
 
         return nKey;
     }
-
+    
     /**
      * {@inheritDoc}
      */
@@ -101,6 +101,47 @@ public class DemandIndexerActionDAO implements IDemandIndexerActionDAO
 
         demandIndexerAction.setIdAction( nKey );
         daoUtil.setInt( 1, demandIndexerAction.getIdAction( ) );
+
+        daoUtil.executeUpdate( );
+
+        daoUtil.free( );
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized void insertAll( List<DemandIndexerAction> listDemandIndexerActions )
+    {
+        if ( ( listDemandIndexerActions == null ) || listDemandIndexerActions.isEmpty( ) )
+        {
+            return;
+        }
+
+        StringBuilder sbQuery = new StringBuilder( SQL_QUERY_INSERT_REQ );
+        int nIdAction = newPrimaryKey( );
+
+        // First, builds the query
+        for ( int i = 0; i < listDemandIndexerActions.size( ); i++ )
+        {
+            sbQuery.append( SQL_QUERY_INSERT_VALUES );
+            sbQuery.append( CONSTANT_COMMA );
+        }
+        
+        // Removes trailing comma
+        sbQuery.deleteCharAt( sbQuery.length( ) - 1 );
+
+        DAOUtil daoUtil = new DAOUtil( sbQuery.toString( ), GruSupplyPlugin.getPlugin( ) );
+        int nIndex = 1;
+
+        // Secondly, injects the parameters
+        for ( DemandIndexerAction demandIndexerAction : listDemandIndexerActions )
+        {
+            daoUtil.setInt( nIndex++, nIdAction++ );
+            daoUtil.setString( nIndex++, demandIndexerAction.getDemandId( ) );
+            daoUtil.setString( nIndex++, demandIndexerAction.getDemandTypeId( ) );
+            daoUtil.setInt( nIndex++, demandIndexerAction.getTask( ).getValue( ) );
+        }
 
         daoUtil.executeUpdate( );
 

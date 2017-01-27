@@ -31,27 +31,53 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.service;
+package fr.paris.lutece.plugins.grusupply.service.index;
 
 import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.indexing.IIndexingService;
 import fr.paris.lutece.plugins.grubusiness.business.indexing.IndexingException;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 /**
- * The mock class for the class ElasticDemandIndexingService.
+ * This class represents a service for indexing
  */
-public class MockElasticDemandIndexingService implements IIndexingService<Demand>
+public final class DemandIndexService
 {
+    private static final String BEAN_DEMAND_INDEX_SERVICE = "grusupply.demandIndexService";
+    private static DemandIndexService _singleton;
+    private static IIndexingService<Demand> _demandIndexingService;
+
+    /** private constructor */
+    private DemandIndexService( )
+    {
+    }
 
     /**
-     * {@inheritDoc }.
+     * Returns the unique instance
+     * 
+     * @return The unique instance
+     */
+    public static DemandIndexService instance( )
+    {
+        if ( _singleton == null )
+        {
+            _singleton = new DemandIndexService( );
+            _demandIndexingService = SpringContextService.getBean( BEAN_DEMAND_INDEX_SERVICE );
+        }
+
+        return _singleton;
+    }
+
+    /**
+     * Indexes the demand
      *
      * @param demand
-     *            the demand
+     *            The demand
+     * @param customer
+     *            the customer
      */
-    @Override
-    public void index( Demand object ) throws IndexingException
+    public void index( Demand demand ) throws IndexingException
     {
-        return;
+        _demandIndexingService.index( demand );
     }
 }
