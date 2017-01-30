@@ -31,37 +31,56 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business.daemon;
+package fr.paris.lutece.plugins.grusupply.business.daemon.demand;
 
-import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerAction;
 
-import java.util.List;
-
-/**
- *
- * Interface for an IndexerActionDAO
- *
- */
-public interface IIndexerActionDAO
+public class DemandIndexerAction extends IndexerAction
 {
-    /**
-     * Deletes a record from the table
-     *
-     * @param nId
-     *            The identifier of the action
-     * @param plugin
-     *            the plugin
-     */
-    void delete( int nId, Plugin plugin );
+
+    private String _strDemandId;
+    private String _strDemandTypeId;
 
     /**
-     * Loads the data of all indexerAction and returns them in a list
+     * Get the demand id
      * 
-     * @param filter
-     *            the search filter
-     * @param plugin
-     *            the plugin
-     * @return The list which contains the data of all actions
+     * @return the _strDemandId
      */
-    List<IndexerAction> selectList( IndexerActionFilter filter, Plugin plugin );
+    public String getDemandId( )
+    {
+        return _strDemandId;
+    }
+
+    /**
+     * Set the demand id
+     * 
+     * @param _strDemandId
+     *            the _strDemandId to set
+     */
+    public void setDemandId( String _strDemandId )
+    {
+        this._strDemandId = _strDemandId;
+    }
+
+    /**
+     * Get the demand type id
+     * 
+     * @return the _strDemandTypeId
+     */
+    public String getDemandTypeId( )
+    {
+        return _strDemandTypeId;
+    }
+
+    /**
+     * Set the demand type id
+     * 
+     * @param _strDemandTypeId
+     *            the _strDemandTypeId to set
+     */
+    public void setDemandTypeId( String _strDemandTypeId )
+    {
+        this._strDemandTypeId = _strDemandTypeId;
+    }
+
 }

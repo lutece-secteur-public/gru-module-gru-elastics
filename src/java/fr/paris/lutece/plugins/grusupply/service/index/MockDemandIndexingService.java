@@ -31,54 +31,39 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business.daemon;
+package fr.paris.lutece.plugins.grusupply.service.index;
 
-import fr.paris.lutece.plugins.grusupply.service.GruSupplyPlugin;
-import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
-
-import java.util.List;
+import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
+import fr.paris.lutece.plugins.grubusiness.business.indexing.IIndexingService;
+import fr.paris.lutece.plugins.grubusiness.business.indexing.IndexingException;
 
 /**
- * This class provides instances management methods (create, find, ...) for IndexerAction objects
+ * The mock class for the class ElasticDemandIndexingService.
  */
-public final class IndexerActionHome
+public class MockDemandIndexingService implements IIndexingService<Demand>
 {
-    // Static variable pointed at the DAO instance
-    private static IIndexerActionDAO _dao = SpringContextService.getBean( "grusupply.indexerActionDAO" );
-    private static Plugin _plugin = PluginService.getPlugin( GruSupplyPlugin.PLUGIN_NAME );
 
     /**
-     * Private constructor
+     * {@inheritDoc }.
+     *
+     * @param demand
+     *            the demand
      */
-    private IndexerActionHome( )
+    @Override
+    public void index( Demand object ) throws IndexingException
     {
+        return;
     }
 
     /**
-     * Removes the indexerAction whose identifier is specified in parameter
+     * {@inheritDoc }.
      * 
-     * @param nId
-     *            The IndexerActionId
+     * @param demand
+     *            the demand to delete
      */
-    public static synchronized void remove( int nId )
+    @Override
+    public void deleteIndex( Demand object ) throws IndexingException
     {
-        _dao.delete( nId, _plugin );
-    }
-
-    // /////////////////////////////////////////////////////////////////////////
-    // Finders
-
-    /**
-     * Loads the data of all the IndexerAction who verify the filter and returns them in a list
-     * 
-     * @param filter
-     *            the filter
-     * @return the list which contains the data of all the indexerAction
-     */
-    public static List<IndexerAction> getList( IndexerActionFilter filter )
-    {
-        return _dao.selectList( filter, _plugin );
+        return;
     }
 }

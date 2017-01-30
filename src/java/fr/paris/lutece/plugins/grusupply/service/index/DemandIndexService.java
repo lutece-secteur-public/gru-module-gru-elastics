@@ -31,9 +31,8 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.service;
+package fr.paris.lutece.plugins.grusupply.service.index;
 
-import fr.paris.lutece.plugins.grubusiness.business.customer.Customer;
 import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.indexing.IIndexingService;
 import fr.paris.lutece.plugins.grubusiness.business.indexing.IndexingException;
@@ -42,16 +41,14 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 /**
  * This class represents a service for indexing
  */
-public final class IndexService
+public final class DemandIndexService
 {
-    private static final String BEAN_CUSTOMER_INDEX_SERVICE = "grusupply.customerIndexService";
     private static final String BEAN_DEMAND_INDEX_SERVICE = "grusupply.demandIndexService";
-    private static IndexService _singleton;
-    private static IIndexingService<Customer> _customerIndexingService;
+    private static DemandIndexService _singleton;
     private static IIndexingService<Demand> _demandIndexingService;
 
     /** private constructor */
-    private IndexService( )
+    private DemandIndexService( )
     {
     }
 
@@ -60,27 +57,15 @@ public final class IndexService
      * 
      * @return The unique instance
      */
-    public static IndexService instance( )
+    public static DemandIndexService instance( )
     {
         if ( _singleton == null )
         {
-            _singleton = new IndexService( );
-            _customerIndexingService = SpringContextService.getBean( BEAN_CUSTOMER_INDEX_SERVICE );
+            _singleton = new DemandIndexService( );
             _demandIndexingService = SpringContextService.getBean( BEAN_DEMAND_INDEX_SERVICE );
         }
 
         return _singleton;
-    }
-
-    /**
-     * Indexes the customer
-     *
-     * @param customer
-     *            The customer
-     */
-    public void index( Customer customer ) throws IndexingException
-    {
-        _customerIndexingService.index( customer );
     }
 
     /**

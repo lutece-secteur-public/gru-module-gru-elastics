@@ -31,58 +31,83 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.business.daemon;
+package fr.paris.lutece.plugins.grusupply.business.daemon.demand;
+
+import org.apache.commons.lang.StringUtils;
+
+import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerActionFilter;
 
 /**
  *
- * This class represents an action for the indexer
+ * This class is a filter for DemandIndexerActionFilter
  *
  */
-public class IndexerAction
+public class DemandIndexerActionFilter extends IndexerActionFilter
 {
-    private int _nIdAction;
-    private IndexerTask _indexerTask;
+
+    private String _strDemandId;
+    private String _strDemandTypeId;
 
     /**
-     * Gets the action id
+     * Get the demand id
      * 
-     * @return the action id
+     * @return the _strDemandId
      */
-    public int getIdAction( )
+    public String getDemandId( )
     {
-        return _nIdAction;
+        return _strDemandId;
     }
 
     /**
-     * Sets the action id
+     * Set the demand id
      * 
-     * @param nIdAction
-     *            the action id
+     * @param _strDemandId
+     *            the _strDemandId to set
      */
-    public void setIdAction( int nIdAction )
+    public void setDemandId( String _strDemandId )
     {
-        _nIdAction = nIdAction;
+        this._strDemandId = _strDemandId;
     }
 
     /**
-     * Gets the task
+     * Tests if the filter contains a demand id to filter or not
      * 
-     * @return the task
+     * @return {@code true} if the filter contains a demand to filter, {@code false} otherwise
      */
-    public IndexerTask getTask( )
+    public boolean containsDemandId( )
     {
-        return _indexerTask;
+        return StringUtils.isNotBlank( _strDemandId );
     }
 
     /**
-     * Sets the task
+     * Get the demand type id
      * 
-     * @param indexerTask
-     *            the task
+     * @return the _strDemandTypeId
      */
-    public void setTask( IndexerTask indexerTask )
+    public String getDemandTypeId( )
     {
-        _indexerTask = indexerTask;
+        return _strDemandTypeId;
+    }
+
+    /**
+     * Set the demand type id
+     * 
+     * @param _strDemandTypeId
+     *            the _strDemandTypeId to set
+     */
+    public void setDemandTypeId( String _strDemandTypeId )
+    {
+        this._strDemandTypeId = _strDemandTypeId;
+    }
+
+    /**
+     * Tests if the filter contains a demand type id to filter or not
+     * 
+     * @return {@code true} if the filter contains a demand type to filter, {@code false} otherwise
+     */
+    public boolean containsDemandTypeId( )
+    {
+        return StringUtils.isNotBlank( _strDemandTypeId );
     }
 
 }

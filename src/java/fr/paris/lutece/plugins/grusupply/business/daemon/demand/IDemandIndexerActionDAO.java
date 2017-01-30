@@ -31,46 +31,55 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.service;
+package fr.paris.lutece.plugins.grusupply.business.daemon.demand;
 
-import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.plugin.PluginService;
-
-import org.apache.commons.beanutils.BeanUtilsBean;
-
-import org.dozer.converters.DateConverter;
-
-import java.text.DateFormat;
-
-import java.util.Locale;
+import java.util.List;
 
 /**
- * GRU supply plugin
+ *
+ * Interface for an DemandIndexerActionDAO
+ *
  */
-public class GruSupplyPlugin extends Plugin
+public interface IDemandIndexerActionDAO
 {
     /**
-     * Name of the GRU supply plugin
-     */
-    public static final String PLUGIN_NAME = "grusupply";
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void init( )
-    {
-        BeanUtilsBean.getInstance( ).getConvertUtils( )
-                .register( new DateConverter( DateFormat.getDateInstance( DateFormat.SHORT, Locale.FRANCE ) ), java.sql.Date.class );
-    }
-
-    /**
-     * Gives the plugin
+     * Inserts a new record in the table.
      *
-     * @return The plugin
+     * @param DemandIndexerAction
+     *            instance of the DemandIndexerAction object to insert
      */
-    public static Plugin getPlugin( )
-    {
-        return PluginService.getPlugin( PLUGIN_NAME );
-    }
+    void insert( DemandIndexerAction demandIndexerAction );
+
+    /**
+     * Insert a list of records in the table
+     * 
+     * @param listDemandIndexerActions
+     */
+    void insertAll( List<DemandIndexerAction> listDemandIndexerActions );
+
+    /**
+     * Deletes a record from the table
+     *
+     * @param nId
+     *            The identifier of the action
+     */
+    void delete( int nId );
+
+    /**
+     * Loads the data of all DemandIndexerAction and returns them in a list
+     * 
+     * @param filter
+     *            the search filter
+     * @return The list which contains the data of all actions
+     */
+    List<DemandIndexerAction> selectList( DemandIndexerActionFilter demandIndexerActionFilter );
+
+    /**
+     * Load the data of the DemandIndexerAction from its id
+     * 
+     * @param idDemandIndexerAction
+     * @return the DemandIndexerAction with the given id
+     */
+    DemandIndexerAction findByPrimaryKey( int idDemandIndexerAction );
+
 }

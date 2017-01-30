@@ -44,9 +44,12 @@ import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.demand.DemandService;
 import fr.paris.lutece.plugins.grubusiness.business.indexing.IndexingException;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
+import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerTask;
+import fr.paris.lutece.plugins.grusupply.business.daemon.demand.DemandIndexerAction;
+import fr.paris.lutece.plugins.grusupply.business.daemon.demand.DemandIndexerActionHome;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
-import fr.paris.lutece.plugins.grusupply.service.IndexService;
 import fr.paris.lutece.plugins.grusupply.service.NotificationService;
+import fr.paris.lutece.plugins.grusupply.service.index.DemandIndexService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -102,11 +105,20 @@ public class GRUSupplyRestService
             try
             {
                 // Parse to Demand
-                IndexService.instance( ).index( notification.getDemand( ) );
+                DemandIndexService.instance( ).index( notification.getDemand( ) );
             }
             catch( IndexingException e )
             {
-                // NOTHING TO DO
+                if ( notification.getDemand( ) != null )
+                {
+                    // Storage the Demand in database when the indexation failed
+                    DemandIndexerAction demandIndexerAction = new DemandIndexerAction( );
+                    demandIndexerAction.setDemandId( String.valueOf( notification.getDemand( ).getId( ) ) );
+                    demandIndexerAction.setDemandTypeId( String.valueOf( notification.getDemand( ).getTypeId( ) ) );
+                    demandIndexerAction.setTask( IndexerTask.CREATE );
+
+                    DemandIndexerActionHome.create( demandIndexerAction );
+                }
             }
 
             // Notify user and crm if a bean NotificationService is instantiated
