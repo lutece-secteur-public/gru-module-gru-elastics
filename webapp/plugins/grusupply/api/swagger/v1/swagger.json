@@ -1,5 +1,5 @@
 {
-    "basePath": "/notification",
+    "basePath": "/dev/notification",
     "paths": {
         "/send": {
             "post": {
@@ -91,7 +91,7 @@
                     "format": "int32",
                     "type": "integer"
                 },
-                "status": {
+                "status_id": {
                     "description": "the status of the demand: 0 = in progress, 1 = closed",
                     "example": 0,
                     "format": "int32",
@@ -101,7 +101,9 @@
                     "example": "RCL160200116",
                     "type": "string"
                 },
-                "$ref": "#/definitions/customer"
+                "customer": {
+                    "$ref": "#/definitions/customer"
+                }
             },
             "type": "object"
         },
@@ -121,7 +123,7 @@
                     "description": "user email",
                     "example": "john.doe@somewhere.com",
                     "type": "string"
-                },
+                }
             },
             "type": "object"
         },
@@ -133,8 +135,10 @@
                     "format": "int32",
                     "type": "integer"
                 },
-                "$ref": "#/definitions/demand",
-                "backoffice_logging": {
+                "demand": {
+                    "$ref": "#/definitions/demand"
+                },
+                "backoffice": {
                     "properties": {
                         "status_text": {
                             "description": "status label which will be displayed in the 360 view",
@@ -151,7 +155,7 @@
                 },
                 "customer_email": {
                     "properties": {
-                        "cci": {
+                        "bcc": {
                             "description": "blind carbon copy",
                             "example": "john.doe@somewhere.com;john.doedoe@somewhere.com",
                             "type": "string"
