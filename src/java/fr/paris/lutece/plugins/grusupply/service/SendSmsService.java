@@ -53,7 +53,7 @@ public class SendSmsService
      */
     public void sendSms( Notification notification )
     {
-        SMSNotification smsNotification = notification.getUserSMS( );
+        SMSNotification smsNotification = notification.getSmsNotification( );
 
         if ( StringUtils.isNotBlank( smsNotification.getPhoneNumber( ) ) )
         {

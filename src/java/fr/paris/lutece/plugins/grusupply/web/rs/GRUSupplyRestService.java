@@ -128,12 +128,12 @@ public class GRUSupplyRestService
             {
                 AppLogService.info( " \n \n GRUSUPPLY - Bean Notifcation not null \n \n" );
 
-                if ( notification.getUserEmail( ) != null )
+                if ( notification.getEmailNotification( ) != null )
                 {
                     notificationService.sendEmail( notification );
                 }
 
-                if ( notification.getUserSMS( ) != null )
+                if ( notification.getSmsNotification( ) != null )
                 {
                     notificationService.sendSms( notification );
                 }
@@ -145,7 +145,7 @@ public class GRUSupplyRestService
 
                 try
                 {
-                    if ( notification.getUserDashboard( ) != null )
+                    if ( notification.getMyDashboardNotification( ) != null )
                     {
                         notificationService.notifyCrm( notification );
                     }
@@ -193,14 +193,14 @@ public class GRUSupplyRestService
             demand.setId( notification.getDemand( ).getId( ) );
             demand.setTypeId( notification.getDemand( ).getTypeId( ) );
             demand.setReference( notification.getDemand( ).getReference( ) );
-            demand.setCreationDate( notification.getNotificationDate( ) );
+            demand.setCreationDate( notification.getDate( ) );
             demand.setMaxSteps( notification.getDemand( ).getMaxSteps( ) );
             demand.setCurrentStep( notification.getDemand( ).getCurrentStep( ) );
             demand.setStatusId( notification.getDemand( ).getStatusId( ) );
 
             Customer customerDemand = new Customer( );
             customerDemand.setId( notification.getDemand( ).getCustomer( ).getId( ) );
-            customerDemand.setAccountGuid( notification.getDemand( ).getCustomer( ).getAccountGuid( ) );
+            customerDemand.setConnectionId( notification.getDemand( ).getCustomer( ).getConnectionId( ) );
             demand.setCustomer( customerDemand );
             _demandService.create( demand );
         }
@@ -214,7 +214,7 @@ public class GRUSupplyRestService
                     && ( notification.getDemand( ).getStatusId( ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
             {
                 demand.setStatusId( notification.getDemand( ).getStatusId( ) );
-                demand.setClosureDate( notification.getNotificationDate( ) );
+                demand.setClosureDate( notification.getDate( ) );
             }
 
             // Demand closed to opened
