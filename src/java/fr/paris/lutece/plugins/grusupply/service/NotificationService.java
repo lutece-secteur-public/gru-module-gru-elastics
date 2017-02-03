@@ -93,10 +93,10 @@ public class NotificationService
      */
     public void sendEmail( Notification notification )
     {
-        if ( ( notification != null ) && ( notification.getUserEmail( ) != null ) )
+        if ( ( notification != null ) && ( notification.getEmailNotification( ) != null ) )
         {
             GruSupplyEmail gruEmail = new GruSupplyEmail( );
-            EmailNotification notifEmail = notification.getUserEmail( );
+            EmailNotification notifEmail = notification.getEmailNotification( );
             gruEmail.setRecipient( notifEmail.getRecipient( ) );
             gruEmail.setCc( notifEmail.getCc( ) );
             gruEmail.setBcc( notifEmail.getCci( ) );
