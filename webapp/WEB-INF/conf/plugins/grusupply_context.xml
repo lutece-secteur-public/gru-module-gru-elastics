@@ -20,7 +20,6 @@
     
     <!-- STORAGE SERVICE -->
     <bean id="grusupply.demandIndexService" class="fr.paris.lutece.plugins.grusupply.service.index.MockDemandIndexingService"/>
-    <bean id="grusupply.demandIndexer" class="fr.paris.lutece.plugins.grusupply.service.index.DemandIndexer"/> 
     
     <!-- NOTIFICATION SERVICE -->
    <bean id="grusupply.notificationService" class="fr.paris.lutece.plugins.grusupply.service.NotificationService"/>  
