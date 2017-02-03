@@ -239,12 +239,11 @@ public class NotifyCrmService
                 ( ( notif.getMyDashboardNotification( ) != null ) && ( notif.getMyDashboardNotification( ).getStatusId( ) != GruSupplyConstants.DEFAULT_INT ) ) ? String
                         .valueOf( notif.getMyDashboardNotification( ).getStatusId( ) ) : StringUtils.EMPTY );
 
-        crmItem.putParameter( ICRMItem.STATUS_TEXT, ( ( notif.getMyDashboardNotification( ) != null ) && ( StringUtils.isNotBlank( notif.getMyDashboardNotification( )
-                .getStatusText( ) ) ) ) ? notif.getMyDashboardNotification( ).getStatusText( ) : StringUtils.EMPTY );
+        crmItem.putParameter( ICRMItem.STATUS_TEXT, ( ( notif.getMyDashboardNotification( ) != null ) && ( StringUtils.isNotBlank( notif
+                .getMyDashboardNotification( ).getStatusText( ) ) ) ) ? notif.getMyDashboardNotification( ).getStatusText( ) : StringUtils.EMPTY );
 
-        crmItem.putParameter( ICRMItem.DEMAND_DATA,
-                ( ( notif.getMyDashboardNotification( ) != null ) && ( StringUtils.isNotBlank( notif.getMyDashboardNotification( ).getData( ) ) ) ) ? notif.getMyDashboardNotification( )
-                        .getData( ) : StringUtils.EMPTY );
+        crmItem.putParameter( ICRMItem.DEMAND_DATA, ( ( notif.getMyDashboardNotification( ) != null ) && ( StringUtils.isNotBlank( notif
+                .getMyDashboardNotification( ).getData( ) ) ) ) ? notif.getMyDashboardNotification( ).getData( ) : StringUtils.EMPTY );
 
         crmItem.putParameter( CRM_REMOTE_ID, ( ( notif.getDemand( ) != null ) && ( StringUtils.isNotBlank( notif.getDemand( ).getId( ) ) ) ) ? notif
                 .getDemand( ).getId( ) : StringUtils.EMPTY );
@@ -272,14 +271,14 @@ public class NotifyCrmService
                 ( ( notif.getDemand( ) != null ) && ( StringUtils.isNotBlank( notif.getDemand( ).getTypeId( ) ) ) ) ? notif.getDemand( ).getTypeId( )
                         : StringUtils.EMPTY );
 
-        crmItem.putParameter( ICRMItem.NOTIFICATION_OBJECT, ( ( notif.getMyDashboardNotification( ) != null ) && ( StringUtils.isNotBlank( notif.getMyDashboardNotification( )
-                .getSubject( ) ) ) ) ? notif.getMyDashboardNotification( ).getSubject( ) : StringUtils.EMPTY );
+        crmItem.putParameter( ICRMItem.NOTIFICATION_OBJECT, ( ( notif.getMyDashboardNotification( ) != null ) && ( StringUtils.isNotBlank( notif
+                .getMyDashboardNotification( ).getSubject( ) ) ) ) ? notif.getMyDashboardNotification( ).getSubject( ) : StringUtils.EMPTY );
 
-        crmItem.putParameter( ICRMItem.NOTIFICATION_MESSAGE, ( ( notif.getMyDashboardNotification( ) != null ) && ( StringUtils.isNotBlank( notif.getMyDashboardNotification( )
-                .getMessage( ) ) ) ) ? notif.getMyDashboardNotification( ).getMessage( ) : StringUtils.EMPTY );
+        crmItem.putParameter( ICRMItem.NOTIFICATION_MESSAGE, ( ( notif.getMyDashboardNotification( ) != null ) && ( StringUtils.isNotBlank( notif
+                .getMyDashboardNotification( ).getMessage( ) ) ) ) ? notif.getMyDashboardNotification( ).getMessage( ) : StringUtils.EMPTY );
 
-        crmItem.putParameter( ICRMItem.NOTIFICATION_SENDER, ( ( notif.getMyDashboardNotification( ) != null ) && ( StringUtils.isNotBlank( notif.getMyDashboardNotification( )
-                .getSenderName( ) ) ) ) ? notif.getMyDashboardNotification( ).getSenderName( ) : StringUtils.EMPTY );
+        crmItem.putParameter( ICRMItem.NOTIFICATION_SENDER, ( ( notif.getMyDashboardNotification( ) != null ) && ( StringUtils.isNotBlank( notif
+                .getMyDashboardNotification( ).getSenderName( ) ) ) ) ? notif.getMyDashboardNotification( ).getSenderName( ) : StringUtils.EMPTY );
 
         return crmItem;
     }
