@@ -101,26 +101,6 @@ public class GRUSupplyRestService
 
             store( notification );
 
-            // STORE FOR AGENT
-            try
-            {
-                // Parse to Demand
-                DemandIndexService.instance( ).index( notification.getDemand( ) );
-            }
-            catch( IndexingException e )
-            {
-                if ( notification.getDemand( ) != null )
-                {
-                    // Storage the Demand in database when the indexation failed
-                    DemandIndexerAction demandIndexerAction = new DemandIndexerAction( );
-                    demandIndexerAction.setDemandId( String.valueOf( notification.getDemand( ).getId( ) ) );
-                    demandIndexerAction.setDemandTypeId( String.valueOf( notification.getDemand( ).getTypeId( ) ) );
-                    demandIndexerAction.setTask( IndexerTask.CREATE );
-
-                    DemandIndexerActionHome.create( demandIndexerAction );
-                }
-            }
-
             // Notify user and crm if a bean NotificationService is instantiated
             NotificationService notificationService = NotificationService.instance( );
 
