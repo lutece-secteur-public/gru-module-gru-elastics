@@ -2,7 +2,7 @@
     <!-- Plugin Informations -->
     <name>grusupply</name>
     <class>fr.paris.lutece.plugins.grusupply.service.GruSupplyPlugin</class>
-    <version>1.2.3</version>
+    <version>1.2.4-SNAPSHOT</version>
     <documentation/>
     <installation/>
     <changes/>
