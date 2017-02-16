@@ -42,14 +42,10 @@ import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grubusiness.business.customer.Customer;
 import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.demand.DemandService;
-import fr.paris.lutece.plugins.grubusiness.business.indexing.IndexingException;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
-import fr.paris.lutece.plugins.grusupply.business.daemon.IndexerTask;
-import fr.paris.lutece.plugins.grusupply.business.daemon.demand.DemandIndexerAction;
-import fr.paris.lutece.plugins.grusupply.business.daemon.demand.DemandIndexerActionHome;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
+import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.NotificationService;
-import fr.paris.lutece.plugins.grusupply.service.index.DemandIndexService;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -63,6 +59,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.apache.commons.lang.StringUtils;
 
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME )
 public class GRUSupplyRestService
@@ -98,6 +96,14 @@ public class GRUSupplyRestService
 
             Notification notification = mapper.readValue( strJson, Notification.class );
             AppLogService.info( "grusupply - Received strJson : " + strJson );
+            if ( notification.getDemand( ) != null && notification.getDemand( ).getCustomer( ) != null
+                    && StringUtils.isNotEmpty( notification.getDemand( ).getCustomer( ).getConnectionId( ) )
+                    && StringUtils.isEmpty( notification.getDemand( ).getCustomer( ).getId( ) ) )
+            {
+                fr.paris.lutece.plugins.grusupply.business.Customer customer = CustomerProvider.instance( ).get(
+                        notification.getDemand( ).getCustomer( ).getConnectionId( ), StringUtils.EMPTY );
+                notification.getDemand( ).getCustomer( ).setId( customer.getCustomerId( ) );
+            }
 
             store( notification );
 
