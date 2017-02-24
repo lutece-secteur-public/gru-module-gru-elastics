@@ -95,7 +95,7 @@ public class GRUSupplyRestService
             mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
 
             Notification notification = mapper.readValue( strJson, Notification.class );
-            AppLogService.info( "grusupply - Received strJson : " + strJson );
+            AppLogService.debug( "grusupply - Received strJson : " + strJson );
             if ( notification.getDemand( ) != null && notification.getDemand( ).getCustomer( ) != null
                     && StringUtils.isNotEmpty( notification.getDemand( ).getCustomer( ).getConnectionId( ) )
                     && StringUtils.isEmpty( notification.getDemand( ).getCustomer( ).getId( ) ) )
