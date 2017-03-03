@@ -10,7 +10,7 @@
     <groupId>fr.paris.lutece.plugins</groupId>
     <artifactId>plugin-grusupply</artifactId>
     <packaging>lutece-plugin</packaging>
-    <version>1.2.4-SNAPSHOT</version>
+    <version>1.2.4</version>
     <name>Lutece grusupply plugin</name>
     
     <repositories>
@@ -95,7 +95,7 @@
         <connection>scm:git:https://github.com/lutece-secteur-public/gru-plugin-grusupply.git</connection>
         <developerConnection>scm:git:https://github.com/lutece-secteur-public/gru-plugin-grusupply.git</developerConnection>
         <url>https://github.com/lutece-secteur-public/gru-plugin-grusupply.git</url>
-      <tag>HEAD</tag>
+      <tag>gru-plugin-grusupply-1.2.4</tag>
   </scm>
     
 </project>
