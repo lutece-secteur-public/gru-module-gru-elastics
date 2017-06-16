@@ -41,14 +41,4 @@
            </init-param>
        </filter> -->
    </filters>
-   
-    <!-- Daemons -->
-    <daemons>
-        <daemon>
-            <daemon-id>demandIndexerDaemon</daemon-id>
-            <daemon-name>grusupply.daemon.demandIndexerDaemon.name</daemon-name>
-            <daemon-description>grusupply.daemon.demandIndexerDaemon.description</daemon-description>
-            <daemon-class>fr.paris.lutece.plugins.grusupply.service.daemon.DemandIndexerDaemon</daemon-class>
-        </daemon>
-    </daemons>
 </plug-in>
