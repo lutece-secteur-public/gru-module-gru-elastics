@@ -178,6 +178,7 @@ public class GRUSupplyRestService
 
             demand.setId( notification.getDemand( ).getId( ) );
             demand.setTypeId( notification.getDemand( ).getTypeId( ) );
+            demand.setSubtypeId( notification.getDemand( ).getSubtypeId( ) );
             demand.setReference( notification.getDemand( ).getReference( ) );
             demand.setCreationDate( notification.getDate( ) );
             demand.setMaxSteps( notification.getDemand( ).getMaxSteps( ) );
