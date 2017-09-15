@@ -5,8 +5,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd" >
     
     <!-- DAO -->
-    <bean id="grusupply.demandDAO"  class="fr.paris.lutece.plugins.grubusiness.business.demand.MockDemandDAO" />  
-    <bean id="grusupply.notificationDAO"  class="fr.paris.lutece.plugins.grubusiness.business.notification.MockNotificationDAO" />
+    <bean id="grusupply.demandDAO"  class="fr.paris.lutece.plugins.grubusiness.business.mock.MockDemandDAO" />
+    <bean id="grusupply.notificationDAO"  class="fr.paris.lutece.plugins.grubusiness.business.mock.MockNotificationDAO" />
     <bean id="grusupply.storageService" class="fr.paris.lutece.plugins.grubusiness.business.demand.DemandService">
       <constructor-arg ref="grusupply.demandDAO"/>
       <constructor-arg ref="grusupply.notificationDAO"/>
