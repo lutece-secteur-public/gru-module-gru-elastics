@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
-	<properties>
-		<title>Plugin GRUSupply</title>
-	</properties>
-	<body>
-		<section name="Plugin GRUSupply">
-			<subsection name="Introduction">
-			</subsection>
-		</section>
-	</body>
+    <properties>
+        <title>Plugin GRU supply</title>
+    </properties>
+    <body>
+        <section name="Plugin GRU supply">
+            <subsection name="Introduction">
+                <p>
+                Ce plugin gère les notifications de la GRU. Il les stocke et envoie les différentes parties de la notification aux systèmes dédiés.
+                </p>
+            </subsection>
+            <subsection name="Configuration">
+                <p><strong>Le DAO pour les demandes</strong></p>
+                <p>
+                Par défaut, le plugin utilise un bouchon pour stocker les demandes. Les demandes ne sont pas stockées.
+                Pour utiliser un mécanisme de stockage correct, le bean <code>grusupply.storageService</code> défini dans le contexte Spring doit utiliser une implémentation concrète de <code>fr.paris.lutece.plugins.grubusiness.business.demand.IDemandDAO</code>
+                de la librairie <code>gru-library-grubusiness</code>.
+                </p>
+                <p>
+                Les implémentations connues sont les suivantes :
+                <ul>
+                    <li>
+                        <code>fr.paris.lutece.plugins.grustoragedb.business.DemandDAO</code> du plugin <code>gru-plugin-grustoragedb</code>.
+                        Les demandes sont stockées dans la base de données.
+                    </li>
+                </ul>
+                </p>
+                <p><strong>Le DAO pour les notifications</strong></p>
+                <p>
+                Par défaut, le plugin utilise un bouchon pour stocker les notifications. Les notifications ne sont pas stockées.
+                Pour utiliser un mécanisme de stockage correct, le bean <code>grusupply.storageService</code> défini dans le contexte Spring doit utiliser une implémentation concrète de <code>fr.paris.lutece.plugins.grubusiness.business.notification.INotificationDAO</code>
+                de la librairie <code>gru-library-grubusiness</code>.
+                </p>
+                <p>
+                Les implémentations connues sont les suivantes :
+                <ul>
+                    <li>
+                        <code>fr.paris.lutece.plugins.grustoragedb.business.NotificationDAO</code> du plugin <code>gru-plugin-grustoragedb</code>.
+                        Les notifications sont stockées dans la base de données.
+                    </li>
+                </ul>
+                </p>
+            </subsection>
+        </section>
+    </body>
 </document>
+

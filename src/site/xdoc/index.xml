@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
-	<properties>
-		<title>Plugin GRUSupply</title>
-	</properties>
-	<body>
-		<section name="Plugin GRUSupply">
-			<subsection name="Introduction">
-			</subsection>
-		</section>
-	</body>
+    <properties>
+        <title>Plugin GRU supply</title>
+    </properties>
+    <body>
+        <section name="Plugin GRU supply">
+            <subsection name="Introduction">
+                <p>
+                This plugin manages notifications for the GRU. It stores them and sends the different parts of the notification to the dedicated systems.
+                </p>
+            </subsection>
+            <subsection name="Configuration">
+                <p><strong>The Demand DAO</strong></p>
+                <p>
+                By default, the plugin uses a mock to store the demands. The demands are not stored.
+                To use a correct storage mechanism, the bean <code>grusupply.storageService</code> defined in the Spring context must use a concrete implementation of <code>fr.paris.lutece.plugins.grubusiness.business.demand.IDemandDAO</code>
+                from the library <code>gru-library-grubusiness</code>.
+                </p>
+                <p>
+                The known implementations are the following:
+                <ul>
+                    <li>
+                        <code>fr.paris.lutece.plugins.grustoragedb.business.DemandDAO</code> from the plugin <code>gru-plugin-grustoragedb</code>.
+                        The demands are stored in the database.
+                    </li>
+                </ul>
+                </p>
+                <p><strong>The Notification DAO</strong></p>
+                <p>
+                By default, the plugin uses a mock to store the notifications. The notifications are not stored.
+                To use a correct storage mechanism, the bean <code>grusupply.storageService</code> defined in the Spring context must use a concrete implementation of <code>fr.paris.lutece.plugins.grubusiness.business.notification.INotificationDAO</code>
+                from the library <code>gru-library-grubusiness</code>.
+                </p>
+                <p>
+                The known implementations are the following:
+                <ul>
+                    <li>
+                        <code>fr.paris.lutece.plugins.grustoragedb.business.NotificationDAO</code> from the plugin <code>gru-plugin-grustoragedb</code>.
+                        The notifications are stored in the database.
+                    </li>
+                </ul>
+                </p>
+            </subsection>
+        </section>
+    </body>
 </document>
+
