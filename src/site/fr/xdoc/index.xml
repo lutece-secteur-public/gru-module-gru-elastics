@@ -10,6 +10,15 @@
                 Ce plugin gère les notifications de la GRU. Il les stocke et envoie les différentes parties de la notification aux systèmes dédiés.
                 </p>
             </subsection>
+            <subsection name="Cryptage des objets Customer">
+                <p>
+                Le plugin peut utiliser des objets <code>Customer</code> ayant leurs identifiants cryptés. Ce mécanisme permet d'avoir un identifiant spécifique par fournisseur de services. Par conséquent, l'identifiant n'est pas partagé.
+                </p>
+                <p>
+                Pour utiliser le cryptage, le site doit contenir une classe implémentant l'interface <code>fr.paris.lutece.plugins.grubusiness.service.encryption.ICustomerEncryptionService</code> de la librairie <code>gru-library-grubusiness</code>.
+                Par exemple, ajoutez le plugin <code>gru-plugin-grukeydiversification</code> dans le <code>pom.xml</code> du site. The cryptage est alors activé.
+                </p>
+            </subsection>
             <subsection name="Configuration">
                 <p><strong>Le DAO pour les demandes</strong></p>
                 <p>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2016, Mairie de Paris
+ * Copyright (c) 2002-2017, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,9 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
-import fr.paris.lutece.plugins.grusupply.business.Customer;
+import fr.paris.lutece.plugins.grubusiness.business.customer.Customer;
+import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
+import fr.paris.lutece.plugins.grubusiness.service.encryption.ICustomerEncryptionService;
 import fr.paris.lutece.plugins.identitystore.web.rs.dto.AttributeDto;
 import fr.paris.lutece.plugins.identitystore.web.rs.dto.IdentityDto;
 import fr.paris.lutece.plugins.identitystore.web.service.IdentityService;
@@ -41,8 +43,10 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 /**
@@ -51,8 +55,6 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
  */
 public class CustomerProvider
 {
-    // FIXME ? full recopie de IdentityStoreCustomerInfoService
-
     // Properties
     private static final String PROPERTIES_APPLICATION_CODE = "grusupply.application.code";
     private static final String PROPERTIES_ATTRIBUTE_USER_NAME_GIVEN = "grusupply.identity.attribute.user.name.given";
@@ -77,6 +79,8 @@ public class CustomerProvider
     private static final String BEAN_IDENTITYSTORE_SERVICE = "grusupply.identitystore.service";
     private static CustomerProvider _singleton;
     private static boolean bIsInitialized = false;
+    private static List<ICustomerEncryptionService> _listCustomerEncryption;
+
     private IdentityService _identityService;
 
     /**
@@ -90,6 +94,7 @@ public class CustomerProvider
             {
                 _singleton = new CustomerProvider( );
                 _singleton.setIdentityService( (IdentityService) SpringContextService.getBean( BEAN_IDENTITYSTORE_SERVICE ) );
+                _listCustomerEncryption = SpringContextService.getBeansOfType( ICustomerEncryptionService.class );
             }
             catch( NoSuchBeanDefinitionException e )
             {
@@ -128,32 +133,91 @@ public class CustomerProvider
 
         IdentityDto identityDto = _identityService.getIdentity( strGuid, strCid, APPLICATION_CODE );
 
-        return convert( identityDto );
+        Customer customerEncrypted = convert( identityDto );
+
+        return decrypt( customerEncrypted, APPLICATION_CODE );
     }
 
     /**
-     * Converts a IdentityDto to a GRU supply customer
+     * <p>
+     * Decrypts a {@link Customer} from the specified {@code Customer}.
+     * <p>
+     * <p>
+     * The provided {@code Customer} is not modified.
+     * </p>
+     * 
+     * @param customer
+     *            the customer from which the {@code Customer} is decrypted. Must not be {@code null}
+     * @param strCode
+     *            the code used to decrypt the {@code Customer}. Must not be {@code null}
+     * @return the decrypted {@code Customer}
+     */
+    public Customer decrypt( Customer customer, String strCode )
+    {
+        Customer customerResult = customer;
+
+        if ( customerResult != null )
+        {
+            for ( ICustomerEncryptionService customerEncryptionService : _listCustomerEncryption )
+            {
+                customerResult = customerEncryptionService.decrypt( customerResult, strCode );
+            }
+        }
+
+        return customerResult;
+    }
+
+    /**
+     * <p>
+     * Decrypts a {@link Customer} from the specified {@code Customer}.
+     * <p>
+     * <p>
+     * The provided {@code Customer} is not modified.
+     * </p>
+     * 
+     * @param customer
+     *            the customer from which the {@code Customer} is decrypted. Must not be {@code null}
+     * @param demand
+     *            the demand for which the {@code Customer} is decrypted. Must not be {@code null}
+     * @return the decrypted {@code Customer}
+     */
+    public Customer decrypt( Customer customer, Demand demand )
+    {
+        Customer customerResult = customer;
+
+        if ( customerResult != null )
+        {
+            for ( ICustomerEncryptionService customerEncryptionService : _listCustomerEncryption )
+            {
+                customerResult = customerEncryptionService.decrypt( customerResult, demand );
+            }
+        }
+
+        return customerResult;
+    }
+
+    /**
+     * Converts a IdentityDto to a customer
      *
-     * @param IdentityDto
-     *            the identityDto
-     * @return the GRU supply customer
+     * @param identityDto
+     *            the identity
+     * @return the customer
      */
     private static Customer convert( IdentityDto identityDto )
     {
-        Customer customerGruSupply = new Customer( );
+        Customer customer = new Customer( );
 
-        customerGruSupply.setCustomerId( identityDto.getCustomerId( ) );
-        customerGruSupply.setConnectionId( identityDto.getConnectionId( ) );
-        customerGruSupply.setName( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_FAMILLY ) );
-        customerGruSupply.setFirstName( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_GIVEN ) );
-        customerGruSupply.setEmail( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL ) );
-        customerGruSupply.setTelephoneNumber( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER ) );
-        customerGruSupply.setFixedTelephoneNumber( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER ) );
-        customerGruSupply.setStayConnected( true );
-        customerGruSupply.setCivility( getAttribute( identityDto, ATTRIBUTE_IDENTITY_GENDER ) );
-        customerGruSupply.setBirthday( getAttribute( identityDto, ATTRIBUTE_IDENTITY_BIRTHDATE ) );
+        customer.setId( identityDto.getCustomerId( ) );
+        customer.setConnectionId( identityDto.getConnectionId( ) );
+        customer.setLastname( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_FAMILLY ) );
+        customer.setFirstname( getAttribute( identityDto, ATTRIBUTE_IDENTITY_NAME_GIVEN ) );
+        customer.setEmail( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_ONLINE_EMAIL ) );
+        customer.setMobilePhone( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_MOBILE_NUMBER ) );
+        customer.setFixedPhoneNumber( getAttribute( identityDto, ATTRIBUTE_IDENTITY_HOMEINFO_TELECOM_TELEPHONE_NUMBER ) );
+        customer.setIdTitle( NumberUtils.toInt( getAttribute( identityDto, ATTRIBUTE_IDENTITY_GENDER ) ) );
+        customer.setBirthDate( getAttribute( identityDto, ATTRIBUTE_IDENTITY_BIRTHDATE ) );
 
-        return customerGruSupply;
+        return customer;
     }
 
     /**

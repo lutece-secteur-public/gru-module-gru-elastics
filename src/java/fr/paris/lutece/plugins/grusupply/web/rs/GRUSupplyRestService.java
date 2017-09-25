@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2016, Mairie de Paris
+ * Copyright (c) 2002-2017, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -96,14 +96,18 @@ public class GRUSupplyRestService
 
             Notification notification = mapper.readValue( strJson, Notification.class );
             AppLogService.debug( "grusupply - Received strJson : " + strJson );
-            if ( notification.getDemand( ) != null && notification.getDemand( ).getCustomer( ) != null
-                    && StringUtils.isNotEmpty( notification.getDemand( ).getCustomer( ).getConnectionId( ) )
-                    && StringUtils.isEmpty( notification.getDemand( ).getCustomer( ).getId( ) ) )
+
+            Customer customerEncrypted = notification.getDemand( ).getCustomer( );
+            Customer customerDecrypted = CustomerProvider.instance( ).decrypt( customerEncrypted, notification.getDemand( ) );
+
+            if ( customerDecrypted != null && StringUtils.isNotEmpty( customerDecrypted.getConnectionId( ) )
+                    && StringUtils.isEmpty( customerDecrypted.getId( ) ) )
             {
-                fr.paris.lutece.plugins.grusupply.business.Customer customer = CustomerProvider.instance( ).get(
-                        notification.getDemand( ).getCustomer( ).getConnectionId( ), StringUtils.EMPTY );
-                notification.getDemand( ).getCustomer( ).setId( customer.getCustomerId( ) );
+                Customer customerTmp = CustomerProvider.instance( ).get( customerDecrypted.getConnectionId( ), StringUtils.EMPTY );
+                customerDecrypted.setId( customerTmp.getId( ) );
             }
+
+            notification.getDemand( ).setCustomer( customerDecrypted );
 
             store( notification );
 
