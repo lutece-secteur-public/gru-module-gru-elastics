@@ -265,8 +265,13 @@
                             "type": "string"
                         },
                         "phone_number": {
-                            "description": "the user phone numer",
+                            "description": "the user phone number",
                             "example": "0600000000",
+                            "type": "string"
+                        },
+                        "sender_name": {
+                            "description": "the name of the SMS sender",
+                            "example": "abcde",
                             "type": "string"
                         }
                     },
