@@ -122,6 +122,11 @@ public class GRUSupplyRestService
                 {
                     notificationService.sendEmail( notification );
                 }
+                
+                if ( notification.getDemand() != null )
+				{
+					notificationService.sendStatistics( notification );
+				}
 
                 if ( notification.getSmsNotification( ) != null )
                 {

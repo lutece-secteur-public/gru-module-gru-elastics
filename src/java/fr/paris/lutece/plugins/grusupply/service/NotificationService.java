@@ -54,6 +54,7 @@ public class NotificationService
     private static SendEmailService _sendEmailService;
     private static SendSmsService _sendSmsService;
     private static NotifyCrmService _notifyCrmService;
+    private static SendStatisticsService _sendStatisticsService;
     private static boolean bIsInitialized = false;
 
     /**
@@ -70,6 +71,7 @@ public class NotificationService
                 _singleton = SpringContextService.getBean( BEAN_NOTIFICATION_SERVICE );
                 _sendEmailService = new SendEmailService( );
                 _sendSmsService = new SendSmsService( );
+                _sendStatisticsService = new SendStatisticsService( );
                 _notifyCrmService = new NotifyCrmService( );
             }
             catch( NoSuchBeanDefinitionException e )
@@ -165,6 +167,20 @@ public class NotificationService
         if ( notification != null )
         {
             _sendSmsService.sendSms( notification );
+        }
+    }
+    
+    /**
+     * send Statistics
+     * 
+     * @param notification
+     * @throws Exception 
+     */
+    public void sendStatistics( Notification notification )
+    {
+        if ( notification != null )
+        {
+            _sendStatisticsService.sendNotification( notification );
         }
     }
 
