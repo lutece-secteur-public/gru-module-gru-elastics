@@ -43,72 +43,67 @@ import javax.ws.rs.core.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
-import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
-import fr.paris.lutece.plugins.identitystore.web.rs.service.Constants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.httpaccess.HttpAccess;
 
 public class SendStatisticsService
 {
-    private static final String URL_WS_CREATE_DEMAND = "grusupply.url.ws.statistics";
+	private static final String URL_WS_CREATE_DEMAND = "grusupply.url.ws.statistics";
 
+	/** constructor */
+	public SendStatisticsService()
+	{
+	}
 
-    /** constructor */
-    public SendStatisticsService( )
-    {
-    }
+	/**
+	 * Send Notification to statistics
+	 * 
+	 * @param n
+	 * @throws Exception
+	 */
+	public void sendNotification( Notification notification )
+	{
+		AppLogService.info( " \n \n GRUSUPPLY - sendNotification( NotificationDTO notification ) \n \n" );
 
-    /**
-     * Send Notification to statistics
-     * 
-     * @param n
-     * @throws Exception 
-     */
-    public void sendNotification( Notification notification )
-    {
-        AppLogService.info( " \n \n GRUSUPPLY - sendNotification( NotificationDTO notification ) \n \n" );
+		doProcess( AppPropertiesService.getProperty( URL_WS_CREATE_DEMAND ), notification );
+	}
 
-        doProcess( AppPropertiesService.getProperty( URL_WS_CREATE_DEMAND ) , notification);
-    }
+	/**
+	 * Call web service rest using GET method
+	 * 
+	 * @param strWsUrl
+	 *            the web service URL
+	 * 
+	 * @param notification
+	 *            the parameters
+	 * @return the response
+	 * @throws Exception
+	 * @throws CRMException
+	 */
+	private Response doProcess( String strWsUrl, Notification notification )
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		HttpAccess clientHttp = new HttpAccess();
+		Map<String, String> mapHeadersResponse = new HashMap<String, String>();
+		Map<String, String> mapHeadersRequest = new HashMap<String, String>();
+		mapHeadersRequest.put( HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON );
 
+		Response oResponse = null;
 
-    /**
-     * Call web service rest using GET method
-     * 
-     * @param strWsUrl
-     *            the web service URL
-     *            
-     * @param notification
-     *            the parameters
-     * @return the response
-     * @throws Exception 
-     * @throws CRMException
-     */
-    private Response doProcess( String strWsUrl, Notification notification )
-    {
-    	ObjectMapper mapper = new ObjectMapper( );
-    	HttpAccess clientHttp = new HttpAccess( );
-        Map<String, String> mapHeadersResponse = new HashMap<String, String>( );
-        Map<String, String> mapHeadersRequest = new HashMap<String, String>( );
-        mapHeadersRequest.put( HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON );
-        mapHeadersRequest.put( HttpHeaders.CONTENT_TYPE, Constants.CONTENT_FORMAT_CHARSET );
-        
-        Response oResponse = null;
-        
-        try
-        {
-            String strJSON = mapper.writeValueAsString( notification );
-            String strResponseJSON = clientHttp.doPostJSON( strWsUrl, strJSON, mapHeadersRequest, mapHeadersResponse );
-            oResponse = mapper.readValue( strResponseJSON, Response.class );
-        }
-        catch( Exception e )
-        {
-        	String strError = "Error connecting to '" + strWsUrl + "' : ";
-            AppLogService.error( strError + e.getMessage( ), e );
-        }
+		try
+		{
+			String strJSON = mapper.writeValueAsString( notification );
+			String strResponseJSON = clientHttp.doPostJSON( strWsUrl, strJSON, mapHeadersRequest, mapHeadersResponse );
+			oResponse = mapper.readValue( strResponseJSON, Response.class );
+		}
+		catch ( Exception e )
+		{
+			String strError = "Error connecting to '" + strWsUrl + "' : ";
+			AppLogService.error( strError + e.getMessage(), e );
+		}
 
-        return oResponse;
-    }
+		return oResponse;
+	}
 }
