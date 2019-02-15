@@ -106,9 +106,18 @@ public class GRUSupplyRestService
                 Customer customerTmp = CustomerProvider.instance( ).get( customerDecrypted.getConnectionId( ), StringUtils.EMPTY );
                 customerDecrypted.setId( customerTmp.getId( ) );
             }
+            else if ( customerDecrypted == null )
+            {
+                customerDecrypted = new Customer( );
+                customerDecrypted.setConnectionId( StringUtils.EMPTY );
+                customerDecrypted.setId( StringUtils.EMPTY );
+                notification.getDemand().setCustomer( customerDecrypted );
+            }
 
             notification.getDemand( ).setCustomer( customerDecrypted );
 
+            
+           
             store( notification );
 
             // Notify user and crm if a bean NotificationService is instantiated
