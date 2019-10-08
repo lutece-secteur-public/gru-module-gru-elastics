@@ -43,6 +43,8 @@ import fr.paris.lutece.plugins.grubusiness.business.customer.Customer;
 import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.demand.DemandService;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
+import fr.paris.lutece.plugins.grubusiness.service.notification.INotificationServiceProvider;
+import fr.paris.lutece.plugins.grubusiness.service.notification.NotificationException;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.NotificationService;
@@ -50,6 +52,8 @@ import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -125,39 +129,10 @@ public class GRUSupplyRestService
 
             if ( notificationService != null )
             {
-                AppLogService.info( " \n \n GRUSUPPLY - Bean Notifcation not null \n \n" );
+                AppLogService.info( "GRUSUPPLY - Process Notification" + notification.getId( ) );
 
-                if ( notification.getEmailNotification( ) != null )
-                {
-                    notificationService.sendEmail( notification );
-                }
+                NotificationService.instance().process( notification );                
                 
-                if ( notification.getDemand() != null )
-				{
-					notificationService.sendStatistics( notification );
-				}
-
-                if ( notification.getSmsNotification( ) != null )
-                {
-                    notificationService.sendSms( notification );
-                }
-
-                if ( ( notification.getBroadcastEmail( ) != null ) && !notification.getBroadcastEmail( ).isEmpty( ) )
-                {
-                    notificationService.sendBroadcastEmail( notification );
-                }
-
-                try
-                {
-                    if ( notification.getMyDashboardNotification( ) != null )
-                    {
-                        notificationService.notifyCrm( notification );
-                    }
-                }
-                catch( CRMException ex )
-                {
-                    return error( ex + " :" + ex.getMessage( ), ex );
-                }
             }
         }
         catch( JsonParseException ex )
@@ -173,6 +148,10 @@ public class GRUSupplyRestService
             return error( ex + " :" + ex.getMessage( ), ex );
         }
         catch( NullPointerException ex )
+        {
+            return error( ex + " :" + ex.getMessage( ), ex );
+        } 
+        catch (NotificationException ex) 
         {
             return error( ex + " :" + ex.getMessage( ), ex );
         }

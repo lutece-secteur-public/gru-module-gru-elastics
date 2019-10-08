@@ -34,11 +34,9 @@
 package fr.paris.lutece.plugins.grusupply.service;
 
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
-import fr.paris.lutece.plugins.grubusiness.business.notification.BroadcastNotification;
-import fr.paris.lutece.plugins.grubusiness.business.notification.EmailAddress;
-import fr.paris.lutece.plugins.grubusiness.business.notification.EmailNotification;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
-import fr.paris.lutece.plugins.grusupply.business.GruSupplyEmail;
+import fr.paris.lutece.plugins.grubusiness.service.notification.INotificationServiceProvider;
+import fr.paris.lutece.plugins.grubusiness.service.notification.NotificationException;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -49,13 +47,9 @@ import java.util.List;
 public class NotificationService
 {
     private static final String BEAN_NOTIFICATION_SERVICE = "grusupply.notificationService";
-    private static final String ADRESS_SEPARATOR = ";";
     private static NotificationService _singleton;
-    private static SendEmailService _sendEmailService;
-    private static SendSmsService _sendSmsService;
-    private static NotifyCrmService _notifyCrmService;
-    private static SendStatisticsService _sendStatisticsService;
     private static boolean bIsInitialized = false;
+    private static List<INotificationServiceProvider> _notifyers ;
 
     /**
      * Returns the unique instance
@@ -69,10 +63,9 @@ public class NotificationService
             try
             {
                 _singleton = SpringContextService.getBean( BEAN_NOTIFICATION_SERVICE );
-                _sendEmailService = new SendEmailService( );
-                _sendSmsService = new SendSmsService( );
-                _sendStatisticsService = new SendStatisticsService( );
-                _notifyCrmService = new NotifyCrmService( );
+                
+                _notifyers = SpringContextService.getBeansOfType( INotificationServiceProvider.class ) ;
+                
             }
             catch( NoSuchBeanDefinitionException e )
             {
@@ -89,121 +82,18 @@ public class NotificationService
     }
 
     /**
-     * send Email
+     * process notification by the registred notifyers
      * 
      * @param notification
+     * @throws NotificationException 
      */
-    public void sendEmail( Notification notification )
+    public static void process ( Notification notification ) throws NotificationException
     {
-        if ( ( notification != null ) && ( notification.getEmailNotification( ) != null ) )
+        
+        for ( INotificationServiceProvider notifyer : _notifyers )
         {
-            GruSupplyEmail gruEmail = new GruSupplyEmail( );
-            EmailNotification notifEmail = notification.getEmailNotification( );
-            gruEmail.setRecipient( notifEmail.getRecipient( ) );
-            gruEmail.setCc( notifEmail.getCc( ) );
-            gruEmail.setBcc( notifEmail.getCci( ) );
-            gruEmail.setSenderEmail( notifEmail.getSenderEmail( ) );
-            gruEmail.setSenderName( notifEmail.getSenderName( ) );
-            gruEmail.setSubject( notifEmail.getSubject( ) );
-            gruEmail.setMessage( notifEmail.getMessage( ) );
-
-            _sendEmailService.sendEmail( gruEmail );
+            notifyer.process( notification );
         }
-    }
-
-    /**
-     * send Broadcast email
-     * 
-     * @param notification
-     */
-    public void sendBroadcastEmail( Notification notification )
-    {
-        if ( ( notification != null ) && ( notification.getBroadcastEmail( ) != null ) )
-        {
-            GruSupplyEmail gruEmail = null;
-
-            for ( BroadcastNotification notifBroadcast : notification.getBroadcastEmail( ) )
-            {
-                gruEmail = new GruSupplyEmail( );
-                gruEmail.setRecipient( buildEmailAdresses( notifBroadcast.getRecipient( ) ) );
-                gruEmail.setCc( buildEmailAdresses( notifBroadcast.getCc( ) ) );
-                gruEmail.setBcc( buildEmailAdresses( notifBroadcast.getBcc( ) ) );
-                gruEmail.setSenderEmail( notifBroadcast.getSenderEmail( ) );
-                gruEmail.setSenderName( notifBroadcast.getSenderName( ) );
-                gruEmail.setSubject( notifBroadcast.getSubject( ) );
-                gruEmail.setMessage( notifBroadcast.getMessage( ) );
-                _sendEmailService.sendEmail( gruEmail );
-            }
-        }
-    }
-
-    private String buildEmailAdresses( List<EmailAddress> lstEmailAdress )
-    {
-        StringBuilder strEmailAdresses = new StringBuilder( );
-
-        if ( ( lstEmailAdress != null ) && !lstEmailAdress.isEmpty( ) )
-        {
-            for ( EmailAddress emailAddress : lstEmailAdress )
-            {
-                if ( strEmailAdresses.length( ) > 0 )
-                {
-                    strEmailAdresses.append( ADRESS_SEPARATOR );
-                }
-
-                strEmailAdresses.append( emailAddress.getAddress( ) );
-            }
-        }
-
-        return strEmailAdresses.toString( );
-    }
-
-    /**
-     * send Sms
-     * 
-     * @param notification
-     */
-    public void sendSms( Notification notification )
-    {
-        if ( notification != null )
-        {
-            _sendSmsService.sendSms( notification );
-        }
-    }
-    
-    /**
-     * send Statistics
-     * 
-     * @param notification
-     * @throws Exception 
-     */
-    public void sendStatistics( Notification notification )
-    {
-        if ( notification != null )
-        {
-            _sendStatisticsService.sendNotification( notification );
-        }
-    }
-
-    /**
-     * Notify CRM
-     * 
-     * @param notification
-     * @throws CRMException
-     */
-    public void notifyCrm( Notification notification ) throws CRMException
-    {
-        if ( notification != null )
-        {
-            if ( !_notifyCrmService.isExistDemand( notification ) )
-            {
-                _notifyCrmService.createDemand( notification );
-            }
-            else
-            {
-                _notifyCrmService.updateDemand( notification );
-            }
-
-            _notifyCrmService.notify( notification );
-        }
-    }
+        
+    }   
 }

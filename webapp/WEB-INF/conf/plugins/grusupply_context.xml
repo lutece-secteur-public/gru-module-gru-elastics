@@ -18,6 +18,13 @@
     <!-- NOTIFICATION SERVICE -->
     <bean id="grusupply.notificationService" class="fr.paris.lutece.plugins.grusupply.service.NotificationService"/>  
    
+    <!-- Notifyers -->
+    <bean id="grusupply.mailNotifyer" class="fr.paris.lutece.plugins.grusupply.service.notifyers.SendEmailService"/>
+    <bean id="grusupply.crmNotifyer" class="fr.paris.lutece.plugins.grusupply.service.notifyers.NotifyCrmService"/>
+    <bean id="grusupply.smsNotifyer" class="fr.paris.lutece.plugins.grusupply.service.notifyers.SendSmsService"/>
+    <bean id="grusupply.statsNotifyer" class="fr.paris.lutece.plugins.grusupply.service.notifyers.SendStatisticsService"/>
+   
+    
     <!-- IDENTITYSTORE BEAN -->
     <bean id="grusupply.identitystore.httpTransport" class="fr.paris.lutece.plugins.identitystore.v1.web.rs.service.IdentityTransportRest">
         <property name="IdentityStoreEndPoint">

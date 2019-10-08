@@ -31,27 +31,39 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.service;
+package fr.paris.lutece.plugins.grusupply.service.notifyers;
 
-import fr.paris.lutece.plugins.grusupply.business.GruSupplyEmail;
-import fr.paris.lutece.portal.service.mail.MailService;
+import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
+import fr.paris.lutece.plugins.grubusiness.business.notification.SMSNotification;
+import fr.paris.lutece.plugins.grubusiness.service.notification.INotificationServiceProvider;
+import fr.paris.lutece.portal.service.util.AppLogService;
 
-public class SendEmailService
+import org.apache.commons.lang.StringUtils;
+
+public class SendSmsService implements INotificationServiceProvider
 {
-    /** constructor */
-    SendEmailService( )
+    /** private constructor */
+    SendSmsService( )
     {
     }
 
     /**
-     * Send Email
+     * Send SMS
      * 
      * @param notification
-     * @param customer
      */
-    public void sendEmail( GruSupplyEmail email )
+    public void process( Notification notification )
     {
-        MailService.sendMailHtml( email.getRecipient( ), email.getCc( ), email.getBcc( ), email.getSenderName( ), email.getSenderEmail( ), email.getSubject( ),
-                email.getMessage( ) );
+        SMSNotification smsNotification = notification.getSmsNotification( );
+
+        if ( StringUtils.isNotBlank( smsNotification.getPhoneNumber( ) ) )
+        {
+            AppLogService.info( "SMS STUB : phone number=" + smsNotification.getPhoneNumber( ) + " message=" + smsNotification.getMessage( ) );
+        }
+    }
+
+    @Override
+    public String getName() {
+        return this.getClass( ).getName( );
     }
 }

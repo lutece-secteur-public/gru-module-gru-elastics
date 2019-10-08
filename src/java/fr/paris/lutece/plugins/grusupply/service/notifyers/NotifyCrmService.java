@@ -31,12 +31,14 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.service;
+package fr.paris.lutece.plugins.grusupply.service.notifyers;
 
 import fr.paris.lutece.plugins.crmclient.business.CRMItemTypeEnum;
 import fr.paris.lutece.plugins.crmclient.business.ICRMItem;
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
+import fr.paris.lutece.plugins.grubusiness.service.notification.INotificationServiceProvider;
+import fr.paris.lutece.plugins.grubusiness.service.notification.NotificationException;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
@@ -56,7 +58,7 @@ import java.util.Map;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-public class NotifyCrmService
+public class NotifyCrmService implements INotificationServiceProvider
 {
     private static final String CRM_REMOTE_ID = "remote_id";
     private static final String KEY_DEMAND = "demand";
@@ -136,19 +138,35 @@ public class NotifyCrmService
         doProcess( crmItem, AppPropertiesService.getProperty( URL_WS_UPDATE_DEMAND ) );
     }
 
-    /**
-     * Notify CRM Demand
-     * 
-     * @param notif
-     * @throws CRMException
-     */
-    public void notify( Notification notif ) throws CRMException
+
+    @Override
+    public void process( Notification notification ) throws NotificationException
     {
-        AppLogService.info( " \n \n GRUSUPPLY - notify( NotificationDTO notif ) \n \n" );
+        
 
-        ICRMItem crmItem = buildCrmItemForNotification( notif, CRMItemTypeEnum.NOTIFICATION );
+        if ( notification != null &&  notification.getMyDashboardNotification( ) != null )
+        {
+            
+            try
+            {            
+                if ( !isExistDemand( notification ) )
+                {
+                    createDemand( notification );
+                }
+                else
+                {
+                    updateDemand( notification );
+                }
 
-        doProcess( crmItem, AppPropertiesService.getProperty( URL_WS_NOTIFY_DEMAND ) );
+                ICRMItem crmItem = buildCrmItemForNotification( notification, CRMItemTypeEnum.NOTIFICATION );
+
+                doProcess( crmItem, AppPropertiesService.getProperty( URL_WS_NOTIFY_DEMAND ) );
+            }
+            catch( CRMException ex )
+            {
+                throw new NotificationException( ex.getMessage( ), ex ) ;
+            }
+        }
     }
 
     /**
@@ -281,5 +299,10 @@ public class NotifyCrmService
                 .getMyDashboardNotification( ).getSenderName( ) ) ) ) ? notif.getMyDashboardNotification( ).getSenderName( ) : StringUtils.EMPTY );
 
         return crmItem;
+    }
+    
+    @Override
+    public String getName() {
+        return this.getClass( ).getName( );
     }
 }

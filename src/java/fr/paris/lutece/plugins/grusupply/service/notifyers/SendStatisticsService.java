@@ -31,7 +31,7 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.service;
+package fr.paris.lutece.plugins.grusupply.service.notifyers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,11 +44,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
+import fr.paris.lutece.plugins.grubusiness.service.notification.INotificationServiceProvider;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.httpaccess.HttpAccess;
 
-public class SendStatisticsService
+public class SendStatisticsService implements INotificationServiceProvider
 {
 	private static final String URL_WS_CREATE_DEMAND = "grusupply.url.ws.statistics";
 
@@ -63,7 +64,7 @@ public class SendStatisticsService
 	 * @param n
 	 * @throws Exception
 	 */
-	public void sendNotification( Notification notification )
+	public void process( Notification notification )
 	{
 		AppLogService.info( " \n \n GRUSUPPLY - sendNotification( NotificationDTO notification ) \n \n" );
 
@@ -106,4 +107,9 @@ public class SendStatisticsService
 
 		return oResponse;
 	}
+        
+        @Override
+        public String getName() {
+            return this.getClass( ).getName( );
+        }
 }
