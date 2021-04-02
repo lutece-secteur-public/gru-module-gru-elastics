@@ -33,16 +33,15 @@
  */
 package fr.paris.lutece.plugins.grusupply.service;
 
+import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 
-import org.dozer.converters.DateConverter;
+import org.apache.commons.beanutils.converters.DateConverter;
+import org.apache.commons.beanutils.converters.DateTimeConverter;
 
-import java.text.DateFormat;
-
-import java.util.Locale;
 
 /**
  * GRU supply plugin
@@ -60,8 +59,10 @@ public class GruSupplyPlugin extends Plugin
     @Override
     public void init( )
     {
-        BeanUtilsBean.getInstance( ).getConvertUtils( )
-                .register( new DateConverter( DateFormat.getDateInstance( DateFormat.SHORT, Locale.FRANCE ) ), java.sql.Date.class );
+        DateTimeConverter dateConverter = new DateConverter();
+        dateConverter.setPattern( I18nService.getDateFormatShortPattern( I18nService.getDefaultLocale( ) ) );
+        dateConverter.setLocale( I18nService.getDefaultLocale( ) );
+        BeanUtilsBean.getInstance( ).getConvertUtils( ).register( dateConverter, java.sql.Date.class );  
     }
 
     /**

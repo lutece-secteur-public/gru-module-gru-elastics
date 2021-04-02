@@ -44,14 +44,14 @@
 	    	<artifactId>lutece-core</artifactId>
 	    	<version>[4.9.9,)</version>
 	    	<type>lutece-core</type>
-	  	</dependency>
+	</dependency>
         <dependency>
             <groupId>fr.paris.lutece.plugins</groupId>
             <artifactId>plugin-rest</artifactId>
             <version>[1.0.0,)</version>
             <type>lutece-plugin</type>
         </dependency>
-       <dependency>
+        <dependency>
             <groupId>fr.paris.lutece.plugins</groupId>
             <artifactId>library-httpaccess</artifactId>
             <version>[2.4.1,)</version>
@@ -73,34 +73,14 @@
             <groupId>fr.paris.lutece.plugins</groupId>
             <artifactId>library-grubusiness</artifactId>
             <version>[1.1.10-SNAPSHOT,)</version>
-            <type>jar</type>
-    </dependency>
-	    <!-- Dozer - Java Bean to Java Bean -->
-        <dependency>
-            <groupId>net.sf.dozer</groupId>
-            <artifactId>dozer</artifactId>
-            <version>5.5.1</version>
-            <exclusions>
-                <exclusion>
-                    <!-- Conflicts with the dozen of dependencies requiring commons-logging:commons-logging -->
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                </exclusion>
-            </exclusions>
+	    <type>jar</type>
         </dependency>
         <dependency>
-			<groupId>fr.paris.lutece.plugins</groupId>
+  	    <groupId>fr.paris.lutece.plugins</groupId>
             <artifactId>plugin-swaggerui</artifactId>
             <version>[1.0.1,)</version>
-	       <type>lutece-plugin</type>
-	    </dependency>
-        <!-- JSON -->
-        <dependency>
-            <groupId>net.sf.json-lib</groupId>
-            <artifactId>json-lib</artifactId>
-            <version>2.4</version>
-            <classifier>jdk15</classifier>
-        </dependency>
+	    <type>lutece-plugin</type>
+	</dependency>
     </dependencies>	
     <properties>
         <componentName>Plugin GRUSupply</componentName>
