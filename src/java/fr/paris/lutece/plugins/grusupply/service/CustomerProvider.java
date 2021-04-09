@@ -110,9 +110,24 @@ public class CustomerProvider
         return _singleton;
     }
 
+    /**
+     * set identity service
+     * 
+     * @param identityService 
+     */
     private void setIdentityService( IdentityService identityService )
     {
         this._identityService = identityService;
+    }
+
+    /**
+     * has identity service
+     * 
+     * @return true if identityService is not null
+     */
+    public boolean hasIdentityService( )
+    {
+        return ( this._identityService != null );
     }
 
     /**

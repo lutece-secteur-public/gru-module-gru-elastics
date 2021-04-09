@@ -38,12 +38,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import fr.paris.lutece.plugins.crmclient.util.CRMException;
 import fr.paris.lutece.plugins.grubusiness.business.customer.Customer;
 import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.demand.DemandService;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
-import fr.paris.lutece.plugins.grubusiness.service.notification.INotificationServiceProvider;
+import fr.paris.lutece.plugins.grubusiness.business.notification.NotificationEvent;
 import fr.paris.lutece.plugins.grubusiness.service.notification.NotificationException;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
@@ -52,8 +51,6 @@ import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -99,26 +96,34 @@ public class GRUSupplyRestService
             mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
 
             Notification notification = mapper.readValue( strJson, Notification.class );
-            AppLogService.debug( "grusupply - Received strJson : " + strJson );
+            AppLogService.debug( "grusupply / notification - Received strJson : " + strJson );
 
             Customer customerEncrypted = notification.getDemand( ).getCustomer( );
-            Customer customerDecrypted = CustomerProvider.instance( ).decrypt( customerEncrypted, notification.getDemand( ) );
-
-            if ( customerDecrypted != null && StringUtils.isNotEmpty( customerDecrypted.getConnectionId( ) )
-                    && StringUtils.isEmpty( customerDecrypted.getId( ) ) )
+            
+            if ( CustomerProvider.instance( ).hasIdentityService( ) )
             {
-                Customer customerTmp = CustomerProvider.instance( ).get( customerDecrypted.getConnectionId( ), StringUtils.EMPTY );
-                customerDecrypted.setId( customerTmp.getId( ) );
-            }
-            else if ( customerDecrypted == null )
-            {
-                customerDecrypted = new Customer( );
-                customerDecrypted.setConnectionId( StringUtils.EMPTY );
-                customerDecrypted.setId( StringUtils.EMPTY );
-                notification.getDemand().setCustomer( customerDecrypted );
-            }
+                Customer customerDecrypted = CustomerProvider.instance( ).decrypt( customerEncrypted, notification.getDemand( ) );
 
-            notification.getDemand( ).setCustomer( customerDecrypted );
+                if ( customerDecrypted != null && StringUtils.isNotEmpty( customerDecrypted.getConnectionId( ) )
+                        && StringUtils.isEmpty( customerDecrypted.getId( ) ) )
+                {
+                    Customer customerTmp = CustomerProvider.instance( ).get( customerDecrypted.getConnectionId( ), StringUtils.EMPTY );
+                    customerDecrypted.setId( customerTmp.getId( ) );
+                }
+                else if ( customerDecrypted == null )
+                {
+                    customerDecrypted = new Customer( );
+                    customerDecrypted.setConnectionId( StringUtils.EMPTY );
+                    customerDecrypted.setId( StringUtils.EMPTY );
+                    notification.getDemand().setCustomer( customerDecrypted );
+                }
+
+                notification.getDemand( ).setCustomer( customerDecrypted );
+            }
+            else
+            {
+                notification.getDemand( ).setCustomer( customerEncrypted );
+            }
 
             
            
@@ -150,11 +155,57 @@ public class GRUSupplyRestService
         catch( NullPointerException ex )
         {
             return error( ex + " :" + ex.getMessage( ), ex );
-        } 
-        catch (NotificationException ex) 
+        }
+        catch (NotificationException ex)
         {
             return error( ex + " :" + ex.getMessage( ), ex );
         }
+
+        return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build( );
+    }
+
+        /**
+     * Web Service methode which permit to store the notification flow into a data store
+     * 
+     * @param strJson
+     *            The JSON flow
+     * @return The response
+     */
+    @POST
+    @Path( "notificationEvent" )
+    @Consumes( MediaType.APPLICATION_JSON )
+    @Produces( MediaType.APPLICATION_JSON )
+    public Response notificationEvent( String strJson )
+    {
+        try
+        {
+            // Format from JSON
+            ObjectMapper mapper = new ObjectMapper( );
+            mapper.configure( DeserializationFeature.UNWRAP_ROOT_VALUE, true );
+            mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+
+            NotificationEvent notificationEvent = mapper.readValue( strJson, NotificationEvent.class );
+            AppLogService.debug( "grusupply / notificationEvent - Received strJson : " + strJson );
+
+            store( notificationEvent );
+
+        }
+        catch( JsonParseException ex )
+        {
+            return error( ex + " :" + ex.getMessage( ), ex );
+        }
+        catch( JsonMappingException ex )
+        {
+            return error( ex + " :" + ex.getMessage( ), ex );
+        }
+        catch( IOException ex )
+        {
+            return error( ex + " :" + ex.getMessage( ), ex );
+        }
+        catch( NullPointerException ex )
+        {
+            return error( ex + " :" + ex.getMessage( ), ex );
+        } 
 
         return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build( );
     }
@@ -215,6 +266,19 @@ public class GRUSupplyRestService
         _demandService.create( notification );
     }
 
+        /**
+     * Stores a notification and the associated demand
+     * 
+     * @param notification
+     *            the notification to store
+     */
+    private void store( NotificationEvent notificationEvent )
+    {
+
+        _demandService.create( notificationEvent );
+    }
+
+ 
     /**
      * Build an error response
      * 
