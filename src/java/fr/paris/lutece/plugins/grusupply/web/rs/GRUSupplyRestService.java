@@ -44,6 +44,7 @@ import fr.paris.lutece.plugins.grubusiness.business.demand.DemandService;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
 import fr.paris.lutece.plugins.grubusiness.business.notification.NotificationEvent;
 import fr.paris.lutece.plugins.grubusiness.service.notification.NotificationException;
+import fr.paris.lutece.plugins.grusupply.business.StatusMessage;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.NotificationService;
@@ -51,6 +52,8 @@ import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -69,8 +72,21 @@ public class GRUSupplyRestService
     // Bean names
     private static final String BEAN_STORAGE_SERVICE = "grusupply.storageService";
 
+    // Messages
+    private static final String WARNING_DEMAND_ID_MANDATORY = "Notification Demand_id field is mandatory";
+    private static final String WARNING_DEMAND_TYPE_ID_MANDATORY = "Notification Demand_type_id field is mandatory";
+    private static final String WARNING_CUSTOMER_ID_MANDATORY = "Notification connection_id field is mandatory";
+    private static final String MESSAGE_MISSING_MANDATORY_FIELD = "Missing value";
+    
     // Other constants
-    private static final String STATUS_RECEIVED = "{ \"acknowledge\" : { \"status\": \"received\" } }";
+    private static final String RESPONSE_OK = "{ \"acknowledge\" : { \"status\": \"received\" } }";
+    
+    private static final String TYPE_DEMAND = "DEMAND";
+    private static final String TYPE_NOTIFICATION = "DEMAND";
+    private static final String STATUS_WARNING = "WARNING";
+    private static final String STATUS_ERROR = "ERROR";
+    
+    // instance variable
     @Inject
     @Named( BEAN_STORAGE_SERVICE )
     private DemandService _demandService;
@@ -88,6 +104,9 @@ public class GRUSupplyRestService
     @Produces( MediaType.APPLICATION_JSON )
     public Response notification( String strJson )
     {
+        
+        List<StatusMessage> warnings = new ArrayList<>( );
+        
         try
         {
             // Format from JSON
@@ -125,10 +144,33 @@ public class GRUSupplyRestService
                 notification.getDemand( ).setCustomer( customerEncrypted );
             }
 
-            
-           
+            // store any notification whatever its content
             store( notification );
-
+            
+            
+            // notification should be associated to a demand id
+            if ( StringUtils.isBlank( notification.getDemand( ).getId( ) ) )
+            {
+                StatusMessage msg = new StatusMessage( TYPE_DEMAND, STATUS_WARNING, MESSAGE_MISSING_MANDATORY_FIELD, WARNING_DEMAND_ID_MANDATORY );
+                warnings.add( msg );
+            }
+            
+            // notification should be associated to a demand type id
+            if ( StringUtils.isBlank( notification.getDemand( ).getTypeId( ) ) )
+            {
+                StatusMessage msg = new StatusMessage( TYPE_DEMAND, STATUS_WARNING, MESSAGE_MISSING_MANDATORY_FIELD, WARNING_DEMAND_TYPE_ID_MANDATORY );
+                warnings.add( msg );
+            }
+            
+            // notification should be associated to a customer id
+            if ( notification.getDemand( ).getCustomer( ) != null 
+                    && StringUtils.isBlank( notification.getDemand( ).getCustomer( ).getConnectionId( ) ) )
+            {
+                StatusMessage msg = new StatusMessage( TYPE_DEMAND, STATUS_WARNING, MESSAGE_MISSING_MANDATORY_FIELD, WARNING_CUSTOMER_ID_MANDATORY );
+                warnings.add( msg );
+            }
+            
+            
             // Notify user and crm if a bean NotificationService is instantiated
             NotificationService notificationService = NotificationService.instance( );
 
@@ -142,26 +184,30 @@ public class GRUSupplyRestService
         }
         catch( JsonParseException ex )
         {
-            return error( ex + " :" + ex.getMessage( ), ex );
+            return fail( ex );
         }
-        catch( JsonMappingException ex )
+        catch( JsonMappingException | NullPointerException | NotificationException ex )
         {
-            return error( ex + " :" + ex.getMessage( ), ex );
+            return fail( ex );
         }
         catch( IOException ex )
         {
-            return error( ex + " :" + ex.getMessage( ), ex );
+            return fail( ex );
         }
-        catch( NullPointerException ex )
+        catch( Exception ex )
         {
-            return error( ex + " :" + ex.getMessage( ), ex );
-        }
-        catch (NotificationException ex)
-        {
-            return error( ex + " :" + ex.getMessage( ), ex );
+            return fail( ex );
         }
 
-        return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build( );
+        if ( warnings.isEmpty( ) )
+        {
+            return success( );
+        }
+        else
+        {
+            return successWithWarnings( warnings );
+        }
+        
     }
 
         /**
@@ -192,22 +238,22 @@ public class GRUSupplyRestService
         }
         catch( JsonParseException ex )
         {
-            return error( ex + " :" + ex.getMessage( ), ex );
+            return fail( ex );
         }
-        catch( JsonMappingException ex )
+        catch( JsonMappingException | NullPointerException ex )
         {
-            return error( ex + " :" + ex.getMessage( ), ex );
+            return fail( ex );
         }
         catch( IOException ex )
         {
-            return error( ex + " :" + ex.getMessage( ), ex );
+            return fail( ex );
         }
-        catch( NullPointerException ex )
+        catch( Exception ex )
         {
-            return error( ex + " :" + ex.getMessage( ), ex );
-        } 
+            return fail( ex );
+        }
 
-        return Response.status( Response.Status.CREATED ).entity( STATUS_RECEIVED ).build( );
+        return success( );
     }
 
     /**
@@ -288,19 +334,61 @@ public class GRUSupplyRestService
      *            An exception
      * @return The response
      */
-    private Response error( String strMessage, Throwable ex )
+    private Response fail( Throwable ex )
     {
+        StringBuilder strMsg = new StringBuilder( "[" );
+        
         if ( ex != null )
         {
-            AppLogService.error( strMessage, ex );
-        }
-        else
-        {
-            AppLogService.error( strMessage );
+            AppLogService.error( ex.getMessage( ), ex );
+            strMsg.append( new StatusMessage( TYPE_NOTIFICATION, STATUS_ERROR, ex.toString( ) , ex.getMessage( ) ).asJson( ) );
         }
 
-        String strError = "{ \"status\": \"Error : " + strMessage + "\" }";
+        strMsg.append( "]" );                
+        String strError = "{ \"acknowledge\" : { \"status\": \"error\", \"errors\" : " + strMsg + " } }";
 
         return Response.status( Response.Status.INTERNAL_SERVER_ERROR ).entity( strError ).build( );
+    }
+    
+     
+    /**
+     * Build an error response
+     * 
+     * @param strMessage
+     *            The error message
+     * @param ex
+     *            An exception
+     * @return The response
+     */
+    private Response successWithWarnings( List<StatusMessage> warnings )
+    {
+        StringBuilder strWarnings = new StringBuilder( "[" );
+        
+        if (warnings != null)
+        {
+            for ( StatusMessage msg : warnings )
+            {
+                strWarnings.append( msg.asJson( ) ).append( "," );
+            }
+            
+            // remove last ","
+            strWarnings.setLength( strWarnings.length( ) - 1);
+        }
+        
+        strWarnings.append( "]" );
+            
+        String strResponse = "{ \"acknowledge\" : { \"status\": \"warning\", \"warnings\" : " + strWarnings.toString( ) + " } }";
+        
+        return Response.status( Response.Status.CREATED ).entity( strResponse ).build( );
+    }
+    
+    /**
+     * success case
+     * 
+     * @return a successful response
+     */
+    private Response success( )
+    {
+        return Response.status( Response.Status.CREATED ).entity( RESPONSE_OK ).build( );
     }
 }
