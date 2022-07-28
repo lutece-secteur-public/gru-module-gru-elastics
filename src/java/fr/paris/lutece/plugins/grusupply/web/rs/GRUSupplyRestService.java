@@ -48,6 +48,7 @@ import fr.paris.lutece.plugins.grusupply.business.StatusMessage;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
 import fr.paris.lutece.plugins.grusupply.service.NotificationService;
+import fr.paris.lutece.plugins.identitystore.web.exception.IdentityNotFoundException;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -126,10 +127,20 @@ public class GRUSupplyRestService
                 if ( customerDecrypted != null && StringUtils.isNotEmpty( customerDecrypted.getConnectionId( ) )
                         && StringUtils.isEmpty( customerDecrypted.getId( ) ) )
                 {
-                    Customer customerTmp = CustomerProvider.instance( ).get( customerDecrypted.getConnectionId( ), StringUtils.EMPTY );
-                    customerDecrypted.setId( customerTmp.getId( ) );
+                	try 
+                	{
+                		Customer customerTmp = CustomerProvider.instance( ).get( customerDecrypted.getConnectionId( ), StringUtils.EMPTY );
+                		customerDecrypted.setId( customerTmp.getId( ) );
+                	}
+            		catch ( IdentityNotFoundException e )
+                    {
+            			// customer not found in IDS
+            			AppLogService.debug( "Customer not found with connection_id : " + customerDecrypted.getConnectionId( ) );
+            			customerDecrypted = null;
+                    }
                 }
-                else if ( customerDecrypted == null )
+                	
+                if ( customerDecrypted == null )
                 {
                     customerDecrypted = new Customer( );
                     customerDecrypted.setConnectionId( StringUtils.EMPTY );
