@@ -46,11 +46,12 @@ import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.httpaccess.HttpAccess;
 import fr.paris.lutece.util.httpaccess.HttpAccessException;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
-import net.sf.json.util.JSONUtils;
-
 import org.apache.commons.lang.StringUtils;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,6 +68,8 @@ public class NotifyCrmService implements INotificationServiceProvider
     private static final String URL_WS_CREATE_DEMAND = "grusupply.url.ws.createDemandByUserGuid";
     private static final String URL_WS_UPDATE_DEMAND = "grusupply.url.ws.updateDemand";
     private static final String URL_WS_NOTIFY_DEMAND = "grusupply.url.ws.notifyDemand";
+    
+    private static JsonMapper _mapper = new JsonMapper();
 
     /** constructor */
     public NotifyCrmService( )
@@ -84,8 +87,7 @@ public class NotifyCrmService implements INotificationServiceProvider
      */
     public boolean isExistDemand( Notification notif ) throws CRMException
     {
-        boolean bIsExistDemand = false;
-
+        
         AppLogService.info( " \n \n GRUSUPPLY - isExistDemand( NotificationDTO notif ) \n \n" );
 
         String strIdDemandType = notif.getDemand( ).getTypeId( );
@@ -93,17 +95,20 @@ public class NotifyCrmService implements INotificationServiceProvider
 
         String strResponse = doProcess( AppPropertiesService.getProperty( URL_WS_GET_DEMAND ) + SLASH + strIdDemandType + SLASH + strIdRemoteDemand );
 
-        if ( JSONUtils.mayBeJSON( strResponse ) )
+        try 
         {
-            JSONObject jsonResponse = (JSONObject) JSONSerializer.toJSON( strResponse );
-
-            if ( jsonResponse.has( KEY_DEMAND ) )
-            {
-                bIsExistDemand = true;
-            }
+        	JsonNode node = _mapper.readTree( strResponse );
+        	if ( node.has( KEY_DEMAND ) ) 
+        	{
+        		return true;
+        	}
         }
-
-        return bIsExistDemand;
+        catch ( JsonProcessingException  e )
+        {
+        	return false;
+        }
+        
+        return false;
     }
 
     /**

@@ -39,6 +39,7 @@ import fr.paris.lutece.plugins.grubusiness.service.encryption.ICustomerEncryptio
 import fr.paris.lutece.plugins.identitystore.v1.web.rs.dto.AttributeDto;
 import fr.paris.lutece.plugins.identitystore.v1.web.rs.dto.IdentityDto;
 import fr.paris.lutece.plugins.identitystore.v1.web.service.IdentityService;
+import fr.paris.lutece.plugins.identitystore.web.exception.IdentityStoreException;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -138,8 +139,9 @@ public class CustomerProvider
      * @param strCid
      *            the customer id
      * @return the customer
+     * @throws IdentityStoreException 
      */
-    public Customer get( String strGuid, String strCid )
+    public Customer get( String strGuid, String strCid ) throws IdentityStoreException
     {
         if ( StringUtils.isBlank( strGuid ) )
         {
