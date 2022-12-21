@@ -358,7 +358,7 @@ public class GRUSupplyRestService
         strMsg.append( "]" );                
         String strError = "{ \"acknowledge\" : { \"status\": \"error\", \"errors\" : " + strMsg + " } }";
 
-        return Response.status( Response.Status.INTERNAL_SERVER_ERROR ).entity( strError ).build( );
+        return Response.status( Response.Status.BAD_REQUEST ).entity( strError ).build( );
     }
     
      
