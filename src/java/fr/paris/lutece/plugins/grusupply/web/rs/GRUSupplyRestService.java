@@ -64,6 +64,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -195,19 +196,19 @@ public class GRUSupplyRestService
         }
         catch( JsonParseException ex )
         {
-            return fail( ex );
+            return fail( ex, Response.Status.BAD_REQUEST );
         }
         catch( JsonMappingException | NullPointerException | NotificationException ex )
         {
-            return fail( ex );
+            return fail( ex, Response.Status.BAD_REQUEST  );
         }
         catch( IOException ex )
         {
-            return fail( ex );
+            return fail( ex, Response.Status.INTERNAL_SERVER_ERROR  );
         }
         catch( Exception ex )
         {
-            return fail( ex );
+            return fail( ex, Response.Status.INTERNAL_SERVER_ERROR  );
         }
 
         if ( warnings.isEmpty( ) )
@@ -249,19 +250,19 @@ public class GRUSupplyRestService
         }
         catch( JsonParseException ex )
         {
-            return fail( ex );
+            return fail( ex, Response.Status.BAD_REQUEST );
         }
         catch( JsonMappingException | NullPointerException ex )
         {
-            return fail( ex );
+            return fail( ex, Response.Status.BAD_REQUEST );
         }
         catch( IOException ex )
         {
-            return fail( ex );
+            return fail( ex, Response.Status.INTERNAL_SERVER_ERROR );
         }
         catch( Exception ex )
         {
-            return fail( ex );
+            return fail( ex, Response.Status.INTERNAL_SERVER_ERROR  );
         }
 
         return success( );
@@ -345,7 +346,7 @@ public class GRUSupplyRestService
      *            An exception
      * @return The response
      */
-    private Response fail( Throwable ex )
+    private Response fail( Throwable ex, Status httpStatus )
     {
         StringBuilder strMsg = new StringBuilder( "[" );
         
@@ -358,7 +359,7 @@ public class GRUSupplyRestService
         strMsg.append( "]" );                
         String strError = "{ \"acknowledge\" : { \"status\": \"error\", \"errors\" : " + strMsg + " } }";
 
-        return Response.status( Response.Status.BAD_REQUEST ).entity( strError ).build( );
+        return Response.status( httpStatus ).entity( strError ).build( );
     }
     
      
