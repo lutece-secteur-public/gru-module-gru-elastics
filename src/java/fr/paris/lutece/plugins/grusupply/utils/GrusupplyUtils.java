@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2015, Mairie de Paris
+ * Copyright (c) 2002-2023, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,36 +31,60 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.constant;
+package fr.paris.lutece.plugins.grusupply.utils;
 
-public class GruSupplyConstants
+import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
+import fr.paris.lutece.portal.service.util.AppLogService;
+
+/**
+ * 
+ * GrusupplyUtils
+ *
+ */
+public class GrusupplyUtils
 {
-    // REST CONSTANTS
-    public static final String PLUGIN_NAME = "grusupply/";
-    public static final String PATH_DEMAND = "demand/";
-    public static final String PATH_DEMAND_LIST = "list";
-    public static final String PATH_DEMAND_STATUS = "status";
-    public static final String PATH_TYPE_DEMAND = "type";
-    public static final String PATH_TYPE_NOTIFICATION = "notification_type";
-    public static final String PATH_NOTIFICATION_LIST = "notification/list";
-    
-    
-    public static final String QUERY_PARAM_INDEX = "index";
-    public static final String QUERY_PARAM_ID_DEMAND_TYPE = "idDemandType";
-    public static final String QUERY_PARAM_CUSTOMER_ID = "customerId";
-    public static final String QUERY_PARAM_ID_DEMAND = "idDemand";
-    public static final String QUERY_PARAM_NOTIFICATION_TYPE = "notification_type";
-    public static final String QUERY_PARAM_LIST_STATUS = "listStatus";
-    public static final String QUERY_PARAM_READED = "readed";
-    
-    // EXIT STATUS
-    public static final String STATUS_201 = "{" + "\"status\":" + "\"201\"" + "}";
-    public static final String STATUS_404 = "{" + "\"status\":" + "\"404\"" + "}";
+    private static ObjectMapper _mapper = new ObjectMapper( );
 
-    /** The Constant DEFAULT_INT. */
-    public static final int DEFAULT_INT = -1;
+    /**
+     * Private constructor
+     */
+    private GrusupplyUtils( )
+    {
+        //Do nothing
+    }
     
-    // PROPERTIES
-    /** The Constant LIMIT_DEMAND_API_REST. */
-    public static final String LIMIT_DEMAND_API_REST = "grusupply.api.rest.limit.demand";
+    /**
+     * Init mapper
+     */
+    private static void initMapper( )
+    {
+        _mapper.configure( DeserializationFeature.UNWRAP_ROOT_VALUE, true );
+        _mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+    }
+
+    /**
+     * Method that can be used to serialize any Java value as a String
+     * @param object
+     * @return
+     */
+    public static String convertToJsonString( Object object )
+    {
+        initMapper( );
+
+        try
+        {
+            return _mapper.writeValueAsString( object );
+        }
+        catch ( JsonProcessingException e )
+        {
+            AppLogService.error( "An error occurred while trying to serialize object to json.", e.getMessage( ) );
+        }
+        return StringUtils.EMPTY;
+    }
 }
