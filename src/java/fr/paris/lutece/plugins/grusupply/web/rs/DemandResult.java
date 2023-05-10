@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2015, Mairie de Paris
+ * Copyright (c) 2002-2023, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,36 +31,36 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.grusupply.constant;
+package fr.paris.lutece.plugins.grusupply.web.rs;
 
-public class GruSupplyConstants
+import java.util.List;
+
+import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
+
+/**
+ * 
+ * DemandResult
+ *
+ */
+public class DemandResult extends SearchResult
 {
-    // REST CONSTANTS
-    public static final String PLUGIN_NAME = "grusupply/";
-    public static final String PATH_DEMAND = "demand/";
-    public static final String PATH_DEMAND_LIST = "list";
-    public static final String PATH_DEMAND_STATUS = "status";
-    public static final String PATH_TYPE_DEMAND = "type";
-    public static final String PATH_TYPE_NOTIFICATION = "notification_type";
-    public static final String PATH_NOTIFICATION_LIST = "notification/list";
-    
-    
-    public static final String QUERY_PARAM_INDEX = "index";
-    public static final String QUERY_PARAM_ID_DEMAND_TYPE = "idDemandType";
-    public static final String QUERY_PARAM_CUSTOMER_ID = "customerId";
-    public static final String QUERY_PARAM_ID_DEMAND = "idDemand";
-    public static final String QUERY_PARAM_NOTIFICATION_TYPE = "notification_type";
-    public static final String QUERY_PARAM_LIST_STATUS = "listStatus";
-    public static final String QUERY_PARAM_READED = "readed";
-    
-    // EXIT STATUS
-    public static final String STATUS_201 = "{" + "\"status\":" + "\"201\"" + "}";
-    public static final String STATUS_404 = "{" + "\"status\":" + "\"404\"" + "}";
+    private List<Demand> _demands;
 
-    /** The Constant DEFAULT_INT. */
-    public static final int DEFAULT_INT = -1;
+    /**
+     * @return the _demands
+     */
+    public List<Demand> getDemands( )
+    {
+        return _demands;
+    }
+
+    /**
+     * @param demands the _demands to set
+     */
+    public void setDemands( List<Demand> demands )
+    {
+        this._demands = demands;
+    }
     
-    // PROPERTIES
-    /** The Constant LIMIT_DEMAND_API_REST. */
-    public static final String LIMIT_DEMAND_API_REST = "grusupply.api.rest.limit.demand";
+    
 }
