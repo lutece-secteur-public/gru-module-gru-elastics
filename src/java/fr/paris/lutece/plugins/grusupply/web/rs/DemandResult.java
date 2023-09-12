@@ -35,7 +35,7 @@ package fr.paris.lutece.plugins.grusupply.web.rs;
 
 import java.util.List;
 
-import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
+import fr.paris.lutece.plugins.grubusiness.business.demand.DemandDisplayDTO;
 
 /**
  * 
@@ -44,22 +44,22 @@ import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
  */
 public class DemandResult extends SearchResult
 {
-    private List<Demand> _demands;
+    private List<DemandDisplayDTO> _listDemandDisplay;
 
     /**
-     * @return the _demands
+     * @return the _listDemandDisplay
      */
-    public List<Demand> getDemands( )
+    public List<DemandDisplayDTO> getListDemandDisplay( )
     {
-        return _demands;
+        return _listDemandDisplay;
     }
 
     /**
-     * @param demands the _demands to set
+     * @param listDemandDisplay the _listDemandDisplay to set
      */
-    public void setDemands( List<Demand> demands )
+    public void setListDemandDisplay( List<DemandDisplayDTO> listDemandDisplay )
     {
-        this._demands = demands;
+        this._listDemandDisplay = listDemandDisplay;
     }
     
     

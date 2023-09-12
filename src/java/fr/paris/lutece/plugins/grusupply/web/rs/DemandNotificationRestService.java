@@ -45,7 +45,6 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
 
-import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.notification.EnumNotificationType;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
 import fr.paris.lutece.plugins.grubusiness.business.notification.NotificationFilter;
@@ -79,18 +78,12 @@ public class DemandNotificationRestService
     @Produces( MediaType.APPLICATION_JSON )
     public Response getListDemand( @HeaderParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND_TYPE ) String strIdDemandType, 
             @HeaderParam( GruSupplyConstants.QUERY_PARAM_INDEX ) String strIndex,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_CUSTOMER_ID ) String strCustomerId,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_NOTIFICATION_TYPE ) String strNotificationType )
+            @HeaderParam( GruSupplyConstants.QUERY_PARAM_CUSTOMER_ID ) String strCustomerId )
     {
         int nIndex = StringUtils.isEmpty( strIndex ) ? 1 : Integer.parseInt( strIndex );
         int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( GruSupplyConstants.LIMIT_DEMAND_API_REST, 10 );
 
-        if ( StringUtils.isEmpty( strNotificationType ) )
-        {
-            strNotificationType = EnumNotificationType.MYDASHBOARD.name( );
-        }
-
-        List<Integer> listIds = DemandHome.getIdsByCustomerIdAndDemandTypeId( strCustomerId, strNotificationType, strIdDemandType );
+        List<Integer> listIds = DemandHome.getIdsByCustomerIdAndDemandTypeId( strCustomerId, EnumNotificationType.MYDASHBOARD.name( ), strIdDemandType );
 
         return getResponse( nIndex, nDefaultItemsPerPage, listIds );
     }
@@ -106,22 +99,16 @@ public class DemandNotificationRestService
     @GET
     @Path( GruSupplyConstants.PATH_DEMAND_STATUS )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response getListOfDemandActive( @HeaderParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND_TYPE ) String strIdDemandType,
+    public Response getListOfDemandByStatus( @HeaderParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND_TYPE ) String strIdDemandType,
             @HeaderParam( GruSupplyConstants.QUERY_PARAM_INDEX ) String strIndex, 
             @HeaderParam( GruSupplyConstants.QUERY_PARAM_CUSTOMER_ID ) String strCustomerId,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_LIST_STATUS ) String strListStatus,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_NOTIFICATION_TYPE ) String strNotificationType )
+            @HeaderParam( GruSupplyConstants.QUERY_PARAM_LIST_STATUS ) String strListStatus )
     {
         int nIndex = StringUtils.isEmpty( strIndex ) ? 1 : Integer.parseInt( strIndex );
         int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( GruSupplyConstants.LIMIT_DEMAND_API_REST, 10 );
 
         List<String> listStatus = Arrays.asList( strListStatus.split( "," ) );
-        
-        if ( StringUtils.isEmpty( strNotificationType ) )
-        {
-            strNotificationType = EnumNotificationType.MYDASHBOARD.name( );
-        }
-        List<Integer> listIds = DemandHome.getIdsByStatus( strCustomerId, listStatus, strNotificationType, strIdDemandType );
+        List<Integer> listIds = DemandHome.getIdsByStatus( strCustomerId, listStatus, EnumNotificationType.MYDASHBOARD.name( ), strIdDemandType );
 
         return getResponse( nIndex, nDefaultItemsPerPage, listIds );
     }
@@ -141,7 +128,7 @@ public class DemandNotificationRestService
         {
             Paginator<Integer> paginator = new Paginator<>( listIds, nDefaultItemsPerPage, StringUtils.EMPTY, StringUtils.EMPTY, String.valueOf( nIndex ) );
 
-            result.setDemands( DemandHome.getByIdsWithLastStatus( paginator.getPageItems( ) ) );
+            result.setListDemandDisplay( DemandHome.getByIdsWithLastStatus( paginator.getPageItems( ) ) );
             result.setIndex( String.valueOf( nIndex ) );
             result.setPaginator( nIndex + "/" + paginator.getPagesCount( ) );
             result.setStatus( Response.Status.OK.name( ) );
@@ -160,8 +147,7 @@ public class DemandNotificationRestService
     @Path( GruSupplyConstants.PATH_NOTIFICATION_LIST )
     @Produces( MediaType.APPLICATION_JSON )
     public Response getListNotification( @HeaderParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND ) String strIdDemand,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND_TYPE ) String strIdDemandType,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_READED ) String strReaded)
+            @HeaderParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND_TYPE ) String strIdDemandType )
     {
         NotificationResult result = new NotificationResult( );
         
@@ -174,17 +160,7 @@ public class DemandNotificationRestService
 
             result.setNotifications( notifications );
             result.setStatus( Response.Status.OK.name( ) );
-            result.setNumberResult( notifications.size( ) );
-            
-            //Set demand
-            if( StringUtils.isNotEmpty( strReaded ) )
-            {
-                Demand demand = DemandHome.findByPrimaryKey( strIdDemand, strIdDemandType );
-                demand.setRead( Boolean.parseBoolean( strReaded ) );
-                
-                DemandHome.update( demand );
-            }
-            
+            result.setNumberResult( notifications.size( ) );           
         }
 
         return Response.status( Response.Status.OK ).entity( GrusupplyUtils.convertToJsonString( result ) ).build( );
