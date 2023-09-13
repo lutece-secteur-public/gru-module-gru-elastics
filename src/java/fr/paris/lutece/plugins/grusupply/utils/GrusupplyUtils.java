@@ -39,7 +39,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 /**
@@ -64,7 +63,7 @@ public class GrusupplyUtils
      */
     private static void initMapper( )
     {
-        _mapper.configure( DeserializationFeature.UNWRAP_ROOT_VALUE, true );
+        _mapper.configure( DeserializationFeature.UNWRAP_ROOT_VALUE, false );
         _mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
     }
 

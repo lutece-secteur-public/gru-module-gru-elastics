@@ -33,13 +33,16 @@
  */
 package fr.paris.lutece.plugins.grusupply.web.rs;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -48,15 +51,23 @@ import org.apache.commons.lang3.StringUtils;
 import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.notification.EnumNotificationType;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
-import fr.paris.lutece.plugins.grubusiness.business.notification.NotificationFilter;
+import fr.paris.lutece.plugins.grubusiness.business.web.rs.DemandDisplay;
+import fr.paris.lutece.plugins.grubusiness.business.web.rs.DemandResult;
+import fr.paris.lutece.plugins.grubusiness.business.web.rs.EnumGenericStatus;
+import fr.paris.lutece.plugins.grubusiness.business.web.rs.NotificationResult;
+import fr.paris.lutece.plugins.grubusiness.business.web.rs.SearchResult;
 import fr.paris.lutece.plugins.grustoragedb.business.DemandHome;
 import fr.paris.lutece.plugins.grustoragedb.business.NotificationHome;
+import fr.paris.lutece.plugins.grustoragedb.business.Status;
+import fr.paris.lutece.plugins.grustoragedb.business.StatusHome;
 import fr.paris.lutece.plugins.grustoragedb.business.DemandType;
 import fr.paris.lutece.plugins.grustoragedb.business.DemandTypeHome;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.utils.GrusupplyUtils;
 import fr.paris.lutece.plugins.rest.service.RestConstants;
+import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.portal.web.l10n.LocaleService;
 import fr.paris.lutece.util.html.Paginator;
 
 /**
@@ -67,7 +78,7 @@ import fr.paris.lutece.util.html.Paginator;
 @Path( RestConstants.BASE_PATH + GruSupplyConstants.PLUGIN_NAME + GruSupplyConstants.PATH_DEMAND )
 public class DemandNotificationRestService
 {
-
+    
     /**
      * Return list of demand
      * 
@@ -77,22 +88,24 @@ public class DemandNotificationRestService
     @GET
     @Path( GruSupplyConstants.PATH_DEMAND_LIST )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response getListDemand( @HeaderParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND_TYPE ) String strIdDemandType, 
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_INDEX ) String strIndex,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_CUSTOMER_ID ) String strCustomerId,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_NOTIFICATION_TYPE ) String strNotificationType )
+    public Response getListDemand( @QueryParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND_TYPE ) String strIdDemandType, 
+            @QueryParam( GruSupplyConstants.QUERY_PARAM_INDEX ) String strIndex,
+            @QueryParam( GruSupplyConstants.QUERY_PARAM_CUSTOMER_ID ) String strCustomerId,
+            @QueryParam( GruSupplyConstants.QUERY_PARAM_NOTIFICATION_TYPE ) String strNotificationType )
     {
         int nIndex = StringUtils.isEmpty( strIndex ) ? 1 : Integer.parseInt( strIndex );
         int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( GruSupplyConstants.LIMIT_DEMAND_API_REST, 10 );
 
-        if ( StringUtils.isEmpty( strNotificationType ) )
+        DemandResult result = new DemandResult( );
+        if( StringUtils.isEmpty( strCustomerId ) )
         {
-            strNotificationType = EnumNotificationType.MYDASHBOARD.name( );
+            result.setStatus( SearchResult.ERROR_FIELD_MANDATORY );
+            result.setErrorMessage( GruSupplyConstants.MESSAGE_ERROR_DEMAND );
+            return Response.status( Response.Status.BAD_REQUEST ).entity( GrusupplyUtils.convertToJsonString( result ) ).build( );
         }
-
+        
         List<Integer> listIds = DemandHome.getIdsByCustomerIdAndDemandTypeId( strCustomerId, strNotificationType, strIdDemandType );
-
-        return getResponse( nIndex, nDefaultItemsPerPage, listIds );
+        return getResponse( result, nIndex, nDefaultItemsPerPage, listIds );
     }
 
     /**
@@ -106,42 +119,46 @@ public class DemandNotificationRestService
     @GET
     @Path( GruSupplyConstants.PATH_DEMAND_STATUS )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response getListOfDemandActive( @HeaderParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND_TYPE ) String strIdDemandType,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_INDEX ) String strIndex, 
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_CUSTOMER_ID ) String strCustomerId,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_LIST_STATUS ) String strListStatus,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_NOTIFICATION_TYPE ) String strNotificationType )
+    public Response getListOfDemandByStatus( @QueryParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND_TYPE ) String strIdDemandType,
+            @QueryParam( GruSupplyConstants.QUERY_PARAM_INDEX ) String strIndex, 
+            @QueryParam( GruSupplyConstants.QUERY_PARAM_CUSTOMER_ID ) String strCustomerId,
+            @QueryParam( GruSupplyConstants.QUERY_PARAM_LIST_STATUS ) String strListStatus,
+            @QueryParam( GruSupplyConstants.QUERY_PARAM_NOTIFICATION_TYPE ) String strNotificationType )
     {
         int nIndex = StringUtils.isEmpty( strIndex ) ? 1 : Integer.parseInt( strIndex );
         int nDefaultItemsPerPage = AppPropertiesService.getPropertyInt( GruSupplyConstants.LIMIT_DEMAND_API_REST, 10 );
 
-        List<String> listStatus = Arrays.asList( strListStatus.split( "," ) );
-        
-        if ( StringUtils.isEmpty( strNotificationType ) )
+        DemandResult result = new DemandResult( );
+        if( StringUtils.isEmpty( strCustomerId ) || StringUtils.isEmpty( strListStatus ) )
         {
-            strNotificationType = EnumNotificationType.MYDASHBOARD.name( );
+            result.setStatus( SearchResult.ERROR_FIELD_MANDATORY );
+            result.setErrorMessage( GruSupplyConstants.MESSAGE_ERROR_STATUS );
+            
+            return Response.status( Response.Status.BAD_REQUEST ).entity( GrusupplyUtils.convertToJsonString( result ) ).build( );
         }
+        
+        List<String> listStatus = Arrays.asList( strListStatus.split( "," ) );
         List<Integer> listIds = DemandHome.getIdsByStatus( strCustomerId, listStatus, strNotificationType, strIdDemandType );
 
-        return getResponse( nIndex, nDefaultItemsPerPage, listIds );
+        return getResponse( result, nIndex, nDefaultItemsPerPage, listIds );
     }
 
     /**
      * Get response
+     * @param result
      * @param nIndex
      * @param nDefaultItemsPerPage
      * @param listIds
      * @return
      */
-    private Response getResponse( int nIndex, int nDefaultItemsPerPage, List<Integer> listIds )
+    private Response getResponse( DemandResult result, int nIndex, int nDefaultItemsPerPage, List<Integer> listIds )
     {
-        DemandResult result = new DemandResult( );
         
         if ( !listIds.isEmpty( ) )
         {
             Paginator<Integer> paginator = new Paginator<>( listIds, nDefaultItemsPerPage, StringUtils.EMPTY, StringUtils.EMPTY, String.valueOf( nIndex ) );
 
-            result.setDemands( DemandHome.getByIdsWithLastStatus( paginator.getPageItems( ) ) );
+            result.setListDemandDisplay( getListDemandDisplay( paginator.getPageItems( ) ) );
             result.setIndex( String.valueOf( nIndex ) );
             result.setPaginator( nIndex + "/" + paginator.getPagesCount( ) );
             result.setStatus( Response.Status.OK.name( ) );
@@ -152,6 +169,61 @@ public class DemandNotificationRestService
     }
 
     /**
+     * 
+     * @param listIds
+     * @return list of demand display
+     */
+    private List<DemandDisplay> getListDemandDisplay( List<Integer> listIds )
+    {
+        List<DemandDisplay> listDemandDisplay = new ArrayList<>( );
+        List<Demand> listDemand = DemandHome.getByIds( listIds );
+        for( Demand demand : listDemand )
+        {   
+            DemandDisplay demandDisplay = new DemandDisplay( );
+            demandDisplay.setDemand( demand );
+            demandDisplay.setStatus( getLabelStatus( demand ) );
+            
+            listDemandDisplay.add( demandDisplay );
+        }
+        Collections.reverse(listDemandDisplay);
+        return listDemandDisplay;
+    }
+    
+    /**
+     * Get status label
+     * @param demand
+     * @return status
+     */
+    private String getLabelStatus( Demand demand )
+    {
+        Notification notification = NotificationHome.getLastNotifByDemandIdAndDemandTypeId( String.valueOf( demand.getDemandId( ) ), String.valueOf( demand.getTypeId( ) ) ) ;
+                 
+        if( notification.getMyDashboardNotification( ) != null )
+        {
+            EnumGenericStatus enumGenericStatus = EnumGenericStatus.getByStatusId( notification.getMyDashboardNotification( ).getStatusId( ) );                
+            if( enumGenericStatus != null )
+            {
+                return I18nService.getLocalizedString( enumGenericStatus.getLabel( ), LocaleService.getDefault( ) );
+            }
+            else
+            {                  
+                Optional<Status> status = StatusHome.findByStatus( notification.getMyDashboardNotification( ).getStatusText( ) );
+                if( status.isPresent( ) )
+                {
+                    enumGenericStatus =  EnumGenericStatus.valueOf( status.get( ).getCodeStatus( ) );
+                    if( enumGenericStatus != null )
+                    {
+                        return I18nService.getLocalizedString( enumGenericStatus.getLabel( ), LocaleService.getDefault( ) );
+                    }
+                }
+            }
+            return notification.getMyDashboardNotification( ).getStatusText( );
+        }
+        
+        return StringUtils.EMPTY;
+    }
+    
+    /**
      * Gets list of notification
      * 
      * @param strIdDemand
@@ -159,35 +231,30 @@ public class DemandNotificationRestService
     @GET
     @Path( GruSupplyConstants.PATH_NOTIFICATION_LIST )
     @Produces( MediaType.APPLICATION_JSON )
-    public Response getListNotification( @HeaderParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND ) String strIdDemand,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND_TYPE ) String strIdDemandType,
-            @HeaderParam( GruSupplyConstants.QUERY_PARAM_READED ) String strReaded)
+    public Response getListNotification( @QueryParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND ) String strIdDemand,
+            @QueryParam( GruSupplyConstants.QUERY_PARAM_ID_DEMAND_TYPE ) String strIdDemandType,
+            @QueryParam( GruSupplyConstants.QUERY_PARAM_CUSTOMER_ID ) String strCustomerId )
     {
         NotificationResult result = new NotificationResult( );
         
-        if ( StringUtils.isNotEmpty( strIdDemand ) && StringUtils.isNotEmpty( strIdDemandType )  )
-        {
-            NotificationFilter filter = new NotificationFilter( );
-            filter.setDemandId( strIdDemand );
-            filter.setDemandTypeId( strIdDemandType );
-            List<Notification> notifications = NotificationHome.findByFilter( filter );
+        if ( StringUtils.isNotEmpty( strIdDemand ) && StringUtils.isNotEmpty( strIdDemandType ) 
+                && StringUtils.isNotEmpty( strCustomerId ) )
+        {            
+            
+            List<Notification> notifications = NotificationHome.getByDemandIdTypeIdCustomerId( strIdDemand, strIdDemandType, strCustomerId );
 
             result.setNotifications( notifications );
             result.setStatus( Response.Status.OK.name( ) );
             result.setNumberResult( notifications.size( ) );
             
-            //Set demand
-            if( StringUtils.isNotEmpty( strReaded ) )
-            {
-                Demand demand = DemandHome.findByPrimaryKey( strIdDemand, strIdDemandType );
-                demand.setRead( Boolean.parseBoolean( strReaded ) );
-                
-                DemandHome.update( demand );
-            }
-            
+            return Response.status( Response.Status.OK ).entity( GrusupplyUtils.convertToJsonString( result ) ).build( );
         }
-
-        return Response.status( Response.Status.OK ).entity( GrusupplyUtils.convertToJsonString( result ) ).build( );
+        else
+        {
+            result.setStatus( SearchResult.ERROR_FIELD_MANDATORY );
+            result.setErrorMessage( GruSupplyConstants.MESSAGE_ERROR_NOTIF);
+            return Response.status( Response.Status.BAD_REQUEST ).entity( GrusupplyUtils.convertToJsonString( result ) ).build( );
+        }
     }
 
     /**
