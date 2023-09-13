@@ -41,9 +41,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.paris.lutece.plugins.grubusiness.business.customer.Customer;
 import fr.paris.lutece.plugins.grubusiness.business.demand.Demand;
 import fr.paris.lutece.plugins.grubusiness.business.demand.DemandService;
+import fr.paris.lutece.plugins.grubusiness.business.notification.Event;
 import fr.paris.lutece.plugins.grubusiness.business.notification.Notification;
 import fr.paris.lutece.plugins.grubusiness.business.notification.NotificationEvent;
+import fr.paris.lutece.plugins.grubusiness.business.web.rs.EnumGenericStatus;
 import fr.paris.lutece.plugins.grubusiness.service.notification.NotificationException;
+import fr.paris.lutece.plugins.grustoragedb.business.DemandTypeHome;
+import fr.paris.lutece.plugins.grustoragedb.business.NotificationContentHome;
+import fr.paris.lutece.plugins.grustoragedb.business.StatusHome;
 import fr.paris.lutece.plugins.grusupply.business.StatusMessage;
 import fr.paris.lutece.plugins.grusupply.constant.GruSupplyConstants;
 import fr.paris.lutece.plugins.grusupply.service.CustomerProvider;
@@ -55,6 +60,7 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -79,6 +85,9 @@ public class GRUSupplyRestService
     private static final String WARNING_DEMAND_TYPE_ID_MANDATORY = "Notification Demand_type_id field is mandatory";
     private static final String WARNING_CUSTOMER_ID_MANDATORY = "Notification connection_id field is mandatory";
     private static final String MESSAGE_MISSING_MANDATORY_FIELD = "Missing value";
+    private static final String MESSAGE_MISSING_DEMAND_ID = "Demand Id and Demand type Id are mandatory";
+    private static final String MESSAGE_MISSING_USER_ID = "User connection id is mandatory";
+    private static final String MESSAGE_INCORRECT_DEMAND_ID = "Demand Type Id not found";
     
     // Other constants
     private static final String RESPONSE_OK = "{ \"acknowledge\" : { \"status\": \"received\" } }";
@@ -87,6 +96,8 @@ public class GRUSupplyRestService
     private static final String TYPE_NOTIFICATION = "DEMAND";
     private static final String STATUS_WARNING = "WARNING";
     private static final String STATUS_ERROR = "ERROR";
+    private static final String STATUS_FAILED = "FAILED";
+    private static final String TYPE_GUICHET = "GUICHET";
     
     // instance variable
     @Inject
@@ -193,6 +204,13 @@ public class GRUSupplyRestService
                 NotificationService.instance().process( notification );                
                 
             }
+            
+            //Create NotificationContent
+            NotificationContentHome.create( notification );
+            
+            //Notification Event
+            controlNotificationEvent( notification );
+            
         }
         catch( JsonParseException ex )
         {
@@ -221,7 +239,92 @@ public class GRUSupplyRestService
         }
         
     }
+    
+    /**
+     * Values and store the NotificationEvent object if failure
+     * @param notification
+     * @param strMessage
+     */
+    private void controlNotificationEvent ( Notification notification  )
+    {
+        if ( notification.getMyDashboardNotification( ) != null )
+        {
+            String strMessage = checkNotification( notification ); 
+            
+            if( StringUtils.isNotEmpty( strMessage ))
+            {
+                NotificationEvent notificationEvent = new NotificationEvent( );
+                        
+                Event event = new Event( );
+                event.setMessage( strMessage );
+                event.setStatus( STATUS_FAILED );
+                event.setType( TYPE_GUICHET );
+                event.setEventDate( notification.getDate( ) );
+                        
+                notificationEvent.setEvent( event );
+                notificationEvent.setMsgId( StringUtils.EMPTY );   
+                notificationEvent.setDemand( notification.getDemand( ) );
+                notificationEvent.setNotificationDate( notification.getDate( ) );
+                
+                store( notificationEvent );
+            }
+        }
+    }
 
+    /**
+     * Check notification
+     * @param notif
+     * @return The message error
+     */
+    private String checkNotification( Notification notif )
+    {        
+        // check if connection id is present
+        if ( notif.getDemand( ) == null || notif.getDemand( ).getCustomer( ) == null || StringUtils.isBlank( notif.getDemand( ).getCustomer( ).getConnectionId( ) ) )
+        {
+            return generateErrorMessage( notif, Response.Status.PRECONDITION_FAILED, MESSAGE_MISSING_USER_ID );
+        }
+
+        // check if Demand remote id and demand type id are present
+        if ( StringUtils.isBlank( notif.getDemand( ).getId( ) ) || StringUtils.isBlank( notif.getDemand( ).getTypeId( ) ) )
+        {
+            return generateErrorMessage( notif, Response.Status.PRECONDITION_FAILED, MESSAGE_MISSING_DEMAND_ID );
+        }
+
+        // check id demand_type_id is numeric
+        if ( !StringUtils.isNumeric( notif.getDemand( ).getTypeId( ) ) )
+        {
+            return generateErrorMessage( notif, Response.Status.PRECONDITION_FAILED, MESSAGE_INCORRECT_DEMAND_ID );
+        }
+
+        // check if demand type id exists
+        if ( !DemandTypeHome.findByPrimaryKey( Integer.parseInt( notif.getDemand( ).getTypeId( ) ) ).isPresent( ) )
+        {
+            return generateErrorMessage( notif, Response.Status.PRECONDITION_FAILED, MESSAGE_INCORRECT_DEMAND_ID );
+        }
+
+        return StringUtils.EMPTY;
+    }
+
+    /**
+     * Generates the error message
+     * @param notification
+     * @param strResponseStatus
+     * @param strErrorMessage
+     * @return
+     */
+    private String generateErrorMessage ( Notification notification, Status strResponseStatus,  String strErrorMessage)
+    {
+        StringBuilder message = new StringBuilder();
+        message.append( "\n" );
+        message.append( "Demande id " + notification.getDemand( ).getDemandId( ) + "\n" );
+        message.append( "Notification id " + notification.getId( ) + "\n" );
+        message.append( "Status: " + strResponseStatus.getStatusCode( ) + " " + strResponseStatus.getReasonPhrase( ) + "\n" );
+        message.append( "Error: " + strErrorMessage  + "\n" );
+        
+        return message.toString( );
+    }
+    
+    
         /**
      * Web Service methode which permit to store the notification flow into a data store
      * 
@@ -277,8 +380,8 @@ public class GRUSupplyRestService
     private void store( Notification notification )
     {
         Demand demand = _demandService.findByPrimaryKey( notification.getDemand( ).getId( ), notification.getDemand( ).getTypeId( ) );
-
-        if ( demand == null )
+                
+        if ( demand == null || !demand.getCustomer( ).getId( ).equals( notification.getDemand( ).getCustomer( ).getConnectionId( ) ) )
         {
             demand = new Demand( );
 
@@ -289,7 +392,7 @@ public class GRUSupplyRestService
             demand.setCreationDate( notification.getDate( ) );
             demand.setMaxSteps( notification.getDemand( ).getMaxSteps( ) );
             demand.setCurrentStep( notification.getDemand( ).getCurrentStep( ) );
-            demand.setStatusId( notification.getDemand( ).getStatusId( ) );
+            demand.setStatusId( getCalculedStatusId( notification ) );
 
             Customer customerDemand = new Customer( );
             customerDemand.setId( notification.getDemand( ).getCustomer( ).getId( ) );
@@ -302,26 +405,61 @@ public class GRUSupplyRestService
             demand.getCustomer( ).setId( notification.getDemand( ).getCustomer( ).getId( ) );
             demand.setCurrentStep( notification.getDemand( ).getCurrentStep( ) );
 
+            int nCalculedStatusId = getCalculedStatusId( notification );
+
             // Demand opened to closed
-            if ( ( demand.getStatusId( ) != fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED )
-                    && ( notification.getDemand( ).getStatusId( ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
+            if ( !EnumGenericStatus.isClosedStatus( demand.getStatusId( ) ) 
+                    && EnumGenericStatus.isClosedStatus( nCalculedStatusId ) )                 
             {
-                demand.setStatusId( notification.getDemand( ).getStatusId( ) );
                 demand.setClosureDate( notification.getDate( ) );
             }
 
             // Demand closed to opened
-            if ( ( demand.getStatusId( ) == fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED )
-                    && ( notification.getDemand( ).getStatusId( ) != fr.paris.lutece.plugins.grubusiness.business.demand.Demand.STATUS_CLOSED ) )
-            {
-                demand.setStatusId( notification.getDemand( ).getStatusId( ) );
+            if ( EnumGenericStatus.isClosedStatus( demand.getStatusId( ) ) && !EnumGenericStatus.isClosedStatus( nCalculedStatusId ) )
+            {                
                 demand.setClosureDate( 0 );
             }
+            
 
             _demandService.update( demand );
         }
-
+        notification.setDemand( demand );
         _demandService.create( notification );
+    }
+    
+    /**
+     * Calculates the generic status id for new notifications.
+     * @param notification
+     * @return
+     */
+    private int getCalculedStatusId ( Notification notification )
+    {                
+        if ( notification.getMyDashboardNotification( ) != null )
+        {
+            if( notification.getDemand( ) != null 
+                    && EnumGenericStatus.existStatus( notification.getDemand( ).getStatusId( ) )  )
+            {
+                return notification.getDemand( ).getStatusId( );
+            }
+            else if ( EnumGenericStatus.existStatus( notification.getMyDashboardNotification( ).getStatusId( ) ) )
+            {
+                return notification.getMyDashboardNotification( ).getStatusId( );
+            } 
+            else
+            {
+                Optional<fr.paris.lutece.plugins.grustoragedb.business.Status> status = StatusHome.findByStatus( notification.getMyDashboardNotification( ).getStatusText( ) );
+                if ( status.isPresent( ) )
+                {
+                    EnumGenericStatus genericStatus = EnumGenericStatus.valueOf( status.get( ).getCodeStatus( ) );
+                    if ( genericStatus != null )
+                    {
+                        return genericStatus.getStatusId( );
+                    }
+                }
+            }
+            return -1;
+        }
+        return notification.getDemand( ).getStatusId( );
     }
 
         /**

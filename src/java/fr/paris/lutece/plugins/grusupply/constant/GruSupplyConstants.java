@@ -48,10 +48,9 @@ public class GruSupplyConstants
     public static final String QUERY_PARAM_INDEX = "index";
     public static final String QUERY_PARAM_ID_DEMAND_TYPE = "idDemandType";
     public static final String QUERY_PARAM_CUSTOMER_ID = "customerId";
+    public static final String QUERY_PARAM_NOTIFICATION_TYPE = "notificationType";
     public static final String QUERY_PARAM_ID_DEMAND = "idDemand";
-    public static final String QUERY_PARAM_NOTIFICATION_TYPE = "notification_type";
     public static final String QUERY_PARAM_LIST_STATUS = "listStatus";
-    public static final String QUERY_PARAM_READED = "readed";
     
     // EXIT STATUS
     public static final String STATUS_201 = "{" + "\"status\":" + "\"201\"" + "}";
@@ -63,4 +62,9 @@ public class GruSupplyConstants
     // PROPERTIES
     /** The Constant LIMIT_DEMAND_API_REST. */
     public static final String LIMIT_DEMAND_API_REST = "grusupply.api.rest.limit.demand";
+    
+    //MESSAGE
+    public static final String MESSAGE_ERROR_DEMAND = "Parameter customerId is mandatory";
+    public static final String MESSAGE_ERROR_STATUS = "Parameters customerId and listStatus are mandatory ( can separated status by ,)";
+    public static final String MESSAGE_ERROR_NOTIF  = "Parameters idDemand, customerId and idDemandType are mandatory " ;
 }
