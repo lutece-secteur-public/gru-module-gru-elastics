@@ -39,6 +39,4 @@
         <constructor-arg ref="grusupply.identitystore.httpTransport"/>
     </bean>
     
-	<!-- Listener -->
-    <bean id="grusupply.contentNotificationListener" class="fr.paris.lutece.plugins.grustoragedb.business.listener.ContentNotificationListener" />
 </beans>

@@ -49,9 +49,7 @@ public class GruSupplyConstants
     public static final String QUERY_PARAM_ID_DEMAND_TYPE = "idDemandType";
     public static final String QUERY_PARAM_CUSTOMER_ID = "customerId";
     public static final String QUERY_PARAM_ID_DEMAND = "idDemand";
-    public static final String QUERY_PARAM_NOTIFICATION_TYPE = "notification_type";
     public static final String QUERY_PARAM_LIST_STATUS = "listStatus";
-    public static final String QUERY_PARAM_READED = "readed";
     
     // EXIT STATUS
     public static final String STATUS_201 = "{" + "\"status\":" + "\"201\"" + "}";
